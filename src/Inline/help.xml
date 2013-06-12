@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<HelpFile createdAt="2005-02-11" createdBy="graebe" id="HelpFile">
+<title>
+The GeoProver Package for Mechanized (Plane) Geometry Theorem Proving
+</title>
+<version>1.3a</version>
+<date>Jan 18, 2003</date>
+
+<author>Hans-Gert Graebe</author>
+<address>
+Univ. Leipzig, Institut f. Informatik, D - 04109 Leipzig, Germany
+</address>
+<url>http://www.informatik.uni-leipzig.de/~graebe</url>
+<email>graebe@informatik.uni-leipzig.de</email>
+
+<keywords>geometry theorem proving</keywords>
+
+<Introduction> <p>The <b>GeoProver</b> is a small package for
+mechanized (plane) geometry manipulations with non degeneracy
+tracing, available for different CAS platforms (Maple, MuPAD,
+Mathematica, and Reduce).</p>
+
+<p>It provides the casual user with a couple of procedures that
+allow him/her to mechanize his/her own geometry proofs. Version
+1.1 grew out from a course of lectures for students of computer
+science on this topic held by the author at the Univ. of Leipzig
+in fall 1996 and was updated after a similar lecture in spring
+1998.  </p>
+
+<p>The (completely revised) version 1.2, finished in March 2002,
+was set up as a generic software project to manage the code for
+different platforms in a unified way. There is a close relationship
+to the SymbolicData project (see 
+<url>http://www.symbolicdata.org</url>).</p>
+
+<p>For examples we refer to the test file, but also to the
+SymbolicData GEO collection. It contains many (generic) proof
+schemes of geometry theorems, mainly from Chou's book. These proof
+schemes can be translated to the GeoProver syntax for different
+platforms with SymbolicData tools.</p>
+
+<p>For version 1.3 the syntax definition (the <b>GeoCode</b>) was
+separated from the GeoProver implementation. The latter is an
+implementation of the GeoCode standard using the coordinate
+method. </p>
+
+<p>Note that function names change with different versions of the
+GeoCode standard. GeoProver 1.3 implements the GeoCode standard
+1.3. </p>
+
+<p>Please send comments, bug reports, hints, wishes, criticisms
+etc. to the author.</p> 
+</Introduction>
+
+<Bibliography>
+<p>If you have used the GeoProver in the preparation of a publication,
+please cite it in the following format (in particular, refer
+explicitely to the used version): </p>
+<pre>
+\bibitem{GeoProver}
+H.-G. Gr\"abe.
+\newblock {\sc GeoProver} -- {A Small Package for Mechanized Plane Geometry
+  Theorem Proving}, 1998 -- 2003.
+\newblock {With versions for Reduce, Maple, MuPAD and Mathematica.}\\ See
+  \url{http://www.informatik.uni-leipzig.de/~compalg/software}.
+</pre>
+
+<p>If you are using BibTeX, you can use the following BibTeX entry</p>  
+<pre>
+@Misc{GeoProver,
+  author =       {Gr\"abe, H.-G.},
+  title =        {{\sc GeoProver} -- {A Small Package for
+                  Mechanized Plane Geometry Theorem Proving}},
+  year =         {1998 -- 2003},
+  note =         {{With versions for Reduce, Maple, MuPAD and
+                  Mathematica.}\\  See
+                  \url{http://www.informatik.uni-leipzig.de/~compalg/software}
+                  },
+}
+</pre>
+</Bibliography>
+
+<Acknowledgements> 
+
+<p>Malte Witte translated the code of version 1.1 from Reduce to
+Maple, MuPAD, and Mathematica and compiled many examples for the
+SymbolicData GEO proof scheme collection, mainly from Chou's
+book.</p>
+
+<p>Benjamin Friedrich collected examples and solutions with
+geometric background from IMO contests.</p>
+</Acknowledgements>
+
+<BasicDataTypes>
+<p>Basic data types are <b>Points</b>, <b>Lines</b>, and
+<b>Circles</b>.</p>
+  
+<p>A point <code>A:=Point(a,b)</code> represents a point with
+coordinates <math>(a1,a2)</math>. </p>
+
+<p>A line <code>l:=Line(a,b,c)</code> represents the line
+<math>{ (x,y) : a*x+b*y+c=0 }</math>. </p>
+
+<p>A circle <code>c:=Circle(c1,c2,c3,c4)</code> represents the
+circle <math>{ (x,y) : c1*(x^2+y^2)+c2*x+c3*y+c4=0 }</math>. </p> 
+</BasicDataTypes>
+</HelpFile>

@@ -1,0 +1,4872 @@
+(************** Content-type: application/mathematica **************
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     85255,       2953]*)
+(*NotebookOutlinePosition[    128315,       4078]*)
+(*  CellTagsIndexPosition[    128271,       4074]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+Cell["\<\
+Needs[\"GeoProver`\"]
+
+GeoProver`gbasis[polys_,vars_]:=
+  (* compute a lex Groebner basis of polys in k[vars] *)
+  GroebnerBasis[polys,vars,CoefficientDomain -> RationalFunctions]
+
+GeoProver`normalf[p_List,poly_,vars_]:=
+\tGeoProver`normalf[#,polys,vars]& /@ p
+
+GeoProver`normalf[p_,polys_,vars_]:=
+  (* compute the normal form of p wrt. polys in k[vars] *)
+  Together[PolynomialReduce[p,polys,vars,
+           CoefficientDomain -> RationalFunctions][[2]]]\
+\>", "Input",
+  CellOpen->False,
+  InitializationCell->True,
+  FontSize->14],
+
+Cell[TextData[{
+  "Demo for the GeoProver package \nversion 1.3 \n\n",
+  StyleBox["Author: Hans-Gert Gr\[ADoubleDot]be\nUniv. Leipzig, Inst. f. \
+Informatik,\nD-04109 Leipzig,Germany\n\nfinished at January 20, 2003",
+    FontSize->24]
+}], "Title",
+  TextAlignment->Center,
+  FontSize->60],
+
+Cell[CellGroupData[{
+
+Cell["Some one line proofs", "Section",
+  FontSize->24],
+
+Cell[CellGroupData[{
+
+Cell["Very elementary statements", "Subsection"],
+
+Cell[TextData[{
+  "Consider a generic triangle ",
+  StyleBox["ABC",
+    FontSlant->"Italic"]
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[a1,a2] 
+b=point[b1,b2]
+c=point[c1,c2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({a1, a2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({b1, b2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({c1, c2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "Its ",
+  StyleBox[" ",
+    FontSlant->"Italic"],
+  StyleBox["perpendicular bisectors",
+    FontWeight->"Bold"],
+  " have a point in common since"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["isconcurrent[pbisector[a,b],pbisector[b,c],pbisector[c,a]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["simplifies to zero. This point", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["m=intersectionpoint[pbisector[a,b],pbisector[b,c]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((a2\ b1\^2 - a1\^2\ b2 - a2\^2\ b2 + a2\ b2\^2 - a2\ c1\^2 + 
+            b2\ c1\^2 + a1\^2\ c2 + a2\^2\ c2 - b1\^2\ c2 - b2\^2\ c2 - 
+            a2\ c2\^2 + 
+            b2\ c2\^2)\)/\((2\ \((a2\ b1 - a1\ b2 - a2\ c1 + b2\ c1 + 
+                a1\ c2 - b1\ c2)\))\), \((a1\^2\ b1 + a2\^2\ b1 - a1\ b1\^2 - 
+            a1\ b2\^2 - a1\^2\ c1 - a2\^2\ c1 + b1\^2\ c1 + b2\^2\ c1 + 
+            a1\ c1\^2 - b1\ c1\^2 + a1\ c2\^2 - 
+            b1\ c2\^2)\)/\((2\ \((a2\ b1 - a1\ b2 - a2\ c1 + b2\ c1 + 
+                a1\ c2 - b1\ c2)\))\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "is the ",
+  StyleBox["center of the circumscribed circle",
+    FontWeight->"Bold"]
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["eqdist[m,a,m,b]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "The ",
+  StyleBox["altitutes intersection theorem",
+    FontWeight->"Bold"],
+  " may be proved in the same way"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+isconcurrent[altitude[a,b,c],altitude[b,c,a],altitude[c,a,b]]\
+\>", \
+"Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "And the ",
+  StyleBox["median intersection theorem",
+    FontWeight->"Bold"],
+  " also"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["isconcurrent[median[a,b,c],median[b,c,a],median[c,a,b]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Euler's line", "Subsection"],
+
+Cell[TextData[{
+  "The theorem about Euler's line states that \n\n\t",
+  StyleBox["the circumcenter M, the orthocenter H and the barycenter S are on \
+a common line. \n\n",
+    FontSlant->"Italic"],
+  "To prove this statement we compute the corresponding generic coordinates:"
+}], "Text",
+  TextAlignment->Left,
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["m=intersectionpoint[pbisector[a,b],pbisector[b,c]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((a2\ b1\^2 - a1\^2\ b2 - a2\^2\ b2 + a2\ b2\^2 - a2\ c1\^2 + 
+            b2\ c1\^2 + a1\^2\ c2 + a2\^2\ c2 - b1\^2\ c2 - b2\^2\ c2 - 
+            a2\ c2\^2 + 
+            b2\ c2\^2)\)/\((2\ \((a2\ b1 - a1\ b2 - a2\ c1 + b2\ c1 + 
+                a1\ c2 - b1\ c2)\))\), \((a1\^2\ b1 + a2\^2\ b1 - a1\ b1\^2 - 
+            a1\ b2\^2 - a1\^2\ c1 - a2\^2\ c1 + b1\^2\ c1 + b2\^2\ c1 + 
+            a1\ c1\^2 - b1\ c1\^2 + a1\ c2\^2 - 
+            b1\ c2\^2)\)/\((2\ \((a2\ b1 - a1\ b2 - a2\ c1 + b2\ c1 + 
+                a1\ c2 - b1\ c2)\))\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["h=intersectionpoint[altitude[a,b,c],altitude[b,c,a]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((a1\ a2\ b1 + a2\^2\ b2 - a1\ b1\ b2 - a2\ b2\^2 - a1\ a2\ c1 + 
+            b1\ b2\ c1 - a2\^2\ c2 + b2\^2\ c2 + a1\ c1\ c2 - b1\ c1\ c2 + 
+            a2\ c2\^2 - b2\ c2\^2)\)/\((a2\ b1 - a1\ b2 - a2\ c1 + b2\ c1 + 
+            a1\ c2 - b1\ c2)\), \((\(-a1\^2\)\ b1 + a1\ b1\^2 - a1\ a2\ b2 + 
+            a2\ b1\ b2 + a1\^2\ c1 - b1\^2\ c1 - a1\ c1\^2 + b1\ c1\^2 + 
+            a1\ a2\ c2 - b1\ b2\ c2 - a2\ c1\ c2 + b2\ c1\ c2)\)/\((a2\ b1 - 
+            a1\ b2 - a2\ c1 + b2\ c1 + a1\ c2 - b1\ c2)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["s=intersectionpoint[median[a,b,c],median[b,c,a]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({1\/3\ \((a1 + b1 + c1)\), 1\/3\ \((a2 + b2 + c2)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["They are all on a common line since", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["iscollinear[m,h,s]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "Moreover, ",
+  StyleBox["S",
+    FontSlant->"Italic"],
+  " divides ",
+  StyleBox["MH ",
+    FontSlant->"Italic"],
+  "with ratio 2:1. Indeed"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["sqrdist[s,varpoint[m,h,1/3]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Feuerbach's circle", "Subsection"],
+
+Cell["\<\
+To prove this statement we choose a special coordinate system\
+\>", \
+"Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[u1,0]
+c=point[u2,u3]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u2, u3}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "compute coordinates of ",
+  StyleBox["M, H",
+    FontSlant->"Italic"],
+  ", and the midpoint ",
+  StyleBox["N",
+    FontSlant->"Italic"],
+  " of ",
+  StyleBox["MH",
+    FontSlant->"Italic"],
+  " "
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["m=intersectionpoint[pbisector[a,b],pbisector[b,c]] ", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u1\/2, \(\(-u1\)\ u2 + u2\^2 + u3\^2\)\/\(2\ u3\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["h=intersectionpoint[altitude[a,b,c],altitude[b,c,a]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u2, \(\((u1 - u2)\)\ u2\)\/u3}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["n=midpoint[m,h]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({1\/4\ \((u1 + 
+            2\ u2)\), \(u1\ u2 - u2\^2 + u3\^2\)\/\(4\ u3\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+and show that N is the center of the nine point circle passing \
+through the midpoints of the sides of ABC\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+cc=pccircle[n,midpoint[a,b]]
+{oncircle[midpoint[b,c],cc], oncircle[midpoint[a,c],cc]}
+\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({2\ u3, \((\(-u1\) - 2\ u2)\)\ u3, \(-u1\)\ u2 + u2\^2 - u3\^2, 
+      u1\ u2\ u3}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["through the midpoints of the upper altitudes' parts", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+{oncircle[midpoint[a,h],cc], oncircle[midpoint[b,h],cc], \
+oncircle[midpoint[c,h],cc]}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["and the pedal points", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+{ oncircle[pedalpoint[a,ppline[b,c]],cc], \
+oncircle[pedalpoint[b,ppline[a,c]],cc], \
+oncircle[pedalpoint[c,ppline[a,b]],cc]}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Non-linear Geometric Objects", "Section",
+  FontSize->18],
+
+Cell[CellGroupData[{
+
+Cell["The bisector intersection theorem", "Subsection"],
+
+Cell[TextData[{
+  "For the ",
+  StyleBox["bisector intersection theorem ",
+    FontSlant->"Italic"],
+  "take special coordinates"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[1,0]
+c=point[u1,u2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, u2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+The bisector intersection point can't be addressed directly, since \
+unordered geometry cannot distinguish between inner and outer bisectors. \
+Hence there are four intersection points of the three pairs of angle \
+bisectors. The coordinates of each such point P \
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["p=point[x1,x2]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x1, x2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+satisfy three polynomial relations, one for each bisector \
+pair,\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={ onbisector[p,a,b,c]==0,
+        onbisector[p,b,c,a]==0,
+        onbisector[p,c,a,b]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u2 - 2\ u2\ x1 + u2\ x1\^2 - 2\ x2 + 2\ u1\ x2 + 2\ x1\ x2 - 
+          2\ u1\ x1\ x2 - u2\ x2\^2 == 
+        0, \(-u1\^2\)\ u2 - u2\^3 + 2\ u1\^2\ u2\ x1 + 2\ u2\^3\ x1 + 
+          u2\ x1\^2 - 2\ u1\ u2\ x1\^2 + 2\ u1\^2\ x2 - 2\ u1\^3\ x2 + 
+          2\ u2\^2\ x2 - 2\ u1\ u2\^2\ x2 - 2\ u1\ x1\ x2 + 
+          2\ u1\^2\ x1\ x2 - 2\ u2\^2\ x1\ x2 - u2\ x2\^2 + 2\ u1\ u2\ x2\^2 == 
+        0, \(-u2\)\ x1\^2 + 2\ u1\ x1\ x2 + u2\ x2\^2 == 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+To prove the theorem we have to show the consistency of these \
+equations. We may try to solve the equations\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+vars={x1,x2}
+sol=Solve[polys,vars];\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x1, x2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "(be patient; we suppress the long output !) Since ",
+  Cell[BoxData[
+      \(x\_2\)]],
+  "is the distance from P to AB we may even check that P is the center of one \
+of the tangent circles: Compute the other distances and compare them with ",
+  Cell[BoxData[
+      \(x\_2\)]]
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+con1=(sqrdistpl[p,ppline[a,c]]-sqrdistpl[p,ppline[a,b]])//Together//\
+Numerator
+con2=(sqrdistpl[p,ppline[b,c]]-sqrdistpl[p,ppline[a,b]])//Together//Numerator\
+\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(u2\^2\ x1\^2 - 2\ u1\ u2\ x1\ x2 - u2\^2\ x2\^2\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \(u2\^2 - 2\ u2\^2\ x1 + u2\^2\ x1\^2 - 2\ u2\ x2 + 2\ u1\ u2\ x2 + 
+      2\ u2\ x1\ x2 - 2\ u1\ u2\ x1\ x2 - u2\^2\ x2\^2\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(con1 /. sol // Together\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0, 0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(con2 /. sol\  // Together\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0, 0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "(again be patient). A more clever way uses Groebner bases (see ",
+  StyleBox["supp.m",
+    FontWeight->"Bold"],
+  " for details) to prove these statements:"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["gb=gbasis[polys,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u2\^3 - 
+        4\ u2\^2\ x2 + \((4\ u2 + 4\ u1\ u2 - 4\ u1\^2\ u2 - 
+              4\ u2\^3)\)\ x2\^2 + \((\(-8\)\ u1 + 8\ u1\^2 + 
+              8\ u2\^2)\)\ x2\^3 - 4\ u2\ x2\^4, 
+      u2\^2 - u1\ u2\^2 + \((\(-u2\^2\) + 
+              2\ u1\ u2\^2)\)\ x1 + \((\(-2\)\ u2 + 2\ u1\ u2 - 
+              2\ u1\^2\ u2)\)\ x2 + \((4\ u1 - 4\ u1\^2 - 
+              2\ u2\^2)\)\ x2\^2 + 2\ u2\ x2\^3}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["normalf[{con1,con2},gb,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "Here is a constructive proof of the ",
+  StyleBox["bisector intersection theorem",
+    FontSlant->"Italic"],
+  ". Take A,B, and P,"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[1,0] 
+p=point[u1,u2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, u2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+ construct the lines l1 symmetric  to AB wrt.AP and l2 symmetric to \
+AB  wrt. BP. They intersect in C and CP must bisect the  third angle:\
+\>", \
+"Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+l1=ppline[a,b]
+l2=symline[l1,ppline[a,p]]
+l3=symline[l1,ppline[b,p]]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({2\ u1\ u2, \(-u1\^2\) + u2\^2, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({2\ \((\(-1\) + u1)\)\ u2, \(-1\) + 2\ u1 - u1\^2 + 
+        u2\^2, \(-2\)\ \((\(-1\) + u1)\)\ u2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["onbisector[p,a,b,intersectionpoint[l2,l3]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Miquel's theorem", "Subsection"],
+
+Cell["\<\
+For a triangle ABC choose points P on AB, Q on BC, and R on AC. \
+Then the circles through A,P,R, through B,P,Q, and through C,Q,R pass through \
+a common point.
+
+To prove this statement we choose A,B,C,P,Q,R \
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[1,0]
+c=point[c1,c2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({c1, c2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+p=lineslider[ppline[a,b],u1]
+q=lineslider[ppline[b,c],u2]
+r=lineslider[ppline[a,c],u3]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u2, \(\(-c2\) + c2\ u2\)\/\(\(-1\) + c1\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u3, \(c2\ u3\)\/c1}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+compute the coordinates of the intersection point X of the circles \
+through A,P,R and B,P,Q other than P\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["x=otherccpoint[p,p3circle[a,p,r],p3circle[b,p,q]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((c1\^2\ c2\^2\ u1 - c1\^3\ c2\^2\ u1 + c1\^3\ u1\^2 - 
+            2\ c1\^4\ u1\^2 + c1\^5\ u1\^2 - c1\^3\ u1\ u2 + 
+            3\ c1\^4\ u1\ u2 - 3\ c1\^5\ u1\ u2 + c1\^6\ u1\ u2 - 
+            c1\^3\ c2\^2\ u1\ u2 + c1\^4\ c2\^2\ u1\ u2 - c1\^3\ c2\^2\ u3 + 
+            c1\^4\ c2\^2\ u3 - c1\ c2\^4\ u3 + c1\^2\ c2\^4\ u3 - 
+            c1\^3\ u1\ u3 + c1\^4\ u1\ u3 + c1\^5\ u1\ u3 - c1\^6\ u1\ u3 - 
+            c1\ c2\^2\ u1\ u3 + c1\^2\ c2\^2\ u1\ u3 + c1\^3\ c2\^2\ u1\ u3 - 
+            c1\^4\ c2\^2\ u1\ u3 + c1\^3\ u2\ u3 - 3\ c1\^4\ u2\ u3 + 
+            3\ c1\^5\ u2\ u3 - c1\^6\ u2\ u3 + c1\ c2\^2\ u2\ u3 - 
+            3\ c1\^2\ c2\^2\ u2\ u3 + 4\ c1\^3\ c2\^2\ u2\ u3 - 
+            2\ c1\^4\ c2\^2\ u2\ u3 + c1\ c2\^4\ u2\ u3 - 
+            c1\^2\ c2\^4\ u2\ u3 + c1\^4\ u3\^2 - 2\ c1\^5\ u3\^2 + 
+            c1\^6\ u3\^2 + 2\ c1\^2\ c2\^2\ u3\^2 - 4\ c1\^3\ c2\^2\ u3\^2 + 
+            2\ c1\^4\ c2\^2\ u3\^2 + c2\^4\ u3\^2 - 2\ c1\ c2\^4\ u3\^2 + 
+            c1\^2\ c2\^4\ u3\^2)\)/\((c1\^2\ c2\^2 - 2\ c1\^3\ c2\^2 + 
+            c1\^4\ c2\^2 + c1\^2\ c2\^4 + 2\ c1\^2\ c2\^2\ u1 - 
+            2\ c1\^3\ c2\^2\ u1 + c1\^2\ u1\^2 - 2\ c1\^3\ u1\^2 + 
+            c1\^4\ u1\^2 - 2\ c1\^2\ c2\^2\ u2 + 4\ c1\^3\ c2\^2\ u2 - 
+            2\ c1\^4\ c2\^2\ u2 - 2\ c1\^2\ c2\^4\ u2 - 2\ c1\^2\ u1\ u2 + 
+            6\ c1\^3\ u1\ u2 - 6\ c1\^4\ u1\ u2 + 2\ c1\^5\ u1\ u2 - 
+            2\ c1\^2\ c2\^2\ u1\ u2 + 2\ c1\^3\ c2\^2\ u1\ u2 + 
+            c1\^2\ u2\^2 - 4\ c1\^3\ u2\^2 + 6\ c1\^4\ u2\^2 - 
+            4\ c1\^5\ u2\^2 + c1\^6\ u2\^2 + 2\ c1\^2\ c2\^2\ u2\^2 - 
+            4\ c1\^3\ c2\^2\ u2\^2 + 2\ c1\^4\ c2\^2\ u2\^2 + 
+            c1\^2\ c2\^4\ u2\^2 - 2\ c1\^3\ c2\^2\ u3 + 2\ c1\^4\ c2\^2\ u3 - 
+            2\ c1\ c2\^4\ u3 + 2\ c1\^2\ c2\^4\ u3 - 2\ c1\^3\ u1\ u3 + 
+            4\ c1\^4\ u1\ u3 - 2\ c1\^5\ u1\ u3 - 2\ c1\ c2\^2\ u1\ u3 + 
+            4\ c1\^2\ c2\^2\ u1\ u3 - 2\ c1\^3\ c2\^2\ u1\ u3 + 
+            2\ c1\^3\ u2\ u3 - 6\ c1\^4\ u2\ u3 + 6\ c1\^5\ u2\ u3 - 
+            2\ c1\^6\ u2\ u3 + 2\ c1\ c2\^2\ u2\ u3 - 
+            6\ c1\^2\ c2\^2\ u2\ u3 + 8\ c1\^3\ c2\^2\ u2\ u3 - 
+            4\ c1\^4\ c2\^2\ u2\ u3 + 2\ c1\ c2\^4\ u2\ u3 - 
+            2\ c1\^2\ c2\^4\ u2\ u3 + c1\^4\ u3\^2 - 2\ c1\^5\ u3\^2 + 
+            c1\^6\ u3\^2 + 2\ c1\^2\ c2\^2\ u3\^2 - 4\ c1\^3\ c2\^2\ u3\^2 + 
+            2\ c1\^4\ c2\^2\ u3\^2 + c2\^4\ u3\^2 - 2\ c1\ c2\^4\ u3\^2 + 
+            c1\^2\ c2\^4\ u3\^2)\), \((\((\(-1\) + c1)\)\ \((c1\^3\ c2\ u1 - 
+                c1\^4\ c2\ u1 - c1\^2\ c2\^3\ u1 - c1\^2\ c2\ u1\^2 + 
+                c1\^3\ c2\ u1\^2 + c1\^2\ c2\ u1\ u2 - 2\ c1\^3\ c2\ u1\ u2 + 
+                c1\^4\ c2\ u1\ u2 + c1\^2\ c2\^3\ u1\ u2 - c1\^3\ c2\ u3 + 
+                c1\^4\ c2\ u3 - c1\ c2\^3\ u3 + c1\^2\ c2\^3\ u3 + 
+                c1\^3\ c2\ u1\ u3 - c1\^4\ c2\ u1\ u3 + c1\ c2\^3\ u1\ u3 - 
+                c1\^2\ c2\^3\ u1\ u3)\))\)/\((c1\^2\ c2\^2 - 
+            2\ c1\^3\ c2\^2 + c1\^4\ c2\^2 + c1\^2\ c2\^4 + 
+            2\ c1\^2\ c2\^2\ u1 - 2\ c1\^3\ c2\^2\ u1 + c1\^2\ u1\^2 - 
+            2\ c1\^3\ u1\^2 + c1\^4\ u1\^2 - 2\ c1\^2\ c2\^2\ u2 + 
+            4\ c1\^3\ c2\^2\ u2 - 2\ c1\^4\ c2\^2\ u2 - 2\ c1\^2\ c2\^4\ u2 - 
+            2\ c1\^2\ u1\ u2 + 6\ c1\^3\ u1\ u2 - 6\ c1\^4\ u1\ u2 + 
+            2\ c1\^5\ u1\ u2 - 2\ c1\^2\ c2\^2\ u1\ u2 + 
+            2\ c1\^3\ c2\^2\ u1\ u2 + c1\^2\ u2\^2 - 4\ c1\^3\ u2\^2 + 
+            6\ c1\^4\ u2\^2 - 4\ c1\^5\ u2\^2 + c1\^6\ u2\^2 + 
+            2\ c1\^2\ c2\^2\ u2\^2 - 4\ c1\^3\ c2\^2\ u2\^2 + 
+            2\ c1\^4\ c2\^2\ u2\^2 + c1\^2\ c2\^4\ u2\^2 - 
+            2\ c1\^3\ c2\^2\ u3 + 2\ c1\^4\ c2\^2\ u3 - 2\ c1\ c2\^4\ u3 + 
+            2\ c1\^2\ c2\^4\ u3 - 2\ c1\^3\ u1\ u3 + 4\ c1\^4\ u1\ u3 - 
+            2\ c1\^5\ u1\ u3 - 2\ c1\ c2\^2\ u1\ u3 + 
+            4\ c1\^2\ c2\^2\ u1\ u3 - 2\ c1\^3\ c2\^2\ u1\ u3 + 
+            2\ c1\^3\ u2\ u3 - 6\ c1\^4\ u2\ u3 + 6\ c1\^5\ u2\ u3 - 
+            2\ c1\^6\ u2\ u3 + 2\ c1\ c2\^2\ u2\ u3 - 
+            6\ c1\^2\ c2\^2\ u2\ u3 + 8\ c1\^3\ c2\^2\ u2\ u3 - 
+            4\ c1\^4\ c2\^2\ u2\ u3 + 2\ c1\ c2\^4\ u2\ u3 - 
+            2\ c1\^2\ c2\^4\ u2\ u3 + c1\^4\ u3\^2 - 2\ c1\^5\ u3\^2 + 
+            c1\^6\ u3\^2 + 2\ c1\^2\ c2\^2\ u3\^2 - 4\ c1\^3\ c2\^2\ u3\^2 + 
+            2\ c1\^4\ c2\^2\ u3\^2 + c2\^4\ u3\^2 - 2\ c1\ c2\^4\ u3\^2 + 
+            c1\^2\ c2\^4\ u3\^2)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["and finally show that it also belongs to the third circle", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["oncircle[x,p3circle[c,q,r]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Theorems of linear type", "Section",
+  FontSize->18],
+
+Cell[CellGroupData[{
+
+Cell["Pappus' theorem", "Subsection"],
+
+Cell["\<\
+Let A,B,C and P,Q,R be collinear. Then the intersection points \
+AQ^PB, AR^PC and BR^QC are collinear. 
+
+To prove this statement choose coordinates where the x-axis is AB.\
+\>", \
+"Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[0,1]
+c=point[0,u5]
+p=point[u6,u7]
+q=point[u8,u9]
+r=point[u0,x2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, 1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, u5}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u6, u7}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u8, u9}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u0, x2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "There is a single condition on P,Q,R that allows to be solved for ",
+  Cell[BoxData[
+      \(x\_2\)]]
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(polys = iscollinear[p, q, r]\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(u0\ u7 - u7\ u8 - u0\ u9 + u6\ u9 - u6\ x2 + u8\ x2\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["The conclusion may be formulated as", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+con=iscollinear[
+intersectionpoint[ppline[a,q],ppline[p,b]],
+intersectionpoint[ppline[a,r],ppline[p,c]],
+intersectionpoint[ppline[b,r],ppline[q,c]]]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\((u0\^2\ u5\ u6\ u7\ u8 - u0\^2\ u5\^2\ u6\ u7\ u8 - 
+          u0\ u5\ u6\ u7\ u8\^2 + u0\ u5\^2\ u6\ u7\ u8\^2 - 
+          u0\^2\ u5\ u6\ u8\ u9 + u0\^2\ u5\^2\ u6\ u8\ u9 + 
+          u0\ u5\ u6\^2\ u8\ u9 - u0\ u5\^2\ u6\^2\ u8\ u9 - 
+          u0\ u5\ u6\^2\ u8\ x2 + u0\ u5\^2\ u6\^2\ u8\ x2 + 
+          u0\ u5\ u6\ u8\^2\ x2 - 
+          u0\ u5\^2\ u6\ u8\^2\ x2)\)/\((\((u8 - u7\ u8 + 
+              u6\ u9)\)\ \((u0\ u5 - u0\ u7 + u6\ x2)\)\ \((u0\ u5 - u8 - 
+              u0\ u9 + u8\ x2)\))\)\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "Now solve the equation for ",
+  Cell[BoxData[
+      \(x\_2\)]],
+  ", substitute the solution into the conlusion and simplify."
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(sol = Solve[polys == 0, x2]\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({{x2 \[Rule] \(\(-u0\)\ u7 + u7\ u8 + u0\ u9 - u6\ u9\)\/\(\(-u6\) + u8\
+\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["con/.sol//Together", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["Again there is a constructive solution", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[0,1]
+p=point[u6,u7]
+q=point[u8,u9]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, 1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u6, u7}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u8, u9}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+c=lineslider[ppline[a,b],u5]
+r=lineslider[ppline[p,q],u0]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, u5}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u0, \(u0\ u7 - u7\ u8 - u0\ u9 + u6\ u9\)\/\(u6 - u8\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+con=iscollinear[
+\tintersectionpoint[ppline[a,q],ppline[p,b]],
+\tintersectionpoint[ppline[a,r],ppline[p,c]],
+\tintersectionpoint[ppline[b,r],ppline[q,c]]]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Theorems of non linear type", "Section",
+  FontSize->18],
+
+Cell[CellGroupData[{
+
+Cell["Fermat point", "Subsection"],
+
+Cell["\<\
+Let ABC be a triangle and ABP, BCQ, ACR equilateral triangles to \
+the same side. Then AP, BQ and CR pass through a common point.
+
+Choose coordinates\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[0,2]
+c=point[u1,u2]
+p=point[x1,x2]
+q=point[x3,x4]
+r=point[x5,x6]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, 2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, u2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x1, x2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x3, x4}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x5, x6}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["The coordinates are related by the polynomial conditions", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={
+\teqdist[p,b,b,c]==0, eqdist[p,c,b,c]==0, 
+\teqdist[q,a,a,c]==0, eqdist[q,c,a,c]==0,
+\teqdist[r,b,a,b]==0, eqdist[r,a,a,b]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\(-u1\^2\) + 4\ u2 - u2\^2 + x1\^2 - 4\ x2 + x2\^2 == 
+        0, \(-4\) + 4\ u2 - 2\ u1\ x1 + x1\^2 - 2\ u2\ x2 + x2\^2 == 
+        0, \(-u1\^2\) - u2\^2 + x3\^2 + x4\^2 == 
+        0, \(-2\)\ u1\ x3 + x3\^2 - 2\ u2\ x4 + x4\^2 == 0, 
+      x5\^2 - 4\ x6 + x6\^2 == 0, \(-4\) + x5\^2 + x6\^2 == 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["The conclusion reads as", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=isconcurrent[ppline[a,p], ppline[b,q], ppline[c,r]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(2\ u2\ x1\ x3 - 2\ u1\ x2\ x3 - 2\ u2\ x1\ x5 + 2\ x2\ x3\ x5 - 
+      u2\ x2\ x3\ x5 + u2\ x1\ x4\ x5 + 2\ u1\ x1\ x6 - 2\ x1\ x3\ x6 + 
+      u1\ x2\ x3\ x6 - u1\ x1\ x4\ x6\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+The statement is difficult to prove since there are auxiliary \
+components (corresponding to triangles on the \"wrong\" sides). If we solve \
+the polynomial conditions for the dependent variables\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["vars={x1,x2,x3,x4,x5,x6}", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x1, x2, x3, x4, x5, x6}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["sol=Solve[polys,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({{x5 \[Rule] \(-\@3\), x6 \[Rule] 1, 
+        x1 \[Rule] 1\/2\ \((2\ \@3 + u1 - \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 - \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\@3\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 + \@3\ u1 + u2)\)}, {x5 \[Rule] \(-\@3\), 
+        x6 \[Rule] 1, x1 \[Rule] 1\/2\ \((2\ \@3 + u1 - \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 + \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\(-\@3\)\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 + \@3\ u1 + u2)\)}, {x5 \[Rule] \(-\@3\), 
+        x6 \[Rule] 1, x1 \[Rule] 1\/2\ \((\(-2\)\ \@3 + u1 + \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 - \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\@3\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 - \@3\ u1 + u2)\)}, {x5 \[Rule] \(-\@3\), 
+        x6 \[Rule] 1, x1 \[Rule] 1\/2\ \((\(-2\)\ \@3 + u1 + \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 + \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\(-\@3\)\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 - \@3\ u1 + u2)\)}, {x5 \[Rule] \@3, 
+        x6 \[Rule] 1, x1 \[Rule] 1\/2\ \((2\ \@3 + u1 - \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 - \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\@3\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 + \@3\ u1 + u2)\)}, {x5 \[Rule] \@3, 
+        x6 \[Rule] 1, x1 \[Rule] 1\/2\ \((2\ \@3 + u1 - \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 + \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\(-\@3\)\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 + \@3\ u1 + u2)\)}, {x5 \[Rule] \@3, 
+        x6 \[Rule] 1, x1 \[Rule] 1\/2\ \((\(-2\)\ \@3 + u1 + \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 - \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\@3\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 - \@3\ u1 + u2)\)}, {x5 \[Rule] \@3, 
+        x6 \[Rule] 1, x1 \[Rule] 1\/2\ \((\(-2\)\ \@3 + u1 + \@3\ u2)\), 
+        x3 \[Rule] 1\/2\ \((u1 + \@3\ u2)\), 
+        x4 \[Rule] 1\/2\ \((\(-\@3\)\ u1 + u2)\), 
+        x2 \[Rule] 1\/2\ \((2 - \@3\ u1 + u2)\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["and substitute these solutions into the conclusion ", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con/.sol//Together", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({1\/2\ \((\(-6\)\ u1\^2 - \@3\ u1\^3 + 24\ u2 + 4\ \@3\ u1\ u2 + 
+            3\ u1\^2\ u2 - 18\ u2\^2 - \@3\ u1\ u2\^2 + 3\ u2\^3)\), 
+      0, \(-2\)\ \@3\ u1 + 3\ u1\^2 - 6\ u2 + 2\ \@3\ u1\ u2 - 3\ u1\^2\ u2 + 
+        9\ u2\^2 - 3\ u2\^3, 
+      1\/2\ \((\(-4\)\ \@3\ u1 + \@3\ u1\^3 - 12\ u2 + 
+            3\ u1\^2\ u2 + \@3\ u1\ u2\^2 + 3\ u2\^3)\), 
+      1\/2\ \((4\ \@3\ u1 - \@3\ u1\^3 - 12\ u2 + 
+            3\ u1\^2\ u2 - \@3\ u1\ u2\^2 + 3\ u2\^3)\), 
+      2\ \@3\ u1 + 3\ u1\^2 - 6\ u2 - 2\ \@3\ u1\ u2 - 3\ u1\^2\ u2 + 
+        9\ u2\^2 - 3\ u2\^3, 0, 
+      1\/2\ \((\(-6\)\ u1\^2 + \@3\ u1\^3 + 24\ u2 - 4\ \@3\ u1\ u2 + 
+            3\ u1\^2\ u2 - 18\ u2\^2 + \@3\ u1\ u2\^2 + 
+            3\ u2\^3)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+we observe that the theorem holds only for two of the 8 branches \
+(this are exactly the solutions where the three equilateal triangles are on \
+the \"same\" sides wrt. ABC).
+
+To avoid this peculiarity we may use oriented angles and determine the outer \
+triangles as isoceles with equal base angles. \
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys2={
+\teqdist[p,b,p,c]==0, 
+\teqdist[q,a,q,c]==0,  
+\teqdist[r,a,r,b]==0, 
+\teqangle[r,a,b,p,b,c]==0, 
+\teqangle[q,c,a,p,b,c]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({4 - u1\^2 - u2\^2 + 2\ u1\ x1 - 4\ x2 + 2\ u2\ x2 == 
+        0, \(-u1\^2\) - u2\^2 + 2\ u1\ x3 + 2\ u2\ x4 == 0, 
+      4\ \((\(-1\) + x6)\) == 
+        0, \((\(-4\)\ x5 + 2\ u2\ x5 - u1\ x1\ x5 + 2\ x2\ x5 - u2\ x2\ x5 + 
+              2\ u1\ x6 - 2\ x1\ x6 + u2\ x1\ x6 - 
+              u1\ x2\ x6)\)/\((\((4 - 2\ u2 + u1\ x1 - 2\ x2 + 
+                  u2\ x2)\)\ x6)\) == 
+        0, \((2\ u1\^3 + 2\ u1\ u2\^2 - 2\ u1\^2\ x1 + u1\^2\ u2\ x1 - 
+              2\ u2\^2\ x1 + u2\^3\ x1 - u1\^3\ x2 - u1\ u2\^2\ x2 - 
+              2\ u1\^2\ x3 + 4\ u2\ x3 - 2\ u2\^2\ x3 + 2\ u1\ x1\ x3 + 
+              u1\^2\ x2\ x3 - 2\ u2\ x2\ x3 + u2\^2\ x2\ x3 - 4\ u1\ x4 - 
+              u1\^2\ x1\ x4 + 2\ u2\ x1\ x4 - u2\^2\ x1\ x4 + 
+              2\ u1\ x2\ x4)\)/\((\((4 - 2\ u2 + u1\ x1 - 2\ x2 + 
+                  u2\ x2)\)\ \((u1\^2 + u2\^2 - u1\ x3 - u2\ x4)\))\) == 
+        0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["sol=Solve[polys2,{x1,x2,x3,x4,x6}]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({{x6 \[Rule] 1, x4 \[Rule] 1\/2\ \((u2 + u1\ x5)\), 
+        x3 \[Rule] 1\/2\ \((u1 - u2\ x5)\), 
+        x2 \[Rule] 1\/2\ \((2 + u2 - u1\ x5)\), 
+        x1 \[Rule] 1\/2\ \((u1 - 2\ x5 + u2\ x5)\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Together[con/.sol]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+Note that we proved a more general theorem than stated above: The \
+theorem remains true for isoceles triangles with equal base angles.\
+\>", \
+"Text",
+  FontSize->14],
+
+Cell["clearndg[]; ", "Input",
+  FontSize->14]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Desargue's theorem", "Subsection"],
+
+Cell["\<\
+The affine version of Desargue's theorem states: For triangles ABC \
+and RST in similarity position AR, BS and CT pass through a common point.
+Here is a constructive proof. Choose A,B,C,R arbitrary\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[a1,a2]
+b=point[b1,b2]
+c=point[c1,c2]
+r=point[d1,d2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({a1, a2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({b1, b2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({c1, c2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({d1, d2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["S and T may be defined as", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+s=lineslider[parline[r,ppline[a,b]],u]
+t=intersectionpoint[parline[r,ppline[a,c]],parline[s,ppline[b,c]]]\
+\>", \
+"Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u, \(\(-a2\)\ d1 + b2\ d1 + a1\ d2 - b1\ d2 + a2\ u - b2\ u\)\/\(a1 - \
+b1\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(\(-b1\)\ d1 + c1\ d1 + a1\ u - c1\ u\)\/\(a1 - b1\), \(\(-a2\)\ d1 + \
+c2\ d1 + a1\ d2 - b1\ d2 + a2\ u - c2\ u\)\/\(a1 - b1\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["and the conclusion reads as", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=isconcurrent[ppline[a,r],ppline[b,s],ppline[c,t]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["Desargue's theorem as theorem of linear type. Take points", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[u1,u2]
+b=point[u3,u4]
+c=point[u5,u6]
+r=point[u7,u8]
+s=point[u9,x1]
+t=point[x2,x3]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u1, u2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u3, u4}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u5, u6}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u7, u8}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u9, x1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x2, x3}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+The similarity of ABC and RST may be expressed through 3 (linear in \
+the dependent variables) equations\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={
+\tisparallel[ppline[r,s],ppline[a,b]]==0,
+\tisparallel[ppline[s,t],ppline[b,c]]==0,
+\tisparallel[ppline[r,t],ppline[a,c]]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u2\ u7 - u4\ u7 - u1\ u8 + u3\ u8 - u2\ u9 + u4\ u9 + u1\ x1 - u3\ x1 == 
+        0, u4\ u9 - u6\ u9 - u3\ x1 + u5\ x1 - u4\ x2 + u6\ x2 + u3\ x3 - 
+          u5\ x3 == 0, 
+      u2\ u7 - u6\ u7 - u1\ u8 + u5\ u8 - u2\ x2 + u6\ x2 + u1\ x3 - u5\ x3 == 
+        0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["The conclusion reads as", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=isconcurrent[ppline[a,r],ppline[b,s],ppline[c,t]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\(-u2\)\ u4\ u5\ u7 + u2\ u3\ u6\ u7 + u1\ u4\ u5\ u8 - 
+      u1\ u3\ u6\ u8 + u2\ u4\ u5\ u9 - u1\ u4\ u6\ u9 - u2\ u6\ u7\ u9 + 
+      u4\ u6\ u7\ u9 - u4\ u5\ u8\ u9 + u1\ u6\ u8\ u9 - u2\ u3\ u5\ x1 + 
+      u1\ u3\ u6\ x1 + u2\ u5\ u7\ x1 - u3\ u6\ u7\ x1 - u1\ u5\ u8\ x1 + 
+      u3\ u5\ u8\ x1 - u2\ u3\ u6\ x2 + u1\ u4\ u6\ x2 + u2\ u4\ u7\ x2 - 
+      u4\ u6\ u7\ x2 - u1\ u4\ u8\ x2 + u3\ u6\ u8\ x2 - u2\ u4\ u9\ x2 + 
+      u2\ u6\ u9\ x2 + u4\ u8\ u9\ x2 - u6\ u8\ u9\ x2 + u2\ u3\ x1\ x2 - 
+      u1\ u6\ x1\ x2 - u2\ u7\ x1\ x2 + u6\ u7\ x1\ x2 + u1\ u8\ x1\ x2 - 
+      u3\ u8\ x1\ x2 + u2\ u3\ u5\ x3 - u1\ u4\ u5\ x3 - u2\ u3\ u7\ x3 + 
+      u4\ u5\ u7\ x3 + u1\ u3\ u8\ x3 - u3\ u5\ u8\ x3 + u1\ u4\ u9\ x3 - 
+      u2\ u5\ u9\ x3 + u2\ u7\ u9\ x3 - u4\ u7\ u9\ x3 - u1\ u8\ u9\ x3 + 
+      u5\ u8\ u9\ x3 - u1\ u3\ x1\ x3 + u1\ u5\ x1\ x3 + u3\ u7\ x1\ x3 - 
+      u5\ u7\ x1\ x3\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+We prove it solving the polynomial conditions for the dependent \
+variables and substitute the solution into the conclusion.\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["sol=Solve[polys,{x1,x2,x3}]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({{x2 \[Rule] \(-\(\(u3\ u7 - u5\ u7 - u1\ u9 + u5\ u9\)\/\(u1 - 
+                  u3\)\)\), 
+        x3 \[Rule] \(-\(\(u2\ u7 - u6\ u7 - u1\ u8 + u3\ u8 - u2\ u9 + 
+                  u6\ u9\)\/\(u1 - u3\)\)\), 
+        x1 \[Rule] \(-\(\(u2\ u7 - u4\ u7 - u1\ u8 + u3\ u8 - u2\ u9 + 
+                  u4\ u9\)\/\(u1 - u3\)\)\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["con/.sol//Together", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "The ",
+  StyleBox["general theorem of Desargue ",
+    FontSlant->"Italic"],
+  "states that for triangles ABC and RST with AB^RS, AC^RT and BC^ST \
+collinear the lines AR, BS and CT pass through a common point (or are \
+parallel). \nFor a proof choose coordinates"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[0,1]
+c=point[u5,u6]
+r=point[u7,u8]
+s=point[u9,u1]
+t=point[u2,x1]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, 1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u5, u6}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u7, u8}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u9, u1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u2, x1}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["The assumption and conclusion read as", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+con1=iscollinear[
+\tintersectionpoint[ppline[r,s],ppline[a,b]],
+\tintersectionpoint[ppline[s,t],ppline[b,c]],
+\tintersectionpoint[ppline[r,t],ppline[a,c]]]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\((u1\ u2\^2\ u5\ u6\ u7 - u1\^2\ u2\^2\ u5\ u6\ u7 - 
+          u1\ u2\ u5\ u6\ u7\^2 + u1\^2\ u2\ u5\ u6\ u7\^2 - 
+          u2\^2\ u5\ u6\ u7\ u8 + u1\ u2\^2\ u5\ u6\ u7\ u8 - 
+          u1\ u2\ u5\ u6\ u7\ u9 + u1\ u5\ u6\ u7\^2\ u9 - 
+          u1\ u2\^2\ u5\ u8\ u9 + u1\ u2\ u5\^2\ u8\ u9 + 
+          u1\ u2\^2\ u5\ u6\ u8\ u9 + u1\ u2\ u5\ u7\ u8\ u9 - 
+          u1\ u5\^2\ u7\ u8\ u9 + 2\ u2\ u5\ u6\ u7\ u8\ u9 - 
+          2\ u1\ u2\ u5\ u6\ u7\ u8\ u9 + u2\^2\ u5\ u8\^2\ u9 - 
+          u2\ u5\^2\ u8\^2\ u9 - u2\^2\ u5\ u6\ u8\^2\ u9 - 
+          u5\ u6\ u7\ u8\ u9\^2 - u2\ u5\ u8\^2\ u9\^2 + 
+          u5\^2\ u8\^2\ u9\^2 + u2\ u5\ u6\ u8\^2\ u9\^2 - 
+          u1\ u2\ u5\^2\ u7\ x1 + u1\^2\ u2\ u5\^2\ u7\ x1 + 
+          u1\ u5\^2\ u7\^2\ x1 - u1\^2\ u5\^2\ u7\^2\ x1 + 
+          u2\ u5\ u6\ u7\^2\ x1 - u1\ u2\ u5\ u6\ u7\^2\ x1 + 
+          u2\ u5\^2\ u7\ u8\ x1 - u1\ u2\ u5\^2\ u7\ u8\ x1 + 
+          u1\ u2\ u5\ u7\ u9\ x1 - u2\ u5\ u6\ u7\ u9\ x1 + 
+          u1\ u2\ u5\ u6\ u7\ u9\ x1 - u1\ u5\ u7\^2\ u9\ x1 - 
+          u5\ u6\ u7\^2\ u9\ x1 - u1\ u2\ u5\^2\ u8\ u9\ x1 - 
+          2\ u2\ u5\ u7\ u8\ u9\ x1 + 2\ u1\ u5\^2\ u7\ u8\ u9\ x1 + 
+          u2\ u5\ u6\ u7\ u8\ u9\ x1 + u2\ u5\^2\ u8\^2\ u9\ x1 + 
+          u5\ u6\ u7\ u9\^2\ x1 + u2\ u5\ u8\ u9\^2\ x1 - 
+          u5\^2\ u8\ u9\^2\ x1 - u2\ u5\ u6\ u8\ u9\^2\ x1 + 
+          u5\ u7\ u8\ u9\^2\ x1 - u5\^2\ u8\^2\ u9\^2\ x1 - 
+          u5\^2\ u7\^2\ x1\^2 + u1\ u5\^2\ u7\^2\ x1\^2 + 
+          u5\^2\ u7\ u9\ x1\^2 - u1\ u5\^2\ u7\ u9\ x1\^2 + 
+          u5\ u7\^2\ u9\ x1\^2 - u5\^2\ u7\ u8\ u9\ x1\^2 - 
+          u5\ u7\ u9\^2\ x1\^2 + 
+          u5\^2\ u8\ u9\^2\ x1\^2)\)/\((\((u7 - u9)\)\ \((u2\ u6 - u6\ u7 + 
+              u5\ u8 - u5\ x1)\)\ \((\(-u2\) + u1\ u5 + u2\ u6 + u9 - 
+              u6\ u9 - u5\ x1)\))\)\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["con2=isconcurrent[ppline[a,r],ppline[b,s],ppline[c,t]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\(-u2\)\ u6\ u7 + u1\ u2\ u6\ u7 + u6\ u7\ u9 + u2\ u8\ u9 - 
+      u5\ u8\ u9 - u2\ u6\ u8\ u9 + u5\ u7\ x1 - u1\ u5\ u7\ x1 - 
+      u7\ u9\ x1 + u5\ u8\ u9\ x1\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Factor[Numerator[con1]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\(-u5\)\ \((u1\ u2 - u1\ u7 - u2\ u8 + u8\ u9 + u7\ x1 - 
+          u9\ x1)\)\ \((\(-u2\)\ u6\ u7 + u1\ u2\ u6\ u7 + u6\ u7\ u9 + 
+          u2\ u8\ u9 - u5\ u8\ u9 - u2\ u6\ u8\ u9 + u5\ u7\ x1 - 
+          u1\ u5\ u7\ x1 - u7\ u9\ x1 + u5\ u8\ u9\ x1)\)\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "We see immediately that ",
+  StyleBox["con2",
+    FontSlant->"Italic"],
+  " is a factor of the assumption polynomial. Note that the second factor is \
+exactly"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(iscollinear[r, s, t]\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\(-u1\)\ u2 + u1\ u7 + u2\ u8 - u8\ u9 - u7\ x1 + u9\ x1\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["i.e., the inverse of the theorem holds, too.", "Text",
+  FontSize->14],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Brocard points", "Subsection"],
+
+Cell[TextData[{
+  StyleBox["Let ABC be a triangle. The circle through A,B tangent to AC, the \
+circle through B,C tangent to AB and the circle through A,C tangent to BC \
+pass through a common point, the ",
+    FontSlant->"Italic"],
+  StyleBox["Brocard",
+    FontWeight->"Bold",
+    FontSlant->"Italic"],
+  StyleBox[" point of the triangle.",
+    FontSlant->"Italic"],
+  "\nFor a proof choose a generic triangle"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[1,0]
+c=point[u1,u2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, u2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["and centers for the circles ", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(m1 = point[x1, x2]\), "\[IndentingNewLine]", 
+    \(m2 = point[x3, x4]\), "\[IndentingNewLine]", 
+    \(m3 = point[x5, x6]\), "\[IndentingNewLine]", 
+    \(c1 = pccircle[m1, a]\), "\n", 
+    \(c2 = pccircle[m2, b]\), "\n", 
+    \(c3 = pccircle[m3, c]\), "\n", 
+    \(\)}], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x1, x2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x3, x4}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x5, x6}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, \(-2\)\ x1, \(-2\)\ x2, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, \(-2\)\ x3, \(-2\)\ x4, \(-1\) + 2\ x3}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, \(-2\)\ x5, \(-2\)\ x6, \(-u1\^2\) - u2\^2 + 2\ u1\ x5 + 
+        2\ u2\ x6}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["These coordinates are determined by the conditions", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={
+\tiscltangent[c1,ppline[a,c]]==0, 
+\toncircle[b,c1]==0, 
+\tiscltangent[c2,ppline[a,b]]==0, 
+\toncircle[c,c2]==0, 
+\tiscltangent[c3,ppline[b,c]]==0, 
+\toncircle[a,c3]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({4\ \((u1\ x1 + u2\ x2)\)\^2 == 0, 1 - 2\ x1 == 0, 
+      4\ \((1 - 2\ x3 + x3\^2)\) == 
+        0, \(-1\) + u1\^2 + u2\^2 + 2\ x3 - 2\ u1\ x3 - 2\ u2\ x4 == 0, 
+      4\ \((u1\^2 - 2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + 
+              u2\^4 - 2\ u1\ x5 + 4\ u1\^2\ x5 - 2\ u1\^3\ x5 + 
+              2\ u2\^2\ x5 - 2\ u1\ u2\^2\ x5 + x5\^2 - 2\ u1\ x5\^2 + 
+              u1\^2\ x5\^2 + 2\ u1\ u2\ x6 - 2\ u1\^2\ u2\ x6 - 
+              2\ u2\^3\ x6 - 2\ u2\ x5\ x6 + 2\ u1\ u2\ x5\ x6 + 
+              u2\^2\ x6\^2)\) == 
+        0, \(-u1\^2\) - u2\^2 + 2\ u1\ x5 + 2\ u2\ x6 == 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+This is a non-linear system of equations, but yields a single (and \
+rational) solution\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["vars={x1,x2,x3,x4,x5,x6,x7,x8,x9}", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x1, x2, x3, x4, x5, x6, x7, x8, x9}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["sol=Solve[polys,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(Solve::"svars" \(\(:\)\(\ \)\) 
+      "Equations may not give solutions for all \"solve\" variables."\)], \
+"Message",
+  FontSize->18],
+
+Cell[BoxData[
+    \({{x2 \[Rule] \(-\(u1\/\(2\ u2\)\)\), 
+        x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}, {x2 \[Rule] \(-\(u1\/\(2\ u2\)\
+\)\), x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}, {x2 \[Rule] \(-\(u1\/\(2\ u2\)\
+\)\), x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}, {x2 \[Rule] \(-\(u1\/\(2\ u2\)\
+\)\), x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}, {x2 \[Rule] \(-\(u1\/\(2\ u2\)\
+\)\), x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}, {x2 \[Rule] \(-\(u1\/\(2\ u2\)\
+\)\), x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}, {x2 \[Rule] \(-\(u1\/\(2\ u2\)\
+\)\), x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}, {x2 \[Rule] \(-\(u1\/\(2\ u2\)\
+\)\), x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+        x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+        x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+        x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                  u1\ u2\^2\)\/\(2\ u2\)\)\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+(Mathematica returns 9 times the same solution, only the first of \
+which is considered)\
+\>", "Text",
+  FontFamily->"Courier",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+  "sol=sol[",
+  StyleBox["[", "SmallText"],
+  "1]]"
+}], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x2 \[Rule] \(-\(u1\/\(2\ u2\)\)\), 
+      x4 \[Rule] \(-\(\(\(-1\) + 2\ u1 - u1\^2 - u2\^2\)\/\(2\ u2\)\)\), 
+      x1 \[Rule] 1\/2, x3 \[Rule] 1, 
+      x5 \[Rule] 1\/2\ \((2\ u1 - u1\^2 - u2\^2)\), 
+      x6 \[Rule] \(-\(\(u1\^2 - u1\^3 - u2\^2 - 
+                u1\ u2\^2\)\/\(2\ u2\)\)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["Let P be the intersection point of two of the circles", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["p=otherccpoint[b,c1/.sol,c2/.sol]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((u1 - u1\^2 + u1\^3 + u2\^2 + u1\ u2\^2)\)/\((1 - 2\ u1 + 3\ u1\^2 - 
+            2\ u1\^3 + u1\^4 + 3\ u2\^2 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + 
+            u2\^4)\), \((u2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\))\)/\((1 - 
+            2\ u1 + 3\ u1\^2 - 2\ u1\^3 + u1\^4 + 3\ u2\^2 - 2\ u1\ u2\^2 + 
+            2\ u1\^2\ u2\^2 + u2\^4)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["This point also belongs to the third circle", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=oncircle[p,c3/.sol]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Simson's theorem", "Subsection"],
+
+Cell["\<\
+Let ABC a triangle and P a point on the circumcircle of ABC. Then \
+the perpfoots from P onto the sides of the triangle (or their prolongations) \
+are collinear.
+
+Here is a constructive proof. Choose a circle and four points on its \
+circumference\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+m=point[0,0]
+a=point[u1,0]
+b=circleslider[m,a,u2]
+c=circleslider[m,a,u3]
+p=circleslider[m,a,u4]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(u1\ \((\(-1\) + u2\^2)\)\)\/\(1 + u2\^2\), \(-\(\(2\ u1\ u2\)\/\(1 + 
+              u2\^2\)\)\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(u1\ \((\(-1\) + u3\^2)\)\)\/\(1 + u3\^2\), \(-\(\(2\ u1\ u3\)\/\(1 + 
+              u3\^2\)\)\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(u1\ \((\(-1\) + u4\^2)\)\)\/\(1 + u4\^2\), \(-\(\(2\ u1\ u4\)\/\(1 + 
+              u4\^2\)\)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["Then compute the coordinates of the pedal points ", "Text",
+  FontSize->14],
+
+Cell["\<\
+x=pedalpoint[p,ppline[a,b]];
+y=pedalpoint[p,ppline[b,c]];
+z=pedalpoint[p,ppline[a,c]];\
+\>", "Input",
+  FontSize->14],
+
+Cell["and prove that they are collinear", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["iscollinear[x,y,z]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14],
+
+Cell["\<\
+A pure equational proof goes as follows. Take points A, B, C, P, X, \
+Y, Z with independent and dependent coordinates \
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[1,0]
+c=point[u1,u2]
+p=point[u3,x1]
+x=varpoint[a,b,x2] 
+y=varpoint[b,c,x3]
+z=varpoint[a,c,x4]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, u2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u3, x1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x2, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1 - x3 + u1\ x3, u2\ x3}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1\ x4, u2\ x4}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+The dependent variables are related by the polynomial \
+conditions\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={
+\tisorthogonal[ppline[a,c],ppline[p,z]]==0,
+\tisorthogonal[ppline[b,c],ppline[p,y]]==0,
+\tisorthogonal[ppline[a,b],ppline[p,x]]==0,      \t\t\t
+\tisconcyclic[a,b,c,p]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\(-u1\)\ u3 - u2\ x1 + u1\^2\ x4 + u2\^2\ x4 == 
+        0, \(-1\) + u1 + u3 - u1\ u3 - u2\ x1 + x3 - 2\ u1\ x3 + u1\^2\ x3 + 
+          u2\^2\ x3 == 0, 
+      u3 - x2 == 0, \(-u2\)\ u3 + u2\ u3\^2 + u1\ x1 - u1\^2\ x1 - 
+          u2\^2\ x1 + u2\ x1\^2 == 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["and the conclusion is", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=iscollinear[x,y,z]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(u2\ x2\ x3 + u2\ x4 - u2\ x2\ x4 - u2\ x3\ x4\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["Solving the polynomial equations we get two solutions", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+vars={x2,x3,x4,x1}
+sol=Solve[polys,vars]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x2, x3, x4, x1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({{x2 \[Rule] u3, 
+        x4 \[Rule] \(1\/\(u1\^2 + u2\^2\)\) \((\(-\(u1\/2\)\) + u1\^2\/2 + 
+                u2\^2\/2 + u1\ u3 - 
+                1\/2\ \@\(\((u1 - u1\^2 - u2\^2)\)\^2 + 4\ u2\^2\ \((1 - \
+u3)\)\ u3\))\), 
+        x3 \[Rule] \((1 - \(3\ u1\)\/2 + u1\^2\/2 + u2\^2\/2 - u3 + u1\ u3 - 
+                1\/2\ \@\(\((u1 - u1\^2 - u2\^2)\)\^2 + 4\ u2\^2\ \((1 - \
+u3)\)\ u3\))\)/\((1 - 2\ u1 + u1\^2 + u2\^2)\), 
+        x1 \[Rule] \(1\/\(2\ u2\)\) \((\(-u1\) + u1\^2 + 
+                u2\^2 - \@\(\((u1 - u1\^2 - u2\^2)\)\^2 + 4\ u2\^2\ \((1 - \
+u3)\)\ u3\))\)}, {x2 \[Rule] u3, 
+        x4 \[Rule] \(1\/\(u1\^2 + u2\^2\)\) \((\(-\(u1\/2\)\) + u1\^2\/2 + 
+                u2\^2\/2 + u1\ u3 + 
+                1\/2\ \@\(\((u1 - u1\^2 - u2\^2)\)\^2 + 4\ u2\^2\ \((1 - \
+u3)\)\ u3\))\), 
+        x3 \[Rule] \((1 - \(3\ u1\)\/2 + u1\^2\/2 + u2\^2\/2 - u3 + u1\ u3 + 
+                1\/2\ \@\(\((u1 - u1\^2 - u2\^2)\)\^2 + 4\ u2\^2\ \((1 - \
+u3)\)\ u3\))\)/\((1 - 2\ u1 + u1\^2 + u2\^2)\), 
+        x1 \[Rule] \(1\/\(2\ u2\)\) \((\(-u1\) + u1\^2 + 
+                u2\^2 + \@\(\((u1 - u1\^2 - u2\^2)\)\^2 + 4\ u2\^2\ \((1 - \
+u3)\)\ u3\))\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(con /. sol // Together\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+Let's prove the same result with a Groebner basis \
+computations:\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["gb=gbasis[polys,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\(-u2\)\ u3 + u2\ u3\^2 + \((u1 - u1\^2 - u2\^2)\)\ x1 + 
+        u2\ x1\^2, \(-u1\)\ u3 - u2\ x1 + \((u1\^2 + u2\^2)\)\ x4, \(-1\) + 
+        u1 + u3 - u1\ u3 - u2\ x1 + \((1 - 2\ u1 + u1\^2 + u2\^2)\)\ x3, 
+      u3 - x2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["normalf[con,gb,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["For the inverse theorem,  the polynomial conditions are ", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={
+\tisorthogonal[ppline[a,c],ppline[p,z]]==0,
+\tisorthogonal[ppline[b,c],ppline[p,y]]==0,
+\tisorthogonal[ppline[a,b],ppline[p,x]]==0,
+    iscollinear[x,y,z]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\(-u1\)\ u3 - u2\ x1 + u1\^2\ x4 + u2\^2\ x4 == 
+        0, \(-1\) + u1 + u3 - u1\ u3 - u2\ x1 + x3 - 2\ u1\ x3 + u1\^2\ x3 + 
+          u2\^2\ x3 == 0, u3 - x2 == 0, 
+      u2\ x2\ x3 + u2\ x4 - u2\ x2\ x4 - u2\ x3\ x4 == 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["The conclusion is", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=isconcyclic[a,b,c,p]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\(-u2\)\ u3 + u2\ u3\^2 + u1\ x1 - u1\^2\ x1 - u2\^2\ x1 + 
+      u2\ x1\^2\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["Solving the polynomial equations we get again two solutions", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(sol = Solve[polys, vars]\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({{x1 \[Rule] \(1\/u2\) \((\(-1\) + u1 + 
+                1\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(7\ u1\)\/\(2\ \((1 - 2\ \
+u1 + u1\^2 + u2\^2)\)\) + \(9\ u1\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + \
+u2\^2)\)\) - \(5\ u1\^3\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + 
+                u1\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + \(3\ \
+u2\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) - \(5\ u1\ u2\^2\)\/\(2\ \((1 \
+- 2\ u1 + u1\^2 + u2\^2)\)\) + \(u1\^2\ u2\^2\)\/\(1 - 2\ u1 + u1\^2 + \
+u2\^2\) + u2\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + u3 - u1\ u3 - 
+                u3\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(3\ u1\ u3\)\/\(1 - 2\ \
+u1 + u1\^2 + u2\^2\) - \(3\ u1\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(u1\
+\^3\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 \
++ u2\^2\) + \(u1\ u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \
+\((\[Sqrt]\((u1\^2 - 2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + 
+                          u2\^4 + 4\ u2\^2\ u3 - 
+                          4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + u1\^2 + 
+                          u2\^2)\))\) + \((u1\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((1 - 
+                      2\ u1 + u1\^2 + 
+                      u2\^2)\) - \((u1\^2\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 
+                          2\ u1 + u1\^2 + 
+                          u2\^2)\))\) - \((u2\^2\ \[Sqrt]\((u1\^2 - 
+                            2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 
+                            2\ u1\^2\ u2\^2 + u2\^4 + 4\ u2\^2\ u3 - 
+                            4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + 
+                          u1\^2 + u2\^2)\))\))\), x2 \[Rule] u3, 
+        x4 \[Rule] \(1\/\(u1\^2 + u2\^2\)\) \((\(-1\) + u1 + 
+                1\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(7\ u1\)\/\(2\ \((1 - 2\ \
+u1 + u1\^2 + u2\^2)\)\) + \(9\ u1\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + \
+u2\^2)\)\) - \(5\ u1\^3\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + 
+                u1\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + \(3\ \
+u2\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) - \(5\ u1\ u2\^2\)\/\(2\ \((1 \
+- 2\ u1 + u1\^2 + u2\^2)\)\) + \(u1\^2\ u2\^2\)\/\(1 - 2\ u1 + u1\^2 + \
+u2\^2\) + u2\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + u3 - 
+                u3\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(3\ u1\ u3\)\/\(1 - 2\ \
+u1 + u1\^2 + u2\^2\) - \(3\ u1\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(u1\
+\^3\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 \
++ u2\^2\) + \(u1\ u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \
+\((\[Sqrt]\((u1\^2 - 2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + 
+                          u2\^4 + 4\ u2\^2\ u3 - 
+                          4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + u1\^2 + 
+                          u2\^2)\))\) + \((u1\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((1 - 
+                      2\ u1 + u1\^2 + 
+                      u2\^2)\) - \((u1\^2\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 
+                          2\ u1 + u1\^2 + 
+                          u2\^2)\))\) - \((u2\^2\ \[Sqrt]\((u1\^2 - 
+                            2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 
+                            2\ u1\^2\ u2\^2 + u2\^4 + 4\ u2\^2\ u3 - 
+                            4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + 
+                          u1\^2 + u2\^2)\))\))\), 
+        x3 \[Rule] \((2 - 3\ u1 + u1\^2 + u2\^2 - 2\ u3 + 
+                2\ u1\ u3 - \[Sqrt]\((u1\^2 - 2\ u1\^3 + u1\^4 - 
+                      2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 4\ u2\^2\ u3 - 
+                      4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + u1\^2 + 
+                    u2\^2)\))\)}, {x1 \[Rule] \(1\/u2\) \((\(-1\) + u1 + 
+                1\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(7\ u1\)\/\(2\ \((1 - 2\ \
+u1 + u1\^2 + u2\^2)\)\) + \(9\ u1\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + \
+u2\^2)\)\) - \(5\ u1\^3\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + 
+                u1\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + \(3\ \
+u2\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) - \(5\ u1\ u2\^2\)\/\(2\ \((1 \
+- 2\ u1 + u1\^2 + u2\^2)\)\) + \(u1\^2\ u2\^2\)\/\(1 - 2\ u1 + u1\^2 + \
+u2\^2\) + u2\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + u3 - u1\ u3 - 
+                u3\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(3\ u1\ u3\)\/\(1 - 2\ \
+u1 + u1\^2 + u2\^2\) - \(3\ u1\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(u1\
+\^3\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 \
++ u2\^2\) + \(u1\ u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \
+\((\[Sqrt]\((u1\^2 - 2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + 
+                          u2\^4 + 4\ u2\^2\ u3 - 
+                          4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + u1\^2 + 
+                          u2\^2)\))\) - \((u1\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((1 - 
+                      2\ u1 + u1\^2 + 
+                      u2\^2)\) + \((u1\^2\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 
+                          2\ u1 + u1\^2 + 
+                          u2\^2)\))\) + \((u2\^2\ \[Sqrt]\((u1\^2 - 
+                            2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 
+                            2\ u1\^2\ u2\^2 + u2\^4 + 4\ u2\^2\ u3 - 
+                            4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + 
+                          u1\^2 + u2\^2)\))\))\), x2 \[Rule] u3, 
+        x4 \[Rule] \(1\/\(u1\^2 + u2\^2\)\) \((\(-1\) + u1 + 
+                1\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(7\ u1\)\/\(2\ \((1 - 2\ \
+u1 + u1\^2 + u2\^2)\)\) + \(9\ u1\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + \
+u2\^2)\)\) - \(5\ u1\^3\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + 
+                u1\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + \(3\ \
+u2\^2\)\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) - \(5\ u1\ u2\^2\)\/\(2\ \((1 \
+- 2\ u1 + u1\^2 + u2\^2)\)\) + \(u1\^2\ u2\^2\)\/\(1 - 2\ u1 + u1\^2 + \
+u2\^2\) + u2\^4\/\(2\ \((1 - 2\ u1 + u1\^2 + u2\^2)\)\) + u3 - 
+                u3\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(3\ u1\ u3\)\/\(1 - 2\ \
+u1 + u1\^2 + u2\^2\) - \(3\ u1\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \(u1\
+\^3\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) - \(u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 \
++ u2\^2\) + \(u1\ u2\^2\ u3\)\/\(1 - 2\ u1 + u1\^2 + u2\^2\) + \
+\((\[Sqrt]\((u1\^2 - 2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + 
+                          u2\^4 + 4\ u2\^2\ u3 - 
+                          4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + u1\^2 + 
+                          u2\^2)\))\) - \((u1\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((1 - 
+                      2\ u1 + u1\^2 + 
+                      u2\^2)\) + \((u1\^2\ \[Sqrt]\((u1\^2 - 2\ u1\^3 + 
+                            u1\^4 - 2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 
+                            4\ u2\^2\ u3 - 4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 
+                          2\ u1 + u1\^2 + 
+                          u2\^2)\))\) + \((u2\^2\ \[Sqrt]\((u1\^2 - 
+                            2\ u1\^3 + u1\^4 - 2\ u1\ u2\^2 + 
+                            2\ u1\^2\ u2\^2 + u2\^4 + 4\ u2\^2\ u3 - 
+                            4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + 
+                          u1\^2 + u2\^2)\))\))\), 
+        x3 \[Rule] \((2 - 3\ u1 + u1\^2 + u2\^2 - 2\ u3 + 
+                2\ u1\ u3 + \[Sqrt]\((u1\^2 - 2\ u1\^3 + u1\^4 - 
+                      2\ u1\ u2\^2 + 2\ u1\^2\ u2\^2 + u2\^4 + 4\ u2\^2\ u3 - 
+                      4\ u2\^2\ u3\^2)\))\)/\((2\ \((1 - 2\ u1 + u1\^2 + 
+                    u2\^2)\))\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(con /. sol // Together\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["Here is an approach through Groebner bases ", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["gb=gbasis[polys,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({u2\ u3 - u2\ u3\^2 + \((\(-u1\) + u1\^2 + u2\^2)\)\ x1 - 
+        u2\ x1\^2, \(-u1\)\ u3 - u2\ x1 + \((u1\^2 + u2\^2)\)\ x4, \(-1\) + 
+        u1 + u3 - u1\ u3 - u2\ x1 + \((1 - 2\ u1 + u1\^2 + u2\^2)\)\ x3, 
+      u3 - x2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["normalf[con,gb,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["The butterfly theorem", "Subsection"],
+
+Cell[TextData[{
+  StyleBox["Let A, B, C, D be four points on a circle with center O. AC and \
+BD intersect at P. The line through P perpendicular to OP intersects AD in E \
+and BC in F. Then P is the midpoint of EF.",
+    FontSlant->"Italic"],
+  "\n\nFor an equational proof choose the following coordinates "
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+p=point[0,0]
+o=point[u1,0]
+a=point[u2,u3]
+b=point[u4,x1]
+c=point[x2,x3]
+d=point[x4,x5]
+e=point[0,x6]
+f=point[0,x7]
+cc=pccircle[o,a]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u2, u3}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u4, x1}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x2, x3}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({x4, x5}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, x6}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({0, x7}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, \(-2\)\ u1, 0, 2\ u1\ u2 - u2\^2 - u3\^2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+Due to the special choice of the coordinate system EF is already \
+perpendicular to OP and the dependent variables are related through the \
+polynomials\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={
+\toncircle[b,cc]==0, 
+\toncircle[c,cc]==0, 
+\toncircle[d,cc]==0,
+\tonline[p,ppline[a,c]]==0,
+\tonline[p,ppline[b,d]]==0,
+\tonline[e,ppline[a,d]]==0,
+\tonline[f,ppline[b,c]]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4 + u4\^2 + x1\^2 == 0, 
+      2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ x2 + x2\^2 + x3\^2 == 0, 
+      2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ x4 + x4\^2 + x5\^2 == 0, 
+      u3\ x2 - u2\ x3 == 0, x1\ x4 - u4\ x5 == 0, 
+      u3\ x4 - u2\ x5 + u2\ x6 - x4\ x6 == 0, 
+      x1\ x2 - u4\ x3 + u4\ x7 - x2\ x7 == 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["The conclusion may be formulated as", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=Numerator[sqrdist[p,midpoint[e,f]]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\((x6 + x7)\)\^2\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "Let's try to solve the polynomial system with ",
+  StyleBox["Solve",
+    FontSlant->"Italic"]
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+vars={x6,x7,x5,x4,x2,x3,x1}
+sol=Solve[polys,vars];\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x6, x7, x5, x4, x2, x3, x1}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "(long output suppressed; be patient or abort the computation) \n\nThe \
+solution contains degenerate components with ",
+  StyleBox["B=D ",
+    FontSlant->"Italic"],
+  "or ",
+  StyleBox["A=C",
+    FontSlant->"Italic"],
+  " that should be removed"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(sol1 = 
+        Select[sol, \(! SameQ[sqrdist[a, c] /. # // Together, 
+                0]\)\  &];\)\), "\n", 
+    \(sol2 = 
+      Select[sol1, \(! SameQ[sqrdist[b, d] /. # // Together, 
+              0]\)\  &]\)}], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({{x6 \[Rule] \((2\ u1\ u2\ u3\ u4\^2 - u2\^2\ u3\ u4\^2 - 
+                u3\^3\ u4\^2 - \(4\ u1\^2\ u2\^3\ u3\ u4\)\/\(2\ u1\ u2 - \
+u2\^2 - u3\^2 - 2\ u1\ u4\) + \(4\ u1\ u2\^4\ u3\ u4\)\/\(2\ u1\ u2 - u2\^2 - \
+u3\^2 - 2\ u1\ u4\) - \(u2\^5\ u3\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ \
+u4\) + \(4\ u1\ u2\^2\ u3\^3\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) \
+- \(2\ u2\^3\ u3\^3\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(u2\ \
+u3\^5\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \(4\ u1\^2\ u2\^2\ \
+u3\ u4\^2\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(2\ u1\ u2\^3\ u3\ \
+u4\^2\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(2\ u1\ u2\ u3\^3\ \
+u4\^2\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + 
+                2\ u1\ u2\^2\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ \
+u4 - u4\^2\) - 
+                u2\^3\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - \
+u4\^2\) - 
+                u2\ u3\^2\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\) - \(4\ u1\^2\ u2\^4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \(4\ u1\ u2\^5\ \@\(\
+\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - \
+u3\^2 - 2\ u1\ u4\) - \(u2\^6\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \(4\ u1\ u2\^3\ \
+u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ \
+u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(2\ u2\^4\ u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\
+\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ \
+u4\) - \(u2\^2\ u3\^4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\
+\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \(4\ u1\^2\ u2\^3\ u4\ \@\(\
+\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - \
+u3\^2 - 2\ u1\ u4\) - \(2\ u1\ u2\^4\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 \
++ 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \((2\ u1\
+\ u2\^2\ u3\^2\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\))\
+\)/\((2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4)\))\)/\((\(-2\)\ u1\ u2\^3 + 
+                u2\^4 + u2\^2\ u3\^2 + 2\ u1\ u2\^2\ u4 - u2\^2\ u4\^2 - 
+                u3\^2\ u4\^2)\), 
+        x7 \[Rule] \((2\ u1\ u2\^2\ u3\ u4 - u2\^3\ u3\ u4 - 
+                u2\ u3\^3\ u4 - \(2\ u1\ u2\^3\ u3\ u4\^2\)\/\(u2\^2 + \
+u3\^2\) + \(u2\^4\ u3\ u4\^2\)\/\(u2\^2 + u3\^2\) - \(2\ u1\ u2\ u3\^3\ u4\^2\
+\)\/\(u2\^2 + u3\^2\) + \(2\ u2\^2\ u3\^3\ u4\^2\)\/\(u2\^2 + u3\^2\) + \
+\(u3\^5\ u4\^2\)\/\(u2\^2 + u3\^2\) + 
+                2\ u1\ u2\^3\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\) - u2\^4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\) - 
+                u2\^2\ u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\) - \(2\ u1\ u2\^4\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ \
+u4 - u4\^2\)\)\/\(u2\^2 + u3\^2\) + \(u2\^5\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + \
+u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(u2\^2 + u3\^2\) - \(1\/\(u2\^2 + 
+                        u3\^2\)\) \((2\ u1\ u2\^2\ u3\^2\ u4\ \@\(\(-2\)\ u1\ \
+u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\))\) + \(2\ u2\^3\ u3\^2\ u4\ \@\(\(-2\
+\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(u2\^2 + u3\^2\) + \(u2\ \
+u3\^4\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - \
+u4\^2\)\)\/\(u2\^2 + u3\^2\))\)/\((\(-2\)\ u1\ u2\^3 + u2\^4 + u2\^2\ u3\^2 + 
+                2\ u1\ u2\^2\ u4 - u2\^2\ u4\^2 - u3\^2\ u4\^2)\), 
+        x5 \[Rule] \(2\ u1\ u2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ \
+u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(u2\^2\ \@\(\(-2\
+\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - \
+u3\^2 - 2\ u1\ u4\) - \(u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\), 
+        x3 \[Rule] \(2\ u1\ u2\ u3 - u2\^2\ u3 - u3\^3\)\/\(u2\^2 + u3\^2\), 
+        x1 \[Rule] \(-\@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - \
+u4\^2\)\), 
+        x2 \[Rule] \(2\ u1\ u2\^2 - u2\^3 - u2\ u3\^2\)\/\(u2\^2 + u3\^2\), 
+        x4 \[Rule] \(\(-2\)\ u1\ u2\ u4 + u2\^2\ u4 + u3\^2\ u4\)\/\(2\ u1\ \
+u2 - u2\^2 - u3\^2 - 2\ u1\ u4\)}, {x6 \[Rule] \((2\ u1\ u2\ u3\ u4\^2 - 
+                u2\^2\ u3\ u4\^2 - 
+                u3\^3\ u4\^2 - \(4\ u1\^2\ u2\^3\ u3\ u4\)\/\(2\ u1\ u2 - \
+u2\^2 - u3\^2 - 2\ u1\ u4\) + \(4\ u1\ u2\^4\ u3\ u4\)\/\(2\ u1\ u2 - u2\^2 - \
+u3\^2 - 2\ u1\ u4\) - \(u2\^5\ u3\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ \
+u4\) + \(4\ u1\ u2\^2\ u3\^3\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) \
+- \(2\ u2\^3\ u3\^3\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(u2\ \
+u3\^5\ u4\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \(4\ u1\^2\ u2\^2\ \
+u3\ u4\^2\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(2\ u1\ u2\^3\ u3\ \
+u4\^2\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(2\ u1\ u2\ u3\^3\ \
+u4\^2\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - 
+                2\ u1\ u2\^2\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ \
+u4 - u4\^2\) + 
+                u2\^3\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - \
+u4\^2\) + 
+                u2\ u3\^2\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\) + \(4\ u1\^2\ u2\^4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(4\ u1\ u2\^5\ \@\(\
+\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - \
+u3\^2 - 2\ u1\ u4\) + \(u2\^6\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(4\ u1\ u2\^3\ \
+u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ \
+u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \(2\ u2\^4\ u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\
+\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ \
+u4\) + \(u2\^2\ u3\^4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\
+\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) - \(4\ u1\^2\ u2\^3\ u4\ \@\(\
+\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - \
+u3\^2 - 2\ u1\ u4\) + \(2\ u1\ u2\^4\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 \
++ 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \((2\ u1\
+\ u2\^2\ u3\^2\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\))\
+\)/\((2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4)\))\)/\((\(-2\)\ u1\ u2\^3 + 
+                u2\^4 + u2\^2\ u3\^2 + 2\ u1\ u2\^2\ u4 - u2\^2\ u4\^2 - 
+                u3\^2\ u4\^2)\), 
+        x7 \[Rule] \((2\ u1\ u2\^2\ u3\ u4 - u2\^3\ u3\ u4 - 
+                u2\ u3\^3\ u4 - \(2\ u1\ u2\^3\ u3\ u4\^2\)\/\(u2\^2 + \
+u3\^2\) + \(u2\^4\ u3\ u4\^2\)\/\(u2\^2 + u3\^2\) - \(2\ u1\ u2\ u3\^3\ u4\^2\
+\)\/\(u2\^2 + u3\^2\) + \(2\ u2\^2\ u3\^3\ u4\^2\)\/\(u2\^2 + u3\^2\) + \
+\(u3\^5\ u4\^2\)\/\(u2\^2 + u3\^2\) - 
+                2\ u1\ u2\^3\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\) + u2\^4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\) + 
+                u2\^2\ u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 \
+- u4\^2\) + \(2\ u1\ u2\^4\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ \
+u4 - u4\^2\)\)\/\(u2\^2 + u3\^2\) - \(u2\^5\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + \
+u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(u2\^2 + u3\^2\) + \(1\/\(u2\^2 + 
+                        u3\^2\)\) \((2\ u1\ u2\^2\ u3\^2\ u4\ \@\(\(-2\)\ u1\ \
+u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\))\) - \(2\ u2\^3\ u3\^2\ u4\ \@\(\(-2\
+\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(u2\^2 + u3\^2\) - \(u2\ \
+u3\^4\ u4\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - \
+u4\^2\)\)\/\(u2\^2 + u3\^2\))\)/\((\(-2\)\ u1\ u2\^3 + u2\^4 + u2\^2\ u3\^2 + 
+                2\ u1\ u2\^2\ u4 - u2\^2\ u4\^2 - u3\^2\ u4\^2)\), 
+        x5 \[Rule] \(-\(\(2\ u1\ u2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ \
+u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 
+                    2\ u1\ u4\)\)\) + \(u2\^2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + \
+u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ u2 - u2\^2 - u3\^2 - 2\ u1\ u4\) + \
+\(u3\^2\ \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\)\)\/\(2\ u1\ \
+u2 - u2\^2 - u3\^2 - 2\ u1\ u4\), 
+        x3 \[Rule] \(2\ u1\ u2\ u3 - u2\^2\ u3 - u3\^3\)\/\(u2\^2 + u3\^2\), 
+        x1 \[Rule] \@\(\(-2\)\ u1\ u2 + u2\^2 + u3\^2 + 2\ u1\ u4 - u4\^2\), 
+        x2 \[Rule] \(2\ u1\ u2\^2 - u2\^3 - u2\ u3\^2\)\/\(u2\^2 + u3\^2\), 
+        x4 \[Rule] \(\(-2\)\ u1\ u2\ u4 + u2\^2\ u4 + u3\^2\ u4\)\/\(2\ u1\ \
+u2 - u2\^2 - u3\^2 - 2\ u1\ u4\)}}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(con /. sol2 // Together\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["\<\
+The Butterfly theorem may also be proved in a constructive \
+way\
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+o=point[0,0]
+a=point[1,0]
+b=circleslider[o,a,u1]
+c=circleslider[o,a,u2]
+d=circleslider[o,a,u3]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(\(-1\) + u1\^2\)\/\(1 + u1\^2\), \(-\(\(2\ u1\)\/\(1 + 
+              u1\^2\)\)\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(\(-1\) + u2\^2\)\/\(1 + u2\^2\), \(-\(\(2\ u2\)\/\(1 + 
+              u2\^2\)\)\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(\(-1\) + u3\^2\)\/\(1 + u3\^2\), \(-\(\(2\ u3\)\/\(1 + 
+              u3\^2\)\)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["p=intersectionpoint[ppline[a,c],ppline[b,d]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\(\(-1\) + u1\ u2 - u1\ u3 + u2\ u3\)\/\(1 + u1\ u2 - u1\ u3 + u2\ \
+u3\), \(-\(\(2\ u2\)\/\(1 + u1\ u2 - u1\ u3 + u2\ u3\)\)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["h=ortholine[p,ppline[o,p]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((1 - u1\ u2 + u1\ u3 - u2\ u3)\)\ \((1 + u1\ u2 - u1\ u3 + 
+            u2\ u3)\), 2\ u2\ \((1 + u1\ u2 - u1\ u3 + u2\ u3)\), 
+      1 - 2\ u1\ u2 + 4\ u2\^2 + u1\^2\ u2\^2 + 2\ u1\ u3 - 2\ u2\ u3 - 
+        2\ u1\^2\ u2\ u3 + 2\ u1\ u2\^2\ u3 + u1\^2\ u3\^2 - 
+        2\ u1\ u2\ u3\^2 + u2\^2\ u3\^2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["e=intersectionpoint[h,ppline[a,d]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((1 - 2\ u1\ u2 + 4\ u2\^2 + u1\^2\ u2\^2 + 2\ u1\ u3 - 4\ u2\ u3 - 
+            2\ u1\^2\ u2\ u3 + u1\^2\ u3\^2 - u2\^2\ u3\^2)\)/\((\(-1\) + 
+            u1\^2\ u2\^2 - 2\ u2\ u3 - 2\ u1\^2\ u2\ u3 + u1\^2\ u3\^2 - 
+            u2\^2\ u3\^2)\), \(-\(\(2\ \((\(-u3\) + u1\ u2\ u3 - 
+                  2\ u2\^2\ u3 - u1\ u3\^2 + u2\ u3\^2)\)\)\/\(\(-1\) + 
+              u1\^2\ u2\^2 - 2\ u2\ u3 - 2\ u1\^2\ u2\ u3 + u1\^2\ u3\^2 - 
+              u2\^2\ u3\^2\)\)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["f=intersectionpoint[h,ppline[b,c]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\((1 - 2\ u1\ u2 - 4\ u2\^2 + u1\^2\ u2\^2 + 2\ u1\ u3 + 4\ u2\ u3 - 
+            2\ u1\^2\ u2\ u3 + u1\^2\ u3\^2 - u2\^2\ u3\^2)\)/\((\(-1\) + 
+            u1\^2\ u2\^2 - 2\ u2\ u3 - 2\ u1\^2\ u2\ u3 + u1\^2\ u3\^2 - 
+            u2\^2\ u3\^2)\), \(-\(\(2\ \((\(-2\)\ u2 + 2\ u1\ u2\^2 + u3 - 
+                  3\ u1\ u2\ u3 + u1\ u3\^2 - u2\ u3\^2)\)\)\/\(\(-1\) + 
+              u1\^2\ u2\^2 - 2\ u2\ u3 - 2\ u1\^2\ u2\ u3 + u1\^2\ u3\^2 - 
+              u2\^2\ u3\^2\)\)\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["con=sqrdist[p,midpoint[e,f]]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Tangency of Feuerbach's circle", "Subsection"],
+
+Cell["\<\
+The Feuerbach circle has another interesting property; it is \
+tangent to the in- and the excircles, i.e., to the four tangent circles of \
+the triangle ABC. 
+
+To prove this statement we choose the following coordinates \
+\>", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+a=point[0,0]
+b=point[2,0]
+c=point[u1,u2]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({0, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({2, 0}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, u2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+m=intersectionpoint[pbisector[a,b],pbisector[b,c]]
+h=intersectionpoint[altitude[a,b,c],altitude[b,c,a]]
+n=midpoint[m,h]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({1, \(\(-2\)\ u1 + u1\^2 + u2\^2\)\/\(2\ u2\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u1, \(-\(\(\((\(-2\) + u1)\)\ u1\)\/u2\)\)}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({\(1 + u1\)\/2, \(2\ u1 - u1\^2 + u2\^2\)\/\(4\ u2\)}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["fc=pccircle[n,midpoint[a,b]] (* Feuerbach's circle *)", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({2\ u2, 2\ \((\(-1\) - u1)\)\ u2, \(-2\)\ u1 + u1\^2 - u2\^2, 
+      2\ u1\ u2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "This is Feuerbach's circle. Let P be the center of one of the tangent \
+circles ",
+  StyleBox["pc",
+    FontSlant->"Italic"]
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+p=point[x1,x2]
+pc=pccircle[p,pedalpoint[p,ppline[a,b]]]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x1, x2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({1, \(-2\)\ x1, \(-2\)\ x2, x1\^2}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "(hence  ",
+  Cell[BoxData[
+      \(x\_2\)]],
+  " is the radius of the tangent circle). The coordinates of P are related by \
+the polynomials"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+polys={
+\tonbisector[p,a,b,c]==0,
+\tonbisector[p,b,c,a]==0}\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({\(-2\)\ \((\(-4\)\ u2 + 4\ u2\ x1 - u2\ x1\^2 + 8\ x2 - 4\ u1\ x2 - 
+              4\ x1\ x2 + 2\ u1\ x1\ x2 + u2\ x2\^2)\) == 0, 
+      2\ \((\(-u1\^2\)\ u2 - u2\^3 + u1\^2\ u2\ x1 + u2\^3\ x1 + u2\ x1\^2 - 
+              u1\ u2\ x1\^2 + 2\ u1\^2\ x2 - u1\^3\ x2 + 2\ u2\^2\ x2 - 
+              u1\ u2\^2\ x2 - 2\ u1\ x1\ x2 + u1\^2\ x1\ x2 - u2\^2\ x1\ x2 - 
+              u2\ x2\^2 + u1\ u2\ x2\^2)\) == 0}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["whereas the conclusion translates as ", "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["con=iscctangent[pc,fc]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(\(-16\)\ \((\(-u1\^2\)\ u2\^2 + 2\ u1\ u2\^2\ x1 + 
+          2\ u1\^2\ u2\^2\ x1 - u2\^2\ x1\^2 - 4\ u1\ u2\^2\ x1\^2 - 
+          u1\^2\ u2\^2\ x1\^2 + 2\ u2\^2\ x1\^3 + 2\ u1\ u2\^2\ x1\^3 - 
+          u2\^2\ x1\^4 + 2\ u1\^2\ u2\ x2 - u1\^3\ u2\ x2 + u1\ u2\^3\ x2 - 
+          2\ u1\ u2\ x1\ x2 - u1\^2\ u2\ x1\ x2 + u1\^3\ u2\ x1\ x2 - 
+          u2\^3\ x1\ x2 - u1\ u2\^3\ x1\ x2 + 2\ u1\ u2\ x1\^2\ x2 - 
+          u1\^2\ u2\ x1\^2\ x2 + u2\^3\ x1\^2\ x2 + u2\^2\ x2\^2 - 
+          2\ u1\ u2\^2\ x2\^2 + u1\^2\ u2\^2\ x2\^2)\)\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[TextData[{
+  "The standard approach through ",
+  StyleBox["Solve ",
+    FontSlant->"Italic"],
+  "yields very complicated radical expressions that are usually hard to \
+simplify. Let's apply Groebner bases instead"
+}], "Text",
+  FontSize->14],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+vars={x1,x2}
+gb=gbasis[polys,vars]\
+\>", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \({x1, x2}\)], "Output",
+  FontSize->18],
+
+Cell[BoxData[
+    \({u2\^3 - 
+        4\ u2\^2\ x2 + \((4\ u2 + 2\ u1\ u2 - u1\^2\ u2 - 
+              u2\^3)\)\ x2\^2 + \((\(-4\)\ u1 + 2\ u1\^2 + 
+              2\ u2\^2)\)\ x2\^3 - u2\ x2\^4, 
+      2\ u2\^2 - 
+        u1\ u2\^2 + \((\(-u2\^2\) + u1\ u2\^2)\)\ x1 + \((\(-4\)\ u2 + 
+              2\ u1\ u2 - u1\^2\ u2)\)\ x2 + \((4\ u1 - 2\ u1\^2 - 
+              u2\^2)\)\ x2\^2 + u2\ x2\^3}\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["normalf[con,gb,vars]", "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  FontSize->18]
+}, Open  ]],
+
+Cell["clearndg[];", "Input",
+  FontSize->14]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Time used for evaluation", "Section",
+  FontSize->18],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TimeUsed[]\)], "Input",
+  FontSize->14],
+
+Cell[BoxData[
+    \(23.07`\)], "Output",
+  FontSize->18]
+}, Open  ]]
+}, Open  ]]
+},
+FrontEndVersion->"4.1 for X",
+ScreenRectangle->{{0, 1024}, {0, 768}},
+AutoGeneratedPackage->None,
+WindowToolbars->"EditBar",
+WindowSize->{920, 646},
+WindowMargins->{{Automatic, 2}, {Automatic, 24}},
+ShowSelection->True,
+Magnification->1,
+StyleDefinitions -> Notebook[{
+  
+  Cell[CellGroupData[{
+  Cell["Style Definitions", "Subtitle"],
+  
+  Cell["\<\
+Modify the definitions below to change the default appearance of \
+all cells in a given style.  Make modifications to any definition using \
+commands in the Format menu.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Style Environment Names", "Section"],
+  
+  Cell[StyleData[All, "Working"],
+    PageWidth->WindowWidth,
+    ScriptMinSize->9],
+  
+  Cell[StyleData[All, "Printout"],
+    PageWidth->PaperWidth,
+    ScriptMinSize->7,
+    FontSize->10,
+    PrivateFontOptions->{"FontType"->"Outline"}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Notebook Options", "Section"],
+  
+  Cell["\<\
+The options defined for the style below will be used at the \
+Notebook level.\
+\>", "Text"],
+  
+  Cell[StyleData["Notebook"],
+    PageHeaders->{{Cell[ 
+            TextData[ {
+              CounterBox[ "Page"]}], "PageNumber"], None, Cell[ 
+            TextData[ {
+              ValueBox[ "FileName"]}], "Header"]}, {Cell[ 
+            TextData[ {
+              ValueBox[ "FileName"]}], "Header"], None, Cell[ 
+            TextData[ {
+              CounterBox[ "Page"]}], "PageNumber"]}},
+    PageHeaderLines->{True, True},
+    PrintingOptions->{"FirstPageHeader"->False,
+    "FacingPages"->True},
+    CellBracketOptions->{"Color"->RGBColor[0, 0, 0.466667]},
+    StyleMenuListing->None]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Header Graphic (to be pasted in)", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["HeaderCell"],
+    ShowCellBracket->False,
+    CellMargins->{{0, 0}, {0, 0}},
+    Evaluatable->False,
+    PageBreakBelow->False,
+    ImageSize->{350, 24},
+    ImageMargins->{{0, 0}, {0, 0}},
+    ImageRegion->{{0, 1}, {0, 1}},
+    StyleMenuListing->None],
+  
+  Cell[GraphicsData["Bitmap", "\<\
+CF5dJ6E]HGAYHf4PAg9QL6QYHg<PAVmbKF5d0`40005N000061000`40O003h00OogooGgoo003oOomO
+Ool00?mooemoo`00ogooGgoo000026jjL[aZ_7:kJ[ab_6ZkL[`3K[/01g:lK[a^^fjkK[a^^g:l00=^
+^`09K[ab_6jlK[aZ_7;LK[a^^fjl009^^`03L[aZ_7:k009^^`05K[ab_6kKK[a^^`03K[`026jkK[a^
+^fjlK]]^^fjlK[/2K[`01VjkL[a^^fjlK[]b_09^^`04K]ab^fZlL[`2K[/2K[`01fjjL]aZ_6jlK[]b
+_6jk009^_009K[]b_6jlK[]^g6jkJ[]^_6jk009^_0A^^`08L[a^_6ZkK[a^^fkLK[ab_09^^`0;K]a^
+_6kKL[]Z_6kKK[]^_7;LK[a^^`02K[`02FjkK]a^_6jkK[aZ_7:kK]a^_002K[/00fjlL[a^_002K[/0
+1FkLL[a^^fjlL_d00W;l00YboGLML_ac7G<LLaeg77<lMaec?0=g?@08Mcig?GLmMeig?GMMNeigG@9g
+GP0ENgmkGG]NMgikGG]oMgekOW]NNgikWW]nNeikWW]nNiikOg^NOgigWWnN009kWP0;Ogik_WnNNkik
+WWnONiio_gnnNimoW`02Okl02G^nOkmo_gnoOmmo_g^nOkmog`02Okl2Oml2Okl2Oml2Okl6Oml01Woo
+OmmoggooOmmoo`9og`03Oomoggoo009oo`03Ommoogoo06eoo`0000=44dPCB1<00TPC00I44dPCA1=8
+4dPDA1<2B1<00d@CB1=84`02A1<2B1<014@CB1=44dPB0TPC01Q44dPBB1A84d@CB1=44dPCA1A84d@C
+B1=44dPCA1=84dPBA1=84dPDB1=44dPCB1@2B1<01d@CB1=44dPCA1=44TPC00944`984`09A1=84dPC
+A1=854PCA1=84d@C00=84`07A1984d@CB1=44dPCA1<00TPC00E44dPCB1=84d@C00984`04A1=84d@C
+A1<2B1<01D@CB1<l4C`A@1000S`A00A043`A?150408l4@04@14l4C`@@142?1403D0@?14l4D0A?10l
+4D0A?10l4D0A?10l4D0B00904@07@1944T@CA19@54`ED9@00U1e00=@]EBeD;H00UCf0UDG01II5eEG
+FCMM>5UgFEMMUefHGGQM^5fgGKUQ^5gHHMQUf67IHOQQnF8IIQUR6@9V6@0OISYVFVHjISYZFVIjJUYZ
+NVIjJWYZNfZJKY]ZNVjKJY]Z^fjKJY]^^fjlK]]^_6jkK[a^nfkLL[]^g7;lL]`00Vkl02YboG;lLaeb
+o7<MMaac7G<LLaec?7<nMcag?G<lMeegGWMLMeig?G]NNeegGWMmMeikGG]nNgmgWG]nNeigWWmnNimk
+OW^oNgio_W^nOimkggnONmh2Okl01GoOOkmoogoOOkl00WoO00=oogoOOml0G7oo00003U3fE?ED]UCg
+E=EDmUBeE?I@mUCeE?I@]ECfD?H2E?H01UBfE?ED]UCgE?I@]@=DmP0@E;EDee3fE;IDmECfD?IDmUBe
+E?IDmE3fE?ED]UCGE;D2E?H03eBgE?E@]UCeE?MDmE3FE?E@mUBfE?EDme3eE;IDm`02E?H04eCeE=MD
+mECFD?ID]UCfE?EDmUBeE?IHmeCEE?ED]UCgD?IDmUCe009DmP08D?ID]ECfE=IDmeCeD;IDm@=DmP0B
+E;MDmECfE?EDmUCFE?ID]UCFD?MLdEBfE?ID]U2eE;I@mUBf0UBe01m@mUBfD;ED]UCfE;ED]U2eE?ID
+]U3eE;I@mUBeD;ID]eCfE?EDmeTGEAEE5eTgFEMEEUUHGGMMF5fGGIQQ^002GKP0667HIMQMn6GIHOUR
+66GiHQYV6F8IJUYV>FHJJUYVFVYJJW]VFVZJJU]VVfYjKW]^V`9ZV`0?K[]ZVfjkKY]^ffjkK[a^fg:l
+K]]bo6kLL]]boFkl00Abo00<Laec77;lLaac7GLLLaec77LmLceg7G<m1GLm0WMM00agGWLmNeigGG]N
+NeegGgMMNgigOW]mNel2Ngh04W^NNgmkWW^ONgik_WnONiioWW^NNkmoWg_NOimoggnNOmmk_`=o_`9o
+g`03OkmoogoO00=ogf9oo`0000AD]E2fD9A<509<5@08E;ID]E1fD7ED]EBfC1A@5@9<500aC1E@5D`D
+D7ED]E2fD1A<5E0DD7E@54`EC1A@5EAeE;I@MD`ED1A<5E0DD;I@U4`DC1E<551eD7A<5E0DC1E@54`E
+D1A@5E1eC1A@5E1eE;I@]50EE;EDMU0EC3A<5E0DC1D00T`D00=D]U2eD1D00T`D011@5E1fC1A@54`E
+D1A@]UBfD7E@54`EC1A@UEBeE;I<5@=<500XD9A@MD`ED1A@MUBeD9E<550EC1A@MU3GE?E@]E2fE;I@
+mE2fE;E@]UCfE;E@]UCFD?E@]UBfE;E@mUBeE;I@eUBeE;I@mUBeE?I@]ESfE=D2EAL07UUFFAMI=Udh
+FGIIN5egFIQIUefGHKUM]f6iGKQQfF7HHOUUnF8HIOUR6FGjHQUVFVHiIUYZ>VHjIUYZNP9ZFP0GJW]Z
+VfZJKWYZVfjkJY]^VVjkJY]b_6ZKK]]^_6kKK]a^^g;LK]abfg;MK_abg004L_`00g<ML_ac7002Lad0
+37LMLaag?G<LMcec?GLmLceg?W<lMaigGP=gG@06NeicOG]nNeegOgMN0W]n00=gOG]nNgh00g]n00ik
+WW^ONgikWW^nNimo_g^NOkmkWgnoNiiogg^n0Wno00=oggnoOml00WoO00=o_gooOml00WoO00AoogoO
+Oomogeioo`0006YD]U1eHOUboFYjL_aE5E0FGIQQn50EE?E^g6jKISY^VfkKJW]^g67HD1EQ^6kLISU^
+_5fhJW]^VfXjK]aMf50DGKQbo6IJJW]^Vd`EJUY^g6HiL[aQf6HIK[aV6VjkJY]^Vg;lHOYMMfkLK[]V
+6E0DEAMUnD`EFIMbo6YKJWYZVfjKK[]^Nd`EE;I^g6IKKW]VNUfGL_aV>VjKKW]@MU1dIQUbo6HjJ[]Z
+>TaeB1=bo7^oMaegGUTGGMQb_6klHKQ@5F6hK]aV>G;LHMQ@U52fE;IDm@9D]P0?E;E@mUBfE;ED]U3f
+E;ED]UBeD?ID]UBeE;I@mUBe009D]P0KD;ED]U2eE?IDeUSgEAII5UTGFCIIF5UGGGQMEeUhGIMQN66I
+GKMQV5gHHMQMf6GIHQQQfF7i009V6@09HQUVFFHIISYZ>VHjIUYZNFXj009ZN`9ZNP9ZV`08JYY^NfjK
+KY]ZVfkLKY]^f`=^^`03K]]b_6kk009^g007Laa^fg;mL_ac77;lL_d00W<L00QboG<LLaec77<MLaag
+?G<M1GLm00mgGGLlMcigGGMNMeekGWMMNeikGGMMNgigOG]oMgd00W]n00=gWG]oNgh00g^N00UoOg^o
+Ogik_g^NOkikWgnnNkl00Wno00=oggnoOml00Wno0goO00IoogoOOomoggooOmmOOol0000RD;EDMUDf
+L_aoof8IE;I<4fXjOom44e1eHOUkOWooNgmI5WooKY]DmE1fE?EZNgooOkm@M5DFNkioofYjE?M@METG
+HQT2Ool06ETGD1EEEWLNOom^o5BfEAIg?GooKW]MMefGHMQooeUhMcaooeBfD1EMMgooB1=DmUUG009o
+o`07E=Ig?GooE?ID]E2EFGL00Woo00=I5eBfGOP00Woo00UIEeAdD7IE5VYKOomoWeCeB1<00Woo01UH
+mdadKY]oof6HOom^Ve3fD7IDmFYKOomoge2fE;ID]E3fE;ID]EBfE?ID]EBfD;IDm@02E;H01U2eE?ID
+]EBfD;IDm@9D]P0TD;EDmUBfE;IDmUBeDAIDmETGE=MIEUDgFCII=eUfGGQIUeUhGIMM]f6iGKQQ^5fh
+IOUMf6GIHQQUnF7iHQUUnFHJIUUV6VII0VYJ00QVFVYJIUYZNVYkJWYZNfik0VZK00A^VfZKKYY^V`9^
+^`0<K[a^ffjlK_a^fW:lK_]bg6kLK_abnfkM0g;l00ac7G;lLaec7GKlLaeg7G<mLaeg?7<mMah2Mcd0
+17MNMcegGWLm0WMM00akGWMMMeigOGMONgegGG]nNgekOgMmNgl3Nih03G]nNimkWW^nOgik_W^OOimk
+_gnnNkmoWg^o009o_`05Nkmo_goOOkmkg`06Oml4Ool00goOOomoo`1JOol0001WE;I@mE2EA1=ogdPD
+D;E<56jKOomQfD`DD1E@UGooHMQ44efGK[a<55BfB1AQV7ooE?E@5D`EGCQooeCFD1A@]U2eA19oogMN
+B1=DmE0EC1Aoof6hC1E@550EOomIUd`DD7I855fgNgi857MNC1=<5F7hOom^^dPDB1=kOWooA1=84g^N
+B1A@]UBeA19oog;lB1A@]D@COomoOT@CD;IDmU1e@19oofijA1=V>GooB1A@553EB1AVFWLMD;A^g4`D
+E?E<55fHOomD]U0ED;D00UBf00MD]E3fE;E@]EBfD?ID]@02E;H01U3eE;ID]EBfD?ID]@9D]P0BD?ED
+]UBeE;IDmE2eE;IHmeDFEAMI5UDGFAMMMeUGFGQIMeeH0UfG00MMN5fHHKQM^67HGMQQf@02HOT026Gi
+HQUV6FHiHQYV6FIIJSX2ISX016IjJUYZNVYk0VYj00MZNfZjKW]Z^fZKKY]Z^`02K[/03FjLK]]^_7:k
+K[]bg6kLL]a^o6kKL_aboG;k009bo00JL_ebo7;lL_ec77<MMcac7G<LMcac7GLmLcag?G<mMcegGWML
+MeigGGMNMcekGWMmNcigO@9kOP0LNeikOgMmNgikWW]NNiikOW^NNgik_W]nNkmoWW^NNkioWg^oOkmo
+WWoONkioggnoOmmo_gooOkl2Oml017ooOmmoogoO0Woo00=oggooOol0G7oo00002E2eE;IDmD`ELaeQ
+f51fC1Ag?P02Ool03T`DD7A@5GooL]a<4dPDOom<5D`CA1=boGooB1@2D;D0K52DOomV>D`EE;ED]TPD
+OimoodPDE;ID]DPDOom^g4`DE;I84gooL]a<4e2fFAI<5E2EC1=kOU1fC1A^W7ooOkm@5DPCL_eoodPD
+C1EbffXjB1=855BfOomQnE0DE;I<57]nOom84eCfE;EDmTPCOomo_d0BNgiood@CE?ID]EBfC1=MfD`D
+Omm@5D`D@1=foGooB1AD]E3hE?ID]UCgE;EDmeBfE?ID]UCgD;EDmeBfE?I@]UCfE;IDme2eE?MD]UCf
+D;IDmUBfF=M@mECeF=MI5UTHFCIIE`9I=`0XGGQMMeVHGIMMV5fGHKQM^67HHKUQn67HHMUQn67iIOQR
+6VGjIQUVFFHJHSYZNVHjJUUVNfIJJWYZNfZJKW]ZNfZjKW]^VfZkKY]ZVfjlK]/2K[/03FklK[]^g7;K
+K]abg6kLL]]bo7;mLaa^o7<L009c7@05Maabo7<MLaeg7002Lad05WLlMcig?G<mMcecGGLmMcigG7MN
+NeegGWMMNeicOG]NMeigOWMmNgikOg]M0W^N015kOW^ONgikWWmoNkikOW^oOimk_WnNNkmk_W^oOiio
+ggnn009o_`04Oomo_gooOkl4Oml01GooOmmoogooOml0GGoo000025CfE;I@]U1eHOQc?50DB1@2Ool0
+36HIL_a<54PDOomkGT`DD1EQf7ooMeikG@9oo`1:B1=@mUBeB1AoofjLC1ADmU2eC1Ag7Goo@19<550E
+A19oognNB1ADeDPDOomg?T0BC1AoOd`CE;I@5G:lHMQ44goOOomI5WLmA1=^VgooB1=DMD`EOomgGW]M
+Ommooe2eD9ED]D`DK]aoodPDE;ED]U2eB1Ao_goo@15o_gooB1A@]EBfD;E@mUBEC1EQf7ooMeekG@9o
+o`09B1=@]U3HE?I@]U2eE;I@mUBe009@]P06E?ED]U2eE;IDmU2e0UBf00a@mEBfE;E@]UBfE;E@mU2f
+E?ED]UCfE?D2EAL03EUGFAII=eeHFGIIF5egGIQIUf6hGIQQ^5fi009Qf003HMUQn68I009Qn@0<ISUR
+6FIIIQYV>FYJISUZFVIJJU]ZFVYj0VYk00IZNVZKKW]ZVfZkKYX2KY/02VkKJ[]b^f[LK[]b_6kKK[]^
+o7;L0Vkl01eboG;LL_abo7<LM_ac77;mLaac7GLLLaec?GLlLaeg?G<mMcegGGLMMcegGGMNMcegGWMM
+MeigOW]N009gG@=kOP0@NeegWg]NMiikWW]mNimkWW^nOgik_WnNNkmoWW^oOih2Okl01G_ONimoggno
+Oml00gno00AoggooOmmoo`=ogf1oo`0000i@]EBeE;I@]E0EOim854PCOomoWT0BOom<5DPC0Woo00U8
+55BfB1Aoge0EB1Aoog<MC1@00UBf00e44gooOim84eBfE?I<56HkOomZ>VZKKY]V>P02Ool0?DPDE;I8
+57^NOomb_7oOOom855BeD9EIUg<M@15oog]n@15o_dPDHKQooe1eD;E<57<MIQU857MNOom855BfD?I<
+56HIOom@UE1fE?ED]T`DK]aooc`AMcioodPCE;IDmUBfE;E@]EBfB1Aooe0EB1AoogLMC1=@mU2g009D
+]@0BE?ID]E2fE;IDmEBfD;ID]E3fE;E@]UBfD?ED]U2fE;E@mUBe0UBf00A@]EBfE;IDm@9De`0GEAEI
+5eTFECMIEeTfGGQIMeUHFIMQN5VHGKQM]f6hGKUQf67iHMUUnF7iISUQn@02IQT03FHiIU]V>FHjIUYZ
+NVHiJWYZFVIkJWYZVfij009ZV`0LKY]ZVfZkK[]^Vg:LJ[]b^fjlK]]^g7;LK]]^g7;kL_a^ng;mL_a^
+o7;lLaec77;lLaec77<MMa`2Lad09GLlLceg?GLmLcag?WMMMcegGG/nMeekGWMMNeigGG]oMgigGG]m
+MemkOW]mNimoGWNNNiikOW]oNiik_gmoNiioWW^oOimkggnO009o_P04Ommk_goOOkl4Oml01gnoOmmo
+ggooOmmoogoO05moo`0000iD]U2fE?ED]T`DMeeDMUCfOom^fd@CKYabo40B0Woo03E84eBeD1EZVegH
+B1=oofHIC1ADmU2eC1Ao_gooB1=DeU2eD1EMUgooIQUMN5ghFAMg?GooB1=D]D`DL_eooeCfJWYood`D
+D;I@]E0EMce84gooJY]<55gHKY]@MWooFEM@5U3DE;Ig?C`A009oo`0[B1=D]UBeC1EMN7ooGEQ@U52f
+E;E<5FYJOom44f6hOomD]E1eD;EDmE2fE;IDmU0DKW]MfDPCOomV6D`EE;ID]E2fE?ID]E2fE;IDmE2f
+E;ID]ECfE;D00UBf00IDmEBfE;ID]ECfE;D2E;H0<53eE;ID]U3eE;IE5UCeFAMHmUDgFEII=eUHFEIM
+N5fGGGMMV5fGHKQM^F6hGOQQf67IHQQUf68IHOUV6F8JIQUV>VHIISYZ>VIIJU]ZNVIJJW]^NVYjJY]Z
+NfZJKY]ZV`9^V`0@J[]b_6ZkL]]^_6kKK]ab^fklK]afg6klK]abgFlKL_d3L_`01FkmMaac7G;mMc`0
+0W<M01Ig?7<mMaig?7<mMcigGGLmMeegGW=LNeig?G]NMeekOWMMNeekOW]oNgekW@9kOP0AMiikOW]o
+OiikWW^nNgik_WnNMkmoWW^oOiik_gnOOmmkW`02Okl01goONkmoggoOOkmoggoo009og`=oo`03Ommo
+ogoo05aoo`0001m@]ECfD;I@]E0EJWYR6EehOomUnT`DB1=ood@BMeioodPDE;I@]EBeMciM>7ooFAM@
+UE1eE;I<4g;mOom85002E;H0;U1dD7IooegiC1=@MD`CISYood`EE;I<4fYjOom44dPCNgiE5e1dE;I<
+56jLISUoof6iD1A857]mE?Ioof7IC7ED]T`DLceDMWooL_e<552EE;ID]D`EOomVFU0E0UBf00Q<5EVG
+OomIEd@COomg7DPD0UBf011D]E2fC1A@eE0EMceM>7ooFAM@55BfE?ID]E2fE;IDm@9D]P0>E;E@mUBf
+E;E@]UCeE;I@]UBeE?I@]UBeE;I@m@9D]P08E;EDmUBfD;EHme4FFAIE5`9I5`05GGMI=eUhFGMIF002
+GIL01F6IGKMQ^5gHHKP00V7H00MQfV7hHOUUnFHiIOUV>@02ISX056IIISYZ>VIjJUYZNfYJIW]^VVYk
+K[]ZNfjKK[]ZVfjKKYYZVg;KJ[`2K[/066kKL]a^fW;LK]]bgG;kLaebg6klMaabo7<LL_aboG<LMaec
+7G<LMcec7GLlLceg7P=g?@0@Mcig?GMMMeigGGMNMeegOW]MMgigOGMNNgekOg]nMgh2Ngh057^NMiek
+Og^NOgmk_W]oNkioWW^oOimk_g^NOmmkWgoOOkmoggnoOml2Okl017ooOmmoggoo0WoO00=oogoOOol0
+GWoo0002E;H04eBeE;ID]ECfL[a^VgooEAI@UE0DJY]VFVXjOom<552eE;I<56Hi009oo`0PB1=E5V5h
+C1A<5FYjOom<4e2fD1AMN4PDOom^Vd`DE;I@MEfGOomIEe1dC7EQ^7ooFEM@5E2ED1EHmeCeD7IDmP9o
+o`0XD9A@MU1eHOQ^_7ooISU@552eD7ED]WnnOomQnD`DHMU<4e2fB1=oog;LC1A@]E2fFAI@5GooIQU8
+4fYJOom<550ED;E@eEBfLae@54`EIST2Ool0FD@CC1E@ME2eE?MD]UCfE;IDme2eE?MD]ECgE;IDmUBf
+E?MD]ECgE;EDmeBfE?ID]UCgE;EDme2eF?MDeUCeF?ME5eTGFCMIEUTgFEMMMeeHGIMMV5fGFIMM^66H
+GKQQf67iHMUQn67IIOUV>67iIQUR6FHjISUV>VYjISYVFVYjJUYVNVYjJW]VNVikJW]Z^VZKK[Y^VfZK
+L]aZ_6jKK[]^ng:lK]abg6kLK_abo6kLL]`00g;l00U^oGKmLaabo7<MLaac7GLMLa`00W<M01=g?GLl
+Mcec?GMMMcegGGMNNceg?WMmMeikGGMNMeekGg]mNgigG@02Ngh017^NOgigOWnO0g^N00aoWW^nOgik
+_WnONkikWgoONiioggnNOml2Okl00goOOkmoo`05Oml00gooOmmoo`1OOol00007D;E@mUBfE?E@]TPD
+L_/00Woo00a<552eE;I<57mnIUYooeSgD7EDeE2fB1<2Ool06DPCC1EooeSgA1=D]WooE;I855CfOolh
+47ooOim04eBeC1E857ooIQY8550EB1Aoof6i00984`05C1Aooe2fE7Dl4002Ool0GT`DD;ED]TPDNeeo
+og;LA1=D]U2eB1AkGWooE?I<57<lNem44T0AOomogd@CA19ogf7H>11oog;LA1=04WoOOom<54`EC1AQ
+^7ooB1AD]DPCOomogeVGOomQ^52EE;EDmU2fE;ED]U3fE;ED]U2eE?ID]U2eE;IDmU2eE;ID]E3fE;ID
+mE2fE?ID]E2fE;I@mUCfF=II5eDeEAMI=eUFFCMIN5UgHGQIMefHHIQM]efhHKQQ^EgHHOQQnF8H0V7i
+00=V6F8iIQX00VHi0VHj00eZFVIJJUYZNVYJJW]VNVikJYY^VfYkKY]ZV`02K[/04FjKK[]^_6kKK[a^
+nfjkK]abnfkLK]]c76kML_]c77;mL_/00W<M0W<L00Ic7G<LLaeg?G<LMcd2Lcd3Mcd03gMMLcegGGMN
+NeegGW]MMeigOG]nLeekOg]NNgigOP02Ngh05WMnNiikOWNNOiikOW^OOiik_gnONkioWWoONimoggno
+Nkmo_WoONkmo_goO0Wno00=oggooOml00WoO00=oogoOOol0GWoo0002E;H01E2eD;ID]U0DFGP00Woo
+00E84eBfE?I<568I009oo`0CEEM<55BfE;I857KlOmm854`DK[]oog;LMceoogoOK[]oogoOJWX00Woo
+00Ag?ECfFEMoW`9oo`03J_]I=gnN009oo`07L_aboGooOom84eTFMch00Woo00E855BfD=I@M5UG009o
+o`09LaeDmEBfD9A@]WooC1=@]T`D009oo`08L[aoogooKYYkWgooE;Ig7@9oo`07LaeDeD@BMeioofYj
+ISX00Woo04I<55BfC1Abg7^NHKUoof8ID1A@mU2fE;E@]U3fE;E@]U2eE?I@]U2eE;I@mU2eE;I@]E3f
+E;I@]E2fE;I@]E3fE;E@mUBfE=EDmUDFEAMI=eTFFEMM>5UfGGQIEefHFIMMV5fhHKQMf5fhHMQQfFGI
+HOQR6FHJHQUV6FHiIQYV>VIIJSYV>FYJIW]VFP9ZN`05KW]ZVfjKIWYZV`02KY/0<fjkKY]Z^g;KK[aZ
+^g:lK[]^ng:lL]a^g7;lK]]bo7;mL_a^ngKmLaebng;mMaebo7<mMaec77LmLaag?WLmLcec?7LnMeeg
+?GMNMeagGWMMMeigGG]NMgikGW]mMgekOg]mOeigWP02Ngh2Nih03G]nNimkWg^nOgik_gnOOkmkWW^o
+OkioWgoO009o_`=og`03OkmoogoO009og`05OomoggooOomog`1NOol0000>D;EDmUBfE;I@]51fJWYo
+ogoOB1AD]E2fE;I44`9oo`0[Nei@MEBeE;I@]DcEGCM@MEBfD7EM^5DFE=I855CfEAII=eehHKQ@]U2D
+IQU@]UTFHOQ<55CFIMUDmV7HC1AD]F7iHKUIUeAeD7E@mV7iE?ED]U2eE;D00UBf00A@55CfEAIR6@9D
+]P0XE?I<55TGD;ED]DbEGIMI=eDGC1A<5ETgE;EM^5BfHOU@5EBeIOUD]U2eC1A@]FYJJWYD]TPCE;ID
+mE2fD7EE5T`DFAM@55BfE;ED]UCfE;D2E;H01UCeE;ID]EBfE?ID]@9D]P06E?ED]UBeE;IDmUBe0UBf
+021D]EBfE;EDmUCgF=IE5UTGFAIIEeDgFEMMEeUhGGQIUf6HGGMQ^EfhHKQQ^EghHMUQnF7HIQUQn6Gi
+HQ]V6FHi0VHj0VIJ0VYJ01QZNVYJIW]ZVVYjKW]^^fjKIY]^^fjJJY]bVfZkK]]b^fjkL[a^g6kkL]a^
+g6klL]`2L_`03VklL_abo7;lLaec77;mLaec77<MMcec77LmLc`2Mcd04GLnMceg?WMMMaegGW]MMeig
+GG]NMeekGWMmMgmkGG]nMgh00W]n0W^N00=kOW^NOil00g^N00Yk_gnNNkikWgnoOiio_g^nNkmog`9o
+_`05Ommo_gooOkmoo`05Oml2Ool00goOOomoo`1KOol0000DE;ID]ECfD;E@5G^NNeibo6HjD1EDmUBe
+E;I@567IMcebo7oOEAM@]@9D]P0ND7ED]U2fE;E@5E1eE=ED]U1eE7I@UE1dD7IDM51fD9EDME2fD7ED
+]E1fD9A@]U2EE7E@MU2ED7A@5E2e0UBf015@U5AeD;I@]EBfE;E@mUBfD9A@MU1eE;E@]UBeE;I@eUBe
+009D]P03D7A@MU2D009D]P1<D9ADMU1eD;E@5E2dD7I@UEBeD;ID]U2eD1E@552fD=ID]EBfD;ID]EAf
+E;E@]UBfD;ED]UCfD;ED]UBeD?ID]UBeD;IDmUBeD;ID]ECfD;ID]EBfD?ID]EBfD;EDmUBfD;EDmUCF
+EAE@mUTGF=IEEeDfGEMI=eUgGGMIUeeHGIMIV5fgHIUQf5gHIMQQfF7HHQQUnV7iHST2IQT03FHiISYZ
+>FHjJS]VFVYjIUYZNfYjJUYZNfjk009ZN`0AK[Y^NfZkKYa^ffjKK[a^^fkkK[a^^fkLK_abg6kKL_eb
+g002L_`036lLLaaboG<kM_ec7GLLLaeg77<LLaec?@9g?@04Lceg?GLmMcd2Med02GLnMeeg?W]MMgik
+GW=MNemkG@02Ngh01g^NMeikWW]nNgmkWW]n00=kWP08OimkWW^oNiiogg^NOkmk_`Ao_`04Ommo_goO
+Okl3Oml00gooOmmog`1QOol0002CE;E@]UBfE=I@]D`DC1E<550EE;I@]ECFE?I@]U0DC1A<5D`DE;I@
+eUBeE;I@mUBfE;E@eUCfE;I@]EBfE?I@]UBeE=I@mUBfE;E@]UCfE;I@]ECFE?I@]UBeE;I@mUBfE;E@
+eUCfE;I@]EBfE?I@]UBeE=I@mUBfE;E@]UCfE;I@]ECFE?I@]UBeE;I@mUBfE;E@eUCfE;I@]EBfE?I@
+]UBeE=I@mUBfE;E@]UCfE;I@]ECFE?I@]UBeE;I@mUBfE;E@eUCfE;I@]EBfE?I@]UBeE=I@mUBfE;E@
+]UCfE;I@]ECFE?I@]UBeE;I@mUBfE;E@eUCfE;I@]EBfE?ID]U2eF=ME5EDGFAMI5UTGFGQMEeEGGGQM
+MeVGHIQMUefhGKMM^F6h009Mf00ZIQUQfF7hIOUV6V8iIQUV6VIIISYZ>VIIIUYZFVYkIUYZNfZJIWY^
+NfZjJ[]ZVfjkKY]^^VZlK]a^^fkLK[]bg6kKL]a^ffkLL_a^ng;ML_ac7G;k0g;m00mc6g<MLaeg77<M
+Mcec77LlMcig7GLmLcig?GMMMch00WMM019gGW]MMeigGGMnNgegOGMnNgigGW]mNiigOW]nNgek_W^N
+Ogl3Nih01WnnNiio_g^OOkmk_P9o_`06OkioggnoNkmoggno1WoO00=oogoOOol0Ggoo0000Oe2fE=ID
+]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID
+]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID
+]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID
+]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID]UCFE;IDeUBfE=ID
+]UCFE;IDeUBf009DeP06E?EHeeTGEAMI=eTf0UTg00EMMeeHFIMMV5Ug009Q^00:GKUQ^5gHHOUUfF7h
+IOUQnFHiHQT2IQT02fIIJSUV>fYJIUYZFfYjJUY^NfZJJW/00VjK00=ZNfjKKY/00VjK00IZ^g:LK[]b
+^f[KL[`2K]/02VkLL]abnfklL]a_6g;mL_]boG;l0W<L01IboG<MLaac7GLmLaag?W<MLceg?G=MMcag
+?WMLMeikGGMNNeegGW]mMeikG@9gGP0BNgikGW]nNeikOW]NMimkWW]nNgmkWW^oNgio_g]oOkmkWg^n
+0Wno00Ek_gnoNmmo_gnn00Eog`05OomoggooOomog`03Ool00goOOomoo`1KOol00025?10l4C`@?14l
+43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l
+43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l
+43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l
+43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l43`A?10l4C`@?14l
+43`A?10l4D0A?1504D0BA1400T@C02U44T@CB1=84dPDB1=<54PCC1E@54adD7E@M52eD;I@eECeD=II
+5UDFECMI=UDfFGIIEeUgFIIIMefGFKMMN5fgGMQM^67HGMQQn67iHOQQnF8H009R6@0?IQUR>FHiISYV
+>FHjIUYZFVIJJUYVFVYjIWYZNVYk009ZVP9ZV`04JYY^VfZkJ[X2K[/036kKK[]^ffkKK]a^ffklK_]^
+o7;lK_abo0Ec7009Lcac?G<lMcag7G=MMcecG7Lm00=gG@04Mgeg?GMmNeh2Mgd027]mMgikOGNNNiik
+OW^NMih2Nih02W^ONkikWW^oOkmk_WoONkmogg_O0WoO00=oogoOOol0Egoo0000\
+\>"], "Graphics",
+    ShowCellBracket->False,
+    CellMargins->{{0, 0}, {Inherited, 0}},
+    Evaluatable->False,
+    GeneratedCell->False,
+    CellAutoOverwrite->False,
+    ImageSize->{350, 24},
+    ImageMargins->{{0, 0}, {0, 0}},
+    ImageRegion->{{0, 1}, {0, 1}}]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Headings", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Title"],
+    ShowCellBracket->False,
+    CellMargins->{{60, 0}, {0, 5}},
+    PageBreakBelow->False,
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LineSpacing->{0.95, 11},
+    CounterAssignments->{{"Section", 0}, {"Equation", 0}, {"Figure", 0}},
+    FontSize->36,
+    FontTracking->"Plain",
+    FontColor->GrayLevel[0]],
+  
+  Cell[StyleData["Title", "Printout"],
+    CellMargins->{{9, 0}, {0, 0}},
+    FontSize->24,
+    FontTracking->"Plain"]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subtitle"],
+    ShowCellBracket->False,
+    CellMargins->{{60, 0}, {0, 5}},
+    PageBreakBelow->False,
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LineSpacing->{1, 0},
+    CounterAssignments->{{"Section", 0}, {"Equation", 0}, {"Figure", 0}},
+    FontFamily->"Helvetica",
+    FontSize->14,
+    FontSlant->"Italic",
+    FontColor->GrayLevel[0]],
+  
+  Cell[StyleData["Subtitle", "Printout"],
+    CellMargins->{{9, 0}, {0, 0}},
+    ParagraphIndent->-85,
+    FontSize->16]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subsubtitle"],
+    ShowCellBracket->False,
+    CellMargins->{{60, 4}, {30, 10}},
+    PageBreakBelow->False,
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    CounterAssignments->{{"Section", 0}, {"Equation", 0}, {"Figure", 0}},
+    FontFamily->"Helvetica",
+    FontSize->12,
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["Subsubtitle", "Printout"],
+    CellMargins->{{9, 10}, {50, 10}},
+    FontSize->14]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Section"],
+    CellFrame->{{6, 0}, {0, 1}},
+    CellDingbat->None,
+    CellMargins->{{44, 0}, {10, 35}},
+    CellGroupingRules->{"SectionGrouping", 30},
+    PageBreakBelow->False,
+    CellFrameMargins->{{8, 4}, {0, 4}},
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LineSpacing->{0.95, 9},
+    CounterIncrements->"Section",
+    CounterAssignments->{{"Subsection", 0}, {"Subsubsection", 0}},
+    FontFamily->"Helvetica",
+    FontSize->20,
+    FontWeight->"Bold",
+    FontColor->RGBColor[0.571389, 0.19675, 0.570504]],
+  
+  Cell[StyleData["Section", "Printout"],
+    CellMargins->{{9, 0}, {2, 50}},
+    CellFrameMargins->{{5, 4}, {0, 4}},
+    FontSize->14,
+    FontTracking->"Plain",
+    FontColor->GrayLevel[0]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subsection"],
+    CellMargins->{{60, 0}, {8, 10}},
+    CellGroupingRules->{"SectionGrouping", 40},
+    PageBreakBelow->False,
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LineSpacing->{1, 7},
+    CounterIncrements->"Subsection",
+    CounterAssignments->{{"Subsubsection", 0}},
+    FontFamily->"Helvetica",
+    FontSize->16,
+    FontWeight->"Bold"],
+  
+  Cell[StyleData["Subsection", "Printout"],
+    CellMargins->{{9, 0}, {6, 40}},
+    FontSize->12]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subsubsection"],
+    CellDingbat->"\[FilledSquare]",
+    CellMargins->{{60, Inherited}, {8, 12}},
+    CellGroupingRules->{"SectionGrouping", 50},
+    PageBreakBelow->False,
+    CellFrameLabelMargins->6,
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LineSpacing->{1, 7},
+    CounterIncrements->"Subsubsection",
+    FontFamily->"Times",
+    FontSize->13,
+    FontWeight->"Bold"],
+  
+  Cell[StyleData["Subsubsection", "Printout"],
+    CellMargins->{{22, 0}, {4, 20}},
+    FontSize->11]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Body Text", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Text"],
+    CellMargins->{{60, 20}, {10, 5}},
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 0\
+.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", "MMA"->"Mathematica",
+         Inherited},
+    Hyphenation->True,
+    LineSpacing->{1, 0},
+    ParagraphSpacing->{0, 12},
+    FontFamily->"Times"],
+  
+  Cell[StyleData["Text", "Printout"],
+    CellMargins->{{9, 0}, {4, 4}},
+    ParagraphSpacing->{0, 6}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Commentary"],
+    CellMargins->{{60, 20}, {2, 8}},
+    PageBreakBelow->False,
+    TextJustification->1,
+    Hyphenation->True,
+    LineSpacing->{1, 2},
+    FontFamily->"Helvetica",
+    FontSize->10,
+    FontColor->RGBColor[0, 0, 0.4]],
+  
+  Cell[StyleData["Commentary", "Printout"],
+    CellMargins->{{9, 0}, {4, 4}},
+    LineSpacing->{1, 3},
+    FontSize->8]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Author"],
+    ShowCellBracket->False,
+    CellMargins->{{60, 4}, {30, 10}},
+    PageBreakBelow->False,
+    CounterAssignments->{{"Section", 0}, {"Equation", 0}, {"Figure", 0}},
+    FontFamily->"Helvetica",
+    FontSize->12,
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["Author", "Printout"],
+    CellMargins->{{9, 10}, {50, 10}},
+    FontSize->14]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Input/Output", "Section"],
+  
+  Cell["\<\
+The cells in this section define styles used for input and output \
+to the kernel.  Be careful when modifying, renaming, or removing these \
+styles, because the front end associates special meanings with these style \
+names.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Input"],
+    CellFrame->{{3, 0}, {0, 0}},
+    CellMargins->{{60, 20}, {0, 0}},
+    Evaluatable->True,
+    CellGroupingRules->"InputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    CellLabelMargins->{{23, Inherited}, {Inherited, Inherited}},
+    CellFrameColor->RGBColor[0.6, 0.2, 0],
+    DefaultFormatType->DefaultInputFormatType,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->"Formula",
+    FormatType->InputForm,
+    ShowStringCharacters->True,
+    NumberMarks->True,
+    LinebreakAdjustments->{0.85, 2, 10, 0, 1},
+    CounterIncrements->"Input",
+    FontWeight->"Bold",
+    Background->RGBColor[1, 0.700008, 0.4]],
+  
+  Cell[StyleData["Input", "Printout"],
+    CellFrame->False,
+    CellMargins->{{37, 0}, {6, 6}},
+    LinebreakAdjustments->{0.85, 2, 10, 1, 1},
+    Background->GrayLevel[0.8]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["InputOnly"],
+    CellFrame->{{3, 0}, {0, 0}},
+    CellMargins->{{60, 20}, {15, 0}},
+    Evaluatable->True,
+    CellGroupingRules->"InputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    CellLabelMargins->{{23, Inherited}, {Inherited, Inherited}},
+    CellFrameColor->RGBColor[0.6, 0.2, 0],
+    DefaultFormatType->DefaultInputFormatType,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->"Formula",
+    FormatType->InputForm,
+    ShowStringCharacters->True,
+    NumberMarks->True,
+    LinebreakAdjustments->{0.85, 2, 10, 0, 1},
+    CounterIncrements->"Input",
+    StyleMenuListing->None,
+    FontWeight->"Bold",
+    Background->RGBColor[1, 0.700008, 0.4]],
+  
+  Cell[StyleData["InputOnly", "Printout"],
+    CellFrame->False,
+    CellMargins->{{37, 0}, {6, 6}},
+    LinebreakAdjustments->{0.85, 2, 10, 1, 1},
+    Background->GrayLevel[0.8]]
+  }, Closed]],
+  
+  Cell[StyleData["InlineInput"],
+    Evaluatable->True,
+    CellGroupingRules->"InputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    DefaultFormatType->DefaultInputFormatType,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    FormatType->InputForm,
+    ShowStringCharacters->True,
+    NumberMarks->True,
+    CounterIncrements->"Input",
+    FontWeight->"Bold"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Output"],
+    CellFrame->{{3, 0}, {0, 0}},
+    CellMargins->{{60, 20}, {15, 0}},
+    CellEditDuplicate->True,
+    CellGroupingRules->"OutputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    CellLabelMargins->{{23, Inherited}, {Inherited, Inherited}},
+    CellFrameColor->RGBColor[0, 0.500008, 0.6],
+    DefaultFormatType->DefaultOutputFormatType,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->"Formula",
+    FormatType->InputForm,
+    CounterIncrements->"Output",
+    Background->RGBColor[1, 0.900008, 0.900008]],
+  
+  Cell[StyleData["Output", "Printout"],
+    CellFrame->False,
+    CellMargins->{{37, 0}, {6, 2}},
+    Background->GrayLevel[0.900008]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Graphics"],
+    CellFrame->{{3, 0}, {0, 0}},
+    CellMargins->{{60, 20}, {0, 0}},
+    CellGroupingRules->"GraphicsGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    ShowCellLabel->False,
+    CellFrameColor->RGBColor[0, 0.6, 0.6],
+    DefaultFormatType->DefaultOutputFormatType,
+    FormatType->InputForm,
+    CounterIncrements->"Graphics",
+    ImageSize->{250, 250},
+    Background->RGBColor[1, 0.900008, 0.900008]],
+  
+  Cell[StyleData["Graphics", "Printout"],
+    CellFrame->False,
+    CellMargins->{{37, 0}, {6, 2}},
+    ImageSize->{250, 250},
+    ImageMargins->{{28, Inherited}, {Inherited, 0}}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Message"],
+    CellMargins->{{72, 20}, {Inherited, Inherited}},
+    CellGroupingRules->"OutputGrouping",
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    ShowCellLabel->False,
+    CellLabelMargins->{{23, Inherited}, {Inherited, Inherited}},
+    DefaultFormatType->DefaultOutputFormatType,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    FormatType->InputForm,
+    StyleMenuListing->None,
+    FontColor->RGBColor[1, 0, 0]],
+  
+  Cell[StyleData["Message", "Printout"],
+    CellMargins->{{44, Inherited}, {Inherited, Inherited}},
+    FontColor->GrayLevel[0]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Print"],
+    CellMargins->{{72, 20}, {Inherited, Inherited}},
+    CellGroupingRules->"OutputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    ShowCellLabel->False,
+    CellLabelMargins->{{23, Inherited}, {Inherited, Inherited}},
+    DefaultFormatType->DefaultOutputFormatType,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    FormatType->InputForm,
+    StyleMenuListing->None],
+  
+  Cell[StyleData["Print", "Printout"],
+    CellMargins->{{44, Inherited}, {Inherited, Inherited}}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["CellLabel"],
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->9,
+    FontWeight->"Plain",
+    FontSlant->"Italic",
+    FontTracking->"Extended",
+    FontColor->RGBColor[0.571389, 0.19675, 0.570504]],
+  
+  Cell[StyleData["CellLabel", "Printout"],
+    FontFamily->"Courier",
+    FontSize->8,
+    FontSlant->"Italic",
+    FontColor->GrayLevel[0]]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Unique Styles", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["DisplayText"],
+    CellFrame->0.5,
+    CellMargins->{{60, 20}, {15, 5}},
+    LineSpacing->{0, 12},
+    ParagraphSpacing->{0, 6},
+    FontFamily->"Helvetica",
+    FontSize->12,
+    FontWeight->"Bold",
+    FontSlant->"Plain",
+    Background->RGBColor[1, 1, 0.8]],
+  
+  Cell[StyleData["DisplayText", "Printout"],
+    CellMargins->{{9, 0}, {4, 4}},
+    ParagraphSpacing->{0, 6},
+    FontSize->10,
+    Background->GrayLevel[0.900008]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["PictureGroup"],
+    CellFrame->{{3, 0}, {0, 0}},
+    CellMargins->{{60, Inherited}, {0, 0}},
+    CellGroupingRules->"GraphicsGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    ShowCellLabel->False,
+    CellFrameColor->RGBColor[0, 0.6, 0.6],
+    CounterIncrements->"Graphics",
+    ImageSize->{250, 250},
+    Background->RGBColor[1, 0.900008, 0.900008]],
+  
+  Cell[StyleData["PictureGroup", "Printout"],
+    CellFrame->False,
+    CellMargins->{{37, Inherited}, {6, 2}},
+    ImageSize->{250, 250},
+    ImageMargins->{{28, Inherited}, {Inherited, 0}}]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Headers and Footers", "Section"],
+  
+  Cell[StyleData["Header"],
+    CellMargins->{{0, 0}, {4, 1}},
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->9,
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["Footer"],
+    CellMargins->{{0, 0}, {0, 4}},
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->6],
+  
+  Cell[StyleData["PageNumber"],
+    CellMargins->{{0, 0}, {4, 1}},
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->9,
+    FontWeight->"Bold"]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Hyperlink Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles useful for making hypertext \
+ButtonBoxes.  The \"Hyperlink\" style is for links within the same Notebook, \
+or between Notebooks.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Hyperlink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookLocate[ #2]}]&),
+    Active->True,
+    ButtonNote->ButtonData}],
+  
+  Cell[StyleData["Hyperlink", "Printout"],
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell["\<\
+The following styles are for linking automatically to the on-line \
+help system.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["MainBookLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "MainBook", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["MainBookLink", "Printout"],
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["AddOnsLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontFamily->"Courier",
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "AddOns", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["AddOnLink", "Printout"],
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["RefGuideLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontFamily->"Courier",
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "RefGuideLink", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["RefGuideLink", "Printout"],
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["GettingStartedLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "GettingStarted", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["GettingStartedLink", "Printout"],
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["OtherInformationLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "OtherInformation", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["OtherInformationLink", "Printout"],
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Palette Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles that define standard \
+ButtonFunctions, for use in palette buttons.\
+\>", "Text"],
+  
+  Cell[StyleData["Paste"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, After]}]&)}],
+  
+  Cell[StyleData["Evaluate"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        SelectionEvaluate[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}],
+  
+  Cell[StyleData["EvaluateCell"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        FrontEnd`SelectionMove[ 
+          FrontEnd`InputNotebook[ ], All, Cell, 1], 
+        FrontEnd`SelectionEvaluateCreateCell[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}],
+  
+  Cell[StyleData["CopyEvaluate"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`SelectionCreateCell[ 
+          FrontEnd`InputNotebook[ ], All], 
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        FrontEnd`SelectionEvaluate[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}],
+  
+  Cell[StyleData["CopyEvaluateCell"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`SelectionCreateCell[ 
+          FrontEnd`InputNotebook[ ], All], 
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        FrontEnd`SelectionEvaluateCreateCell[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Placeholder Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles useful for making placeholder \
+objects in palette templates.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Placeholder"],
+    Editable->False,
+    Selectable->False,
+    StyleBoxAutoDelete->True,
+    Placeholder->True,
+    StyleMenuListing->None],
+  
+  Cell[StyleData["Placeholder", "Presentation"]],
+  
+  Cell[StyleData["Placeholder", "Condensed"]],
+  
+  Cell[StyleData["Placeholder", "Printout"]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["SelectionPlaceholder"],
+    Editable->False,
+    Selectable->False,
+    StyleBoxAutoDelete->True,
+    Placeholder->PrimaryPlaceholder,
+    StyleMenuListing->None,
+    DrawHighlighted->True],
+  
+  Cell[StyleData["SelectionPlaceholder", "Presentation"]],
+  
+  Cell[StyleData["SelectionPlaceholder", "Condensed"]],
+  
+  Cell[StyleData["SelectionPlaceholder", "Printout"]]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["FormatType Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles that are mixed in with the styles \
+of most cells.  If a cell's FormatType matches the name of one of the styles \
+defined below, then that style is applied between the cell's style and its \
+own options.\
+\>", "Text"],
+  
+  Cell[StyleData["CellExpression"],
+    PageWidth->Infinity,
+    CellMargins->{{6, Inherited}, {Inherited, Inherited}},
+    ShowCellLabel->False,
+    ShowSpecialCharacters->False,
+    AllowInlineCells->False,
+    AutoItalicWords->{},
+    StyleMenuListing->None,
+    FontFamily->"Courier",
+    FontSize->12,
+    Background->GrayLevel[1]],
+  
+  Cell[StyleData["InputForm"],
+    InputAutoReplacements->{},
+    AllowInlineCells->False,
+    StyleMenuListing->None,
+    FontFamily->"Courier"],
+  
+  Cell[StyleData["OutputForm"],
+    PageWidth->Infinity,
+    TextAlignment->Left,
+    LineSpacing->{1, -5},
+    StyleMenuListing->None,
+    FontFamily->"Courier"],
+  
+  Cell[StyleData["StandardForm"],
+    InputAutoReplacements->{
+      "->"->"\[Rule]", ":>"->"\[RuleDelayed]", "<="->"\[LessEqual]", 
+        ">="->"\[GreaterEqual]", "!="->"\[NotEqual]", "=="->"\[Equal]", 
+        Inherited},
+    LineSpacing->{1.25, 0},
+    StyleMenuListing->None,
+    FontFamily->"Courier"],
+  
+  Cell[StyleData["TraditionalForm"],
+    InputAutoReplacements->{
+      "->"->"\[Rule]", ":>"->"\[RuleDelayed]", "<="->"\[LessEqual]", 
+        ">="->"\[GreaterEqual]", "!="->"\[NotEqual]", "=="->"\[Equal]", 
+        Inherited},
+    LineSpacing->{1.25, 0},
+    SingleLetterItalics->True,
+    TraditionalFunctionNotation->True,
+    DelimiterMatching->None,
+    StyleMenuListing->None],
+  
+  Cell["\<\
+The style defined below is mixed in to any cell that is in an \
+inline cell within another.\
+\>", "Text"],
+  
+  Cell[StyleData["InlineCell"],
+    TextAlignment->Left,
+    ScriptLevel->1,
+    StyleMenuListing->None],
+  
+  Cell[StyleData["InlineCellEditing"],
+    StyleMenuListing->None,
+    Background->RGBColor[1, 0.749996, 0.8]]
+  }, Closed]]
+  }, Open  ]]
+  }]
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+Cell[1705, 50, 544, 17, 19, "Input",
+  CellOpen->False,
+  InitializationCell->True],
+Cell[2252, 69, 288, 7, 469, "Title"],
+
+Cell[CellGroupData[{
+Cell[2565, 80, 55, 1, 85, "Section"],
+
+Cell[CellGroupData[{
+Cell[2645, 85, 48, 0, 44, "Subsection"],
+Cell[2696, 87, 120, 5, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[2841, 96, 86, 5, 67, "Input"],
+Cell[2930, 103, 58, 2, 51, "Output"],
+Cell[2991, 107, 58, 2, 51, "Output"],
+Cell[3052, 111, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[3125, 116, 192, 8, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[3342, 128, 91, 1, 33, "Input"],
+Cell[3436, 131, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[3502, 136, 62, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[3589, 141, 83, 1, 33, "Input"],
+Cell[3675, 144, 594, 10, 170, "Output"]
+}, Open  ]],
+Cell[4284, 157, 129, 5, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[4438, 166, 48, 1, 33, "Input"],
+Cell[4489, 169, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[4555, 174, 158, 6, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[4738, 184, 104, 4, 33, "Input"],
+Cell[4845, 190, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[4911, 195, 134, 6, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[5070, 205, 88, 1, 33, "Input"],
+Cell[5161, 208, 51, 2, 51, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5261, 216, 34, 0, 44, "Subsection"],
+Cell[5298, 218, 327, 8, 138, "Text"],
+
+Cell[CellGroupData[{
+Cell[5650, 230, 83, 1, 33, "Input"],
+Cell[5736, 233, 594, 10, 170, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6367, 248, 85, 1, 33, "Input"],
+Cell[6455, 251, 559, 8, 199, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[7051, 264, 81, 1, 33, "Input"],
+Cell[7135, 267, 102, 2, 71, "Output"]
+}, Open  ]],
+Cell[7252, 272, 67, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[7344, 277, 51, 1, 33, "Input"],
+Cell[7398, 280, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[7464, 285, 187, 9, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[7676, 298, 61, 1, 33, "Input"],
+Cell[7740, 301, 51, 2, 51, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[7840, 309, 40, 0, 44, "Subsection"],
+Cell[7883, 311, 103, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[8011, 319, 82, 5, 67, "Input"],
+Cell[8096, 326, 56, 2, 51, "Output"],
+Cell[8155, 330, 57, 2, 51, "Output"],
+Cell[8215, 334, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[8288, 339, 243, 12, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[8556, 355, 84, 1, 33, "Input"],
+Cell[8643, 358, 101, 2, 76, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[8781, 365, 85, 1, 33, "Input"],
+Cell[8869, 368, 81, 2, 71, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[8987, 375, 48, 1, 33, "Input"],
+Cell[9038, 378, 126, 3, 76, "Output"]
+}, Open  ]],
+Cell[9179, 384, 146, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[9350, 392, 127, 5, 67, "Input"],
+Cell[9480, 399, 132, 3, 58, "Output"],
+Cell[9615, 404, 56, 2, 51, "Output"]
+}, Open  ]],
+Cell[9686, 409, 83, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[9794, 414, 127, 4, 33, "Input"],
+Cell[9924, 420, 59, 2, 51, "Output"]
+}, Open  ]],
+Cell[9998, 425, 52, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[10075, 430, 166, 5, 50, "Input"],
+Cell[10244, 437, 59, 2, 51, "Output"]
+}, Open  ]],
+Cell[10318, 442, 44, 1, 33, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[10411, 449, 63, 1, 79, "Section"],
+
+Cell[CellGroupData[{
+Cell[10499, 454, 55, 0, 44, "Subsection"],
+Cell[10557, 456, 157, 6, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[10739, 466, 81, 5, 67, "Input"],
+Cell[10823, 473, 56, 2, 51, "Output"],
+Cell[10882, 477, 56, 2, 51, "Output"],
+Cell[10941, 481, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[11014, 486, 303, 6, 45, "Text"],
+
+Cell[CellGroupData[{
+Cell[11342, 496, 47, 1, 33, "Input"],
+Cell[11392, 499, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[11465, 504, 105, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[11595, 512, 136, 5, 67, "Input"],
+Cell[11734, 519, 497, 8, 141, "Output"]
+}, Open  ]],
+Cell[12246, 530, 148, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[12419, 538, 76, 4, 50, "Input"],
+Cell[12498, 544, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[12571, 549, 323, 9, 45, "Text"],
+
+Cell[CellGroupData[{
+Cell[12919, 562, 200, 6, 50, "Input"],
+Cell[13122, 570, 97, 2, 55, "Output"],
+Cell[13222, 574, 171, 3, 55, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[13430, 582, 72, 2, 33, "Input"],
+Cell[13505, 586, 62, 2, 51, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[13604, 593, 74, 2, 33, "Input"],
+Cell[13681, 597, 62, 2, 51, "Output"]
+}, Open  ]],
+Cell[13758, 602, 203, 6, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[13986, 612, 54, 1, 33, "Input"],
+Cell[14043, 615, 450, 9, 118, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[14530, 629, 61, 1, 33, "Input"],
+Cell[14594, 632, 56, 2, 51, "Output"]
+}, Open  ]],
+Cell[14665, 637, 178, 6, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[14868, 647, 82, 5, 67, "Input"],
+Cell[14953, 654, 56, 2, 51, "Output"],
+Cell[15012, 658, 56, 2, 51, "Output"],
+Cell[15071, 662, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[15144, 667, 181, 5, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[15350, 676, 109, 5, 67, "Input"],
+Cell[15462, 683, 59, 2, 51, "Output"],
+Cell[15524, 687, 84, 2, 58, "Output"],
+Cell[15611, 691, 148, 3, 58, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[15796, 699, 75, 1, 33, "Input"],
+Cell[15874, 702, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[15940, 707, 44, 1, 33, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[16021, 713, 38, 0, 44, "Subsection"],
+Cell[16062, 715, 249, 7, 99, "Text"],
+
+Cell[CellGroupData[{
+Cell[16336, 726, 81, 5, 67, "Input"],
+Cell[16420, 733, 56, 2, 51, "Output"],
+Cell[16479, 737, 56, 2, 51, "Output"],
+Cell[16538, 741, 58, 2, 51, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[16633, 748, 127, 5, 67, "Input"],
+Cell[16763, 755, 57, 2, 51, "Output"],
+Cell[16823, 759, 93, 2, 71, "Output"],
+Cell[16919, 763, 70, 2, 71, "Output"]
+}, Open  ]],
+Cell[17004, 768, 145, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[17174, 776, 82, 1, 33, "Input"],
+Cell[17259, 779, 4436, 65, 948, "Output"]
+}, Open  ]],
+Cell[21710, 847, 89, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[21824, 852, 60, 1, 33, "Input"],
+Cell[21887, 855, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[21953, 860, 44, 1, 33, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[22046, 867, 58, 1, 79, "Section"],
+
+Cell[CellGroupData[{
+Cell[22129, 872, 37, 0, 44, "Subsection"],
+Cell[22169, 874, 213, 7, 84, "Text"],
+
+Cell[CellGroupData[{
+Cell[22407, 885, 125, 8, 118, "Input"],
+Cell[22535, 895, 56, 2, 51, "Output"],
+Cell[22594, 899, 56, 2, 51, "Output"],
+Cell[22653, 903, 57, 2, 51, "Output"],
+Cell[22713, 907, 58, 2, 51, "Output"],
+Cell[22774, 911, 58, 2, 51, "Output"],
+Cell[22835, 915, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[22908, 920, 148, 5, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[23081, 929, 77, 2, 33, "Input"],
+Cell[23161, 933, 101, 2, 51, "Output"]
+}, Open  ]],
+Cell[23277, 938, 67, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[23369, 943, 189, 6, 84, "Input"],
+Cell[23561, 951, 557, 10, 138, "Output"]
+}, Open  ]],
+Cell[24133, 964, 173, 6, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[24331, 974, 76, 2, 33, "Input"],
+Cell[24410, 978, 127, 3, 71, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[24574, 986, 51, 1, 33, "Input"],
+Cell[24628, 989, 53, 2, 51, "Output"]
+}, Open  ]],
+Cell[24696, 994, 70, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[24791, 999, 96, 6, 84, "Input"],
+Cell[24890, 1007, 56, 2, 51, "Output"],
+Cell[24949, 1011, 56, 2, 51, "Output"],
+Cell[25008, 1015, 58, 2, 51, "Output"],
+Cell[25069, 1019, 58, 2, 51, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[25164, 1026, 98, 4, 50, "Input"],
+Cell[25265, 1032, 57, 2, 51, "Output"],
+Cell[25325, 1036, 106, 2, 71, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[25468, 1043, 195, 6, 84, "Input"],
+Cell[25666, 1051, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[25732, 1056, 44, 1, 33, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[25825, 1063, 62, 1, 79, "Section"],
+
+Cell[CellGroupData[{
+Cell[25912, 1068, 34, 0, 44, "Subsection"],
+Cell[25949, 1070, 189, 6, 84, "Text"],
+
+Cell[CellGroupData[{
+Cell[26163, 1080, 126, 8, 118, "Input"],
+Cell[26292, 1090, 56, 2, 51, "Output"],
+Cell[26351, 1094, 56, 2, 51, "Output"],
+Cell[26410, 1098, 58, 2, 51, "Output"],
+Cell[26471, 1102, 58, 2, 51, "Output"],
+Cell[26532, 1106, 58, 2, 51, "Output"],
+Cell[26593, 1110, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[26666, 1115, 88, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[26779, 1120, 175, 6, 84, "Input"],
+Cell[26957, 1128, 349, 6, 115, "Output"]
+}, Open  ]],
+Cell[27321, 1137, 55, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[27401, 1142, 88, 1, 33, "Input"],
+Cell[27492, 1145, 225, 4, 74, "Output"]
+}, Open  ]],
+Cell[27732, 1152, 235, 5, 45, "Text"],
+
+Cell[CellGroupData[{
+Cell[27992, 1161, 57, 1, 33, "Input"],
+Cell[28052, 1164, 74, 2, 51, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[28163, 1171, 54, 1, 33, "Input"],
+Cell[28220, 1174, 1942, 34, 776, "Output"]
+}, Open  ]],
+Cell[30177, 1211, 83, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[30285, 1216, 51, 1, 33, "Input"],
+Cell[30339, 1219, 774, 14, 266, "Output"]
+}, Open  ]],
+Cell[31128, 1236, 341, 8, 99, "Text"],
+
+Cell[CellGroupData[{
+Cell[31494, 1248, 174, 8, 118, "Input"],
+Cell[31671, 1258, 934, 16, 247, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[32642, 1279, 67, 1, 33, "Input"],
+Cell[32712, 1282, 249, 5, 118, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[32998, 1292, 51, 1, 33, "Input"],
+Cell[33052, 1295, 53, 2, 51, "Output"]
+}, Open  ]],
+Cell[33120, 1300, 177, 5, 30, "Text"],
+Cell[33300, 1307, 45, 1, 33, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[33382, 1313, 40, 0, 44, "Subsection"],
+Cell[33425, 1315, 237, 5, 72, "Text"],
+
+Cell[CellGroupData[{
+Cell[33687, 1324, 100, 6, 84, "Input"],
+Cell[33790, 1332, 58, 2, 51, "Output"],
+Cell[33851, 1336, 58, 2, 51, "Output"],
+Cell[33912, 1340, 58, 2, 51, "Output"],
+Cell[33973, 1344, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[34046, 1349, 57, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[34128, 1354, 148, 5, 50, "Input"],
+Cell[34279, 1361, 128, 3, 71, "Output"],
+Cell[34410, 1366, 180, 3, 71, "Output"]
+}, Open  ]],
+Cell[34605, 1372, 59, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[34689, 1377, 86, 1, 33, "Input"],
+Cell[34778, 1380, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[34844, 1385, 89, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[34958, 1390, 130, 8, 118, "Input"],
+Cell[35091, 1400, 58, 2, 51, "Output"],
+Cell[35152, 1404, 58, 2, 51, "Output"],
+Cell[35213, 1408, 58, 2, 51, "Output"],
+Cell[35274, 1412, 58, 2, 51, "Output"],
+Cell[35335, 1416, 58, 2, 51, "Output"],
+Cell[35396, 1420, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[35469, 1425, 144, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[35638, 1433, 174, 6, 84, "Input"],
+Cell[35815, 1441, 314, 6, 97, "Output"]
+}, Open  ]],
+Cell[36144, 1450, 55, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[36224, 1455, 86, 1, 33, "Input"],
+Cell[36313, 1458, 952, 14, 212, "Output"]
+}, Open  ]],
+Cell[37280, 1475, 164, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[37469, 1483, 60, 1, 33, "Input"],
+Cell[37532, 1486, 379, 7, 165, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[37948, 1498, 51, 1, 33, "Input"],
+Cell[38002, 1501, 53, 2, 51, "Output"]
+}, Open  ]],
+Cell[38070, 1506, 310, 8, 72, "Text"],
+
+Cell[CellGroupData[{
+Cell[38405, 1518, 126, 8, 118, "Input"],
+Cell[38534, 1528, 56, 2, 51, "Output"],
+Cell[38593, 1532, 56, 2, 51, "Output"],
+Cell[38652, 1536, 58, 2, 51, "Output"],
+Cell[38713, 1540, 58, 2, 51, "Output"],
+Cell[38774, 1544, 58, 2, 51, "Output"],
+Cell[38835, 1548, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[38908, 1553, 69, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[39002, 1558, 196, 6, 84, "Input"],
+Cell[39201, 1566, 1874, 31, 421, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[41112, 1602, 87, 1, 33, "Input"],
+Cell[41202, 1605, 212, 4, 74, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[41451, 1614, 56, 1, 33, "Input"],
+Cell[41510, 1617, 305, 5, 97, "Output"]
+}, Open  ]],
+Cell[41830, 1625, 206, 7, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[42061, 1636, 69, 2, 33, "Input"],
+Cell[42133, 1640, 106, 2, 51, "Output"]
+}, Open  ]],
+Cell[42254, 1645, 76, 1, 30, "Text"],
+Cell[42333, 1648, 44, 1, 33, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[42414, 1654, 36, 0, 44, "Subsection"],
+Cell[42453, 1656, 440, 12, 72, "Text"],
+
+Cell[CellGroupData[{
+Cell[42918, 1672, 81, 5, 67, "Input"],
+Cell[43002, 1679, 56, 2, 51, "Output"],
+Cell[43061, 1683, 56, 2, 51, "Output"],
+Cell[43120, 1687, 58, 2, 51, "Output"]
+}, Open  ]],
+Cell[43193, 1692, 60, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[43278, 1697, 318, 8, 147, "Input"],
+Cell[43599, 1707, 58, 2, 51, "Output"],
+Cell[43660, 1711, 58, 2, 51, "Output"],
+Cell[43721, 1715, 58, 2, 51, "Output"],
+Cell[43782, 1719, 80, 2, 51, "Output"],
+Cell[43865, 1723, 93, 2, 51, "Output"],
+Cell[43961, 1727, 130, 3, 58, "Output"]
+}, Open  ]],
+Cell[44106, 1733, 82, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[44213, 1738, 218, 9, 135, "Input"],
+Cell[44434, 1749, 646, 11, 205, "Output"]
+}, Open  ]],
+Cell[45095, 1763, 127, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[45247, 1771, 66, 1, 33, "Input"],
+Cell[45316, 1774, 86, 2, 51, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[45439, 1781, 54, 1, 33, "Input"],
+Cell[45496, 1784, 154, 4, 51, "Message"],
+Cell[45653, 1790, 2449, 42, 871, "Output"]
+}, Open  ]],
+Cell[48117, 1835, 153, 5, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[48295, 1844, 96, 5, 33, "Input"],
+Cell[48394, 1851, 344, 7, 129, "Output"]
+}, Open  ]],
+Cell[48753, 1861, 85, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[48863, 1866, 66, 1, 33, "Input"],
+Cell[48932, 1869, 387, 6, 148, "Output"]
+}, Open  ]],
+Cell[49334, 1878, 75, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[49434, 1883, 56, 1, 33, "Input"],
+Cell[49493, 1886, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[49559, 1891, 44, 1, 33, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[49640, 1897, 38, 0, 44, "Subsection"],
+Cell[49681, 1899, 287, 8, 99, "Text"],
+
+Cell[CellGroupData[{
+Cell[49993, 1911, 136, 7, 101, "Input"],
+Cell[50132, 1920, 56, 2, 51, "Output"],
+Cell[50191, 1924, 57, 2, 51, "Output"],
+Cell[50251, 1928, 149, 3, 80, "Output"],
+Cell[50403, 1933, 149, 3, 80, "Output"],
+Cell[50555, 1938, 149, 3, 80, "Output"]
+}, Open  ]],
+Cell[50719, 1944, 81, 1, 30, "Text"],
+Cell[50803, 1947, 127, 5, 67, "Input"],
+Cell[50933, 1954, 65, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[51023, 1959, 51, 1, 33, "Input"],
+Cell[51077, 1962, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[51143, 1967, 44, 1, 33, "Input"],
+Cell[51190, 1970, 158, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[51373, 1978, 154, 9, 135, "Input"],
+Cell[51530, 1989, 56, 2, 51, "Output"],
+Cell[51589, 1993, 56, 2, 51, "Output"],
+Cell[51648, 1997, 58, 2, 51, "Output"],
+Cell[51709, 2001, 58, 2, 51, "Output"],
+Cell[51770, 2005, 57, 2, 51, "Output"],
+Cell[51830, 2009, 75, 2, 51, "Output"],
+Cell[51908, 2013, 66, 2, 51, "Output"]
+}, Open  ]],
+Cell[51989, 2018, 106, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[52120, 2026, 219, 7, 101, "Input"],
+Cell[52342, 2035, 310, 6, 115, "Output"]
+}, Open  ]],
+Cell[52667, 2044, 53, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[52745, 2049, 55, 1, 33, "Input"],
+Cell[52803, 2052, 95, 2, 51, "Output"]
+}, Open  ]],
+Cell[52913, 2057, 85, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[53023, 2062, 81, 4, 50, "Input"],
+Cell[53107, 2068, 66, 2, 51, "Output"],
+Cell[53176, 2072, 1202, 22, 549, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[54415, 2099, 71, 2, 33, "Input"],
+Cell[54489, 2103, 56, 2, 51, "Output"]
+}, Open  ]],
+Cell[54560, 2108, 105, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[54690, 2116, 54, 1, 33, "Input"],
+Cell[54747, 2119, 274, 5, 88, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[55058, 2129, 53, 1, 33, "Input"],
+Cell[55114, 2132, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[55180, 2137, 88, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[55293, 2142, 207, 7, 101, "Input"],
+Cell[55503, 2151, 276, 5, 114, "Output"]
+}, Open  ]],
+Cell[55794, 2159, 49, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[55868, 2164, 57, 1, 33, "Input"],
+Cell[55928, 2167, 125, 3, 55, "Output"]
+}, Open  ]],
+Cell[56068, 2173, 91, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[56184, 2178, 73, 2, 33, "Input"],
+Cell[56260, 2182, 8426, 122, 2541, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[64723, 2309, 71, 2, 33, "Input"],
+Cell[64797, 2313, 56, 2, 51, "Output"]
+}, Open  ]],
+Cell[64868, 2318, 75, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[64968, 2323, 54, 1, 33, "Input"],
+Cell[65025, 2326, 274, 5, 88, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[65336, 2336, 53, 1, 33, "Input"],
+Cell[65392, 2339, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[65458, 2344, 44, 1, 33, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[65539, 2350, 43, 0, 44, "Subsection"],
+Cell[65585, 2352, 337, 7, 99, "Text"],
+
+Cell[CellGroupData[{
+Cell[65947, 2363, 172, 11, 169, "Input"],
+Cell[66122, 2376, 56, 2, 51, "Output"],
+Cell[66181, 2380, 57, 2, 51, "Output"],
+Cell[66241, 2384, 58, 2, 51, "Output"],
+Cell[66302, 2388, 58, 2, 51, "Output"],
+Cell[66363, 2392, 58, 2, 51, "Output"],
+Cell[66424, 2396, 58, 2, 51, "Output"],
+Cell[66485, 2400, 57, 2, 51, "Output"],
+Cell[66545, 2404, 57, 2, 51, "Output"],
+Cell[66605, 2408, 95, 2, 58, "Output"]
+}, Open  ]],
+Cell[66715, 2413, 192, 5, 45, "Text"],
+
+Cell[CellGroupData[{
+Cell[66932, 2422, 225, 10, 152, "Input"],
+Cell[67160, 2434, 389, 7, 162, "Output"]
+}, Open  ]],
+Cell[67564, 2444, 67, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[67656, 2449, 72, 1, 33, "Input"],
+Cell[67731, 2452, 66, 2, 55, "Output"]
+}, Open  ]],
+Cell[67812, 2457, 140, 5, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[67977, 2466, 91, 4, 50, "Input"],
+Cell[68071, 2472, 78, 2, 51, "Output"]
+}, Open  ]],
+Cell[68164, 2477, 292, 10, 84, "Text"],
+
+Cell[CellGroupData[{
+Cell[68481, 2491, 262, 7, 52, "Input"],
+Cell[68746, 2500, 8586, 121, 4216, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[77369, 2626, 72, 2, 33, "Input"],
+Cell[77444, 2630, 56, 2, 51, "Output"]
+}, Open  ]],
+Cell[77515, 2635, 104, 4, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[77644, 2643, 135, 7, 101, "Input"],
+Cell[77782, 2652, 56, 2, 51, "Output"],
+Cell[77841, 2656, 56, 2, 51, "Output"],
+Cell[77900, 2660, 135, 3, 77, "Output"],
+Cell[78038, 2665, 135, 3, 77, "Output"],
+Cell[78176, 2670, 135, 3, 77, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[78348, 2678, 77, 1, 33, "Input"],
+Cell[78428, 2681, 179, 3, 71, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[78644, 2689, 59, 1, 33, "Input"],
+Cell[78706, 2692, 355, 6, 113, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[79098, 2703, 67, 1, 33, "Input"],
+Cell[79168, 2706, 518, 8, 143, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[79723, 2719, 67, 1, 33, "Input"],
+Cell[79793, 2722, 529, 8, 143, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[80359, 2735, 61, 1, 33, "Input"],
+Cell[80423, 2738, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[80489, 2743, 44, 1, 33, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[80570, 2749, 52, 0, 44, "Subsection"],
+Cell[80625, 2751, 260, 7, 99, "Text"],
+
+Cell[CellGroupData[{
+Cell[80910, 2762, 81, 5, 67, "Input"],
+Cell[80994, 2769, 56, 2, 51, "Output"],
+Cell[81053, 2773, 56, 2, 51, "Output"],
+Cell[81112, 2777, 58, 2, 51, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[81207, 2784, 160, 5, 67, "Input"],
+Cell[81370, 2791, 96, 2, 76, "Output"],
+Cell[81469, 2795, 94, 2, 71, "Output"],
+Cell[81566, 2799, 103, 2, 76, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[81706, 2806, 86, 1, 33, "Input"],
+Cell[81795, 2809, 129, 3, 58, "Output"]
+}, Open  ]],
+Cell[81939, 2815, 171, 6, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[82135, 2825, 96, 4, 50, "Input"],
+Cell[82234, 2831, 58, 2, 51, "Output"],
+Cell[82295, 2835, 84, 2, 58, "Output"]
+}, Open  ]],
+Cell[82394, 2840, 188, 7, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[82607, 2851, 100, 5, 67, "Input"],
+Cell[82710, 2858, 460, 7, 145, "Output"]
+}, Open  ]],
+Cell[83185, 2868, 69, 1, 30, "Text"],
+
+Cell[CellGroupData[{
+Cell[83279, 2873, 55, 1, 33, "Input"],
+Cell[83337, 2876, 585, 9, 167, "Output"]
+}, Open  ]],
+Cell[83937, 2888, 246, 7, 45, "Text"],
+
+Cell[CellGroupData[{
+Cell[84208, 2899, 75, 4, 50, "Input"],
+Cell[84286, 2905, 58, 2, 51, "Output"],
+Cell[84347, 2909, 426, 9, 118, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[84810, 2923, 53, 1, 33, "Input"],
+Cell[84866, 2926, 51, 2, 51, "Output"]
+}, Open  ]],
+Cell[84932, 2931, 44, 1, 33, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[85025, 2938, 59, 1, 79, "Section"],
+
+Cell[CellGroupData[{
+Cell[85109, 2943, 59, 2, 33, "Input"],
+Cell[85171, 2947, 56, 2, 51, "Output"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

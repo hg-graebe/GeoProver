@@ -1,0 +1,160 @@
+(************** Content-type: application/mathematica **************
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      3279,        112]*)
+(*NotebookOutlinePosition[      3929,        135]*)
+(*  CellTagsIndexPosition[      3885,        131]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+Cell["Needs[\"GeoProver`\"]", "Input"],
+
+Cell["\<\
+Let's plot a figure containing a triangle with Euler's line and \
+Feuerbach's circle.
+
+Here is the triangle\
+\>", "Text"],
+
+Cell["\<\
+a=point[0,0]
+b=point[1.,0]
+c=point[0.4,0.7]\
+\>", "Input"],
+
+Cell["For the whole scene we need some more points", "Text"],
+
+Cell["\<\
+m=intersectionpoint[pbisector[a,b],pbisector[b,c]]
+h=intersectionpoint[altitude[a,b,c],altitude[b,c,a]]
+s=intersectionpoint[median[a,b,c],median[b,c,a]]
+n=midpoint[h,m]
+d=intersectionpoint[ppline[a,b],altitude[c,a,b]]\
+\>", "Input"],
+
+Cell["\<\
+We create scenes from these data. s1 is the triangle, s2 the set of \
+perpendicular bisectors, s3 the set of altitudes, s4 the set of median lines \
+and s5 contains Euler's line and Feuerbach's circle.\
+\>", "Text"],
+
+Cell["\<\
+s1={ppline[a,b],ppline[a,c],ppline[b,c]}
+s2={ppline[a,m],ppline[b,m],ppline[c,m]}
+s3={ppline[a,h],ppline[b,h],ppline[c,h]}
+s4={ppline[a,s],ppline[b,s],ppline[c,s]}
+s5={ppline[m,s],pccircle[n,d]}
+\
+\>", "Input"],
+
+Cell["Now create an uncolored plot from these data", "Text"],
+
+Cell["u=Join[s1,s2,s3,s4,s5];", "Input"],
+
+Cell["geoplot[u,{x,0,1}]", "Input"],
+
+Cell["For a colored plot we add colors the the different scenes", "Text"],
+
+Cell["\<\
+cs1=Map[{#,RGBColor[0,0,0]}&,s1]
+cs2=Map[{#,RGBColor[1,1,0]}&,s2]
+cs3=Map[{#,RGBColor[0,1,0]}&,s3]
+cs4=Map[{#,RGBColor[1,0,1]}&,s4]
+cs5=Map[{#,RGBColor[1,0,0]}&,s5]
+\
+\>", "Input"],
+
+Cell[BoxData[
+    \(\(cu = Join[cs1, cs2, cs3, cs4, cs5];\)\)], "Input"],
+
+Cell["geoplot[cu,{x,-0.1,1}]", "Input"]
+},
+FrontEndVersion->"4.1 for X",
+ScreenRectangle->{{0, 1024}, {0, 768}},
+WindowSize->{520, 593},
+WindowMargins->{{Automatic, 157}, {Automatic, 5}},
+ShowSelection->True
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+Cell[1705, 50, 76, 0, 27, "Input"],
+Cell[1784, 52, 131, 5, 68, "Text"],
+Cell[1918, 59, 68, 4, 57, "Input"],
+Cell[1989, 65, 60, 0, 32, "Text"],
+Cell[2052, 67, 242, 6, 87, "Input"],
+Cell[2297, 75, 225, 4, 68, "Text"],
+Cell[2525, 81, 220, 7, 102, "Input"],
+Cell[2748, 90, 60, 0, 32, "Text"],
+Cell[2811, 92, 40, 0, 27, "Input"],
+Cell[2854, 94, 35, 0, 27, "Input"],
+Cell[2892, 96, 73, 0, 32, "Text"],
+Cell[2968, 98, 190, 7, 102, "Input"],
+Cell[3161, 107, 72, 1, 27, "Input"],
+Cell[3236, 110, 39, 0, 27, "Input"]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

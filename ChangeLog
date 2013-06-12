@@ -1,0 +1,77 @@
+June 15 2003
+	
+	tangent_line code added.
+	other_cc_point and is_cc_tangent moved to GeoCode macros.
+	
+June 4 2003
+
+	op and part removed from Maple and MuPAD inline code
+
+May 18 2003
+
+	Geoplot part for Mma added.
+
+Jan 20 2003
+
+	All packages updated for GeoProver version 1.3a that implements
+	the GeoCode standard 1.3 as of today. Maple worksheet and Mma
+	notebook updated. New GeoProver.tst files generated. New release
+	put on the web.
+
+Aug 8 2002
+
+	par_point, sqrdist_pl, other_incenter and rotate added.
+	varpoint(A,B,u) changed to (1-u)*A+u*B (i.e., u=0 => A, u=1 => B)
+	
+Mar 6 2002
+
+	Numerator and Denominator removed from supp.* and added to
+	Inline. 
+
+	Freeze of version 1.2
+
+Febr 26 2002
+
+	All supp files moved to SymbolicData (since they concern only the
+	extended GEO language used in the GEO records).
+	
+Febr 13 2002
+
+	MuPAD/supp: geo_normalf also for lists. Updated to MuPAD 2.5
+	syntax (esp. concerning extensive piecewise return values of the
+	solve function)
+
+Febr 10 2002
+
+	red_hom_coords changed to inner function reduce_coords that is
+	called during the constructors Line() and Circle().
+
+Febr 8 2002
+
+	Numerator and Denominator moved to the supp files.
+
+Jan 13 2002
+
+	Maple/supp: geo_normalf also for lists
+		
+Jan 04 2002
+
+	Maple/supp: geo_eliminate, geo_normal, geo_simplify added
+	MuPAD/supp: geo_normal, geo_simplify added. This file should be
+	checked against the syntax changes in MuPAD 2.0 !!
+	
+Jan 03 2002
+
+	In the directory sd-Files all occurencies of pr_circle removed and
+	circle-slider changed to new syntax.
+	
+Dec 28 2001
+
+	circle_slider(M,A,u) with new syntax implemented in
+	reduce.inline, maple.inline
+
+	pr_circle (former c1_circle) should migrate to pc_circle.  
+
+	Reduce/GeoProver.tst: pr_circle removed, circle_slider converted
+	to new syntax.
+	
