@@ -9,23 +9,17 @@ use XML::DOM;
 
 my $parser=new XML::DOM::Parser;
 
-my $SD_HOME="/home/graebe/SD/SD-2";
-my $GeoCodeHome="$SD_HOME/XMLData/GeoCode"; 
-my $GeoTestHome="$SD_HOME/XMLData/GEO"; 
-my $GeoProverHome="/home/graebe/CVS-Projekte/GeoProver"; 
-my $GeoCodeTable;
+my $SD_HOME="/home/graebe/git/SD/symbolicdata/data";
+my $GeoProverHome="/home/graebe/git/Software/GeoProver/src"; 
+my $GeoTestHome="/home/graebe/git/SD/symbolicdata/data/XMLResources/GeoProofSchemes"; 
+my $GeoCodeTable=getGeoCode("GeoCode.xml");
 
-opendir DH, $GeoCodeHome or die;
-map {
-   my $r=readXML("$GeoCodeHome/$_");
-   $GeoCodeTable->{$r->{Key}}=$r;
- } grep(/\.xml$/, readdir DH);
-closedir DH;
+print showGeoCodeTable($GeoCodeTable); # for testing
 
 my @examples=("Arnon", "CircumCenter_1", "EulerLine_1",
 	      "Brocard_3", "Feuerbach_1", "FeuerbachTangency_1",
 	      "GeneralizedFermatPoint_1", "TaylorCircle_1",
-	      "Miquel_1", "PappusPoint_1", "IMO/36_1", "IMO/43_2");
+	      "Miquel_1", "PappusPoint_1", "IMO.36_1", "IMO.43_2");
 
 my $Date="2007-02-09"; # Misc::GetDate();
 
@@ -687,6 +681,38 @@ sub CreateCode
     $s.=&$comment($_)."\n".&$transcode($r->{$_})."\n" if $r->{$_};
   } (@$tags);
   return (&$preamble(),$s);
+}
+
+sub getGeoCode {
+  my $doc=$parser->parsefile(shift) or die;
+  my $h;
+  map {
+    my $s=$_->toString();
+    $s=~s|<rdfs:label>([^<]*)</rdfs:label>||s;
+    my $name=$1; 
+    $s=~s|<sd:call>([^<]*)</sd:call>||s;
+    my $call=$1; 
+    if ($s=~s|<sd:defaultDefinition>([^<]*)</sd:defaultDefinition>||s) {
+      my $default=$1;
+      $h->{$name}{"call"}=$call; 
+      $h->{$name}{"default"}=$default;
+    }
+  } $doc->getElementsByTagName("sd:GeoCodeFunction");
+  return $h;
+}
+
+sub showGeoCodeTable { # for testing purposes
+  my $h=shift;
+  my $out;
+  map {
+    $out.=<<EOT;
+  Name: $_
+  Call: $h->{$_}{"call"}
+  Code: $h->{$_}{"default"}
+
+EOT
+  } (sort keys %$h); 
+  return $out;
 }
 
 1;

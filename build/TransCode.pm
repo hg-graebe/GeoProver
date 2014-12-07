@@ -4,7 +4,7 @@
 # AUTHOR:  graebe
 # CREATED: 2/2000
 # PURPOSE: translate GeoCode to different target CAS
-# VERSION: $Id: TransCode.pm,v 1.1 2012/02/10 21:13:31 graebe Exp $
+# VERSION: 2012/02/10 
 
 use strict;
 

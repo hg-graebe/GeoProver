@@ -1,8 +1,8 @@
 # GeoProver Package 
 # Author: Hans-Gert Graebe, Univ. Leipzig, Germany
 # email: graebe@informatik.uni-leipzig.de
-# Web page: www.informatik.uni-leipzig.de/~compalg/software/
-# Version: $Id: Preamble.pm,v 1.1 2012/02/10 21:13:31 graebe Exp $
+# Web page: https://github.com/hg-graebe/GeoProver
+# Version: 2012/02/10 
 
 use strict;
 

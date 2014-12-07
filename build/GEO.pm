@@ -4,10 +4,7 @@
 # AUTHOR:  graebe
 # CREATED: 2/2000
 # PURPOSE: functions to manage GEO records 
-# VERSION: $Id: GEO.pm,v 1.1 2012/02/10 21:13:31 graebe Exp $
-
-use lib (defined ($SD_HOME = $ENV{'SD_HOME'}) ? "$ENV{'SD_HOME'}/bin" : 
-	 die "Environment variable SD_HOME not set");
+# VERSION: 2012/02/10 
 
 use strict;
 
