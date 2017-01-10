@@ -11,10 +11,10 @@ my $parser=new XML::DOM::Parser;
 
 my $SD_HOME="/home/graebe/git/SD/symbolicdata/data";
 my $GeoProverHome="/home/graebe/git/Software/GeoProver/src"; 
-my $GeoTestHome="/home/graebe/git/SD/symbolicdata/data/XMLResources/GeoProofSchemes"; 
-my $GeoCodeTable=getGeoCode("GeoCode.xml");
+my $GeoTestHome="/home/graebe/git/SD/data/XMLResources/GeoProofSchemes"; 
+my $GeoCodeTable=getGeoCode("GeoCode.rdf");
 
-print showGeoCodeTable($GeoCodeTable); # for testing
+# print showGeoCodeTable($GeoCodeTable); # for testing
 
 my @examples=("Arnon", "CircumCenter_1", "EulerLine_1",
 	      "Brocard_3", "Feuerbach_1", "FeuerbachTangency_1",
@@ -40,6 +40,10 @@ use strict;
 
 my (@interface, @code, $inlinecode);
 
+# @interface contains for the default function definitions the code interface
+# definitions for the given CAS (if any), @code the code itself.  $inlinecode
+# is the CAS dependent inline code.
+
 # ======== The actions part ===============
 
 sub buildCode {
@@ -49,15 +53,20 @@ sub buildCode {
     die "$sysname invalid as target\n" unless $sys;
     my $out;
     @interface=(); @code=();
-    { no strict 'refs'; 
+    { no strict 'refs';
+      # Add package infor as comment
       $out=join("\n", map &{"TransCode::$sysname"."_Comment"}(" $_"), 
 		split(/\n/, $Version));
       $out.="\n\n";
+      # Initialize the global arrays @interface and @code
       map &{"codeprepare$sysname"}($GeoCodeTable->{$_}), 
 	(sort keys %$GeoCodeTable);
+      # Get the inline code
       $inlinecode=readFile($sys->{inline});
+      # create the package for the given CAS
       $out.=&{"codecreate$sysname"}();
     }
+    # write the result to the target file.
     createFile($out,$sys->{target});
   }
 }
@@ -322,8 +331,8 @@ EOT
 
 sub codeprepareReduce
 {
-  my $r=shift;
-  return unless $r->{code};
+  my $r=shift; 
+  return unless $r->{code}; 
   my $c="algebraic procedure ".$r->{call}.";\n\t".$r->{code}.";\n";
   $c=~s/::\w*//gs;
   push(@code, TransCode::Reduce($c));
@@ -695,7 +704,7 @@ sub getGeoCode {
     if ($s=~s|<sd:defaultDefinition>([^<]*)</sd:defaultDefinition>||s) {
       my $default=$1;
       $h->{$name}{"call"}=$call; 
-      $h->{$name}{"default"}=$default;
+      $h->{$name}{"code"}=$default;
     }
   } $doc->getElementsByTagName("sd:GeoCodeFunction");
   return $h;

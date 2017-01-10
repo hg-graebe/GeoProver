@@ -9,38 +9,18 @@ geoprover::info:="The package GeoProver is a small package for mechanized\
  \n(plane) geometry manipulations with non-degeneracy tracing. \n":
 
 geoprover::interface:={
-hold(Point),
 hold(altitude),
-hold(angle_sum),
 hold(centroid),
-hold(circle_center),
-hold(circle_slider),
-hold(circle_sqradius),
 hold(circumcenter),
 hold(csym_point),
-hold(eq_angle),
-hold(eq_dist),
 hold(fixedpoint),
-hold(intersection_point),
 hold(is_cc_tangent),
-hold(is_cl_tangent),
-hold(is_collinear),
-hold(is_concurrent),
 hold(is_concyclic),
-hold(is_equal),
-hold(is_orthogonal),
-hold(is_parallel),
-hold(l2_angle),
-hold(line_slider),
 hold(median),
 hold(midpoint),
 hold(on_bisector),
-hold(on_circle),
-hold(on_line),
-hold(ortho_line),
 hold(orthocenter),
 hold(other_cc_point),
-hold(other_cl_point),
 hold(other_incenter),
 hold(p3_angle),
 hold(p3_circle),
@@ -48,20 +28,10 @@ hold(p9_center),
 hold(p9_circle),
 hold(p_bisector),
 hold(pappus_line),
-hold(par_line),
-hold(par_point),
-hold(pc_circle),
 hold(pedalpoint),
-hold(pp_line),
-hold(radical_axis),
-hold(rotate),
-hold(sqrdist),
 hold(sqrdist_pl),
-hold(sym_line),
 hold(sym_point),
-hold(tangent_line),
 hold(triangle_area),
-hold(varpoint),
 hold(clear_ndg),
 hold(print_ndg),
 hold(add_ndg),
@@ -519,7 +489,7 @@ end_proc:
 geoprover::circumcenter:=
 proc(_A:geoprover::DOM_POINT,_B:geoprover::DOM_POINT,_C:geoprover::DOM_POINT):geoprover::DOM_POINT
 begin
-geoprover::intersection_point(geoprover::p_bisector(_A,_B), geoprover::p_bisector(_B,_C))
+geoprover::intersection_point(geoprover::p_bisector(_A,_B),geoprover::p_bisector(_B,_C))
 end_proc:
 
 geoprover::csym_point:=
@@ -579,8 +549,7 @@ end_proc:
 geoprover::other_incenter:=
 proc(_M:geoprover::DOM_POINT,_A:geoprover::DOM_POINT,_B:geoprover::DOM_POINT):geoprover::DOM_POINT
 begin
-geoprover::intersection_point(geoprover::ortho_line(_A,geoprover::pp_line(_M,_A)),
-geoprover::ortho_line(_B,geoprover::pp_line(_M,_B)))
+geoprover::intersection_point(geoprover::ortho_line(_A,geoprover::pp_line(_M,_A)),geoprover::ortho_line(_B,geoprover::pp_line(_M,_B)))
 end_proc:
 
 geoprover::p3_angle:=
@@ -616,8 +585,7 @@ end_proc:
 geoprover::pappus_line:=
 proc(_A:geoprover::DOM_POINT,_B:geoprover::DOM_POINT,_C:geoprover::DOM_POINT,_D:geoprover::DOM_POINT,_E:geoprover::DOM_POINT,_F:geoprover::DOM_POINT):geoprover::DOM_LINE
 begin
-geoprover::pp_line(geoprover::intersection_point(geoprover::pp_line(_A,_E),geoprover::pp_line(_B,_D)),
-	geoprover::intersection_point(geoprover::pp_line(_A,_F),geoprover::pp_line(_C,_D)))
+geoprover::pp_line(geoprover::intersection_point(geoprover::pp_line(_A,_E),geoprover::pp_line(_B,_D)),geoprover::intersection_point(geoprover::pp_line(_A,_F),geoprover::pp_line(_C,_D)))
 end_proc:
 
 geoprover::pedalpoint:=
