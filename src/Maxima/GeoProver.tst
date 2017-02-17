@@ -286,8 +286,10 @@ nondeg_:[x5-u2,x1-u2,x6-u1,x3-u1];
 
 con_:is_concurrent(pp_line(A,M),pp_line(D,N),pp_line(X,Y));
 
-sol_:geo_solveconstrained(polys_,vars_,nondeg_);
-result_:geo_eval(con_,sol_);
+gb:geo_gbasis(polys_,vars_);
+p:=apply("*",nondeg_);
+geo_normalf(con_gb,vars_);
+geo_normalf(p*con_gb,vars_);
 
 /* 
 Example IMO/43_2
@@ -298,8 +300,8 @@ No verbal problem description available
 */
 
 
-vars_:[x1, x2);
-parameters_:[u1);
+vars_:[x1, x2];
+parameters_:[u1];
 
 B:Point(-1,0);
 C:Point(1,0);
@@ -316,14 +318,13 @@ P_1_:pedalpoint(J,m_);
 P_2_:pedalpoint(J,pp_line(C,E));
 P_3_:pedalpoint(J,pp_line(C,F));
 
-polys_:[on_line(E,m_), on_line(F,m_));
+polys_:[on_line(E,m_), on_line(F,m_)];
 
-nondegs_:[x1-x2);
+con_:[eq_dist(J,P_1_,J,P_2_), eq_dist(J,P_1_,J,P_3_)];
 
-con_:[eq_dist(J,P_1_,J,P_2_), eq_dist(J,P_1_,J,P_3_));
-
-sol_:geo_solveconstrained(polys_,vars_,nondegs_); 
-result_:geo_simplify(geo_eval(con_,sol_));
+gb:geo_gbasis(polys_,vars_);
+geo_normalf(con_[1],gb,vars_);
+geo_normalf(con_[2],gb,vars_);
 
 quit;
 

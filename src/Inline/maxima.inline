@@ -17,6 +17,8 @@ print_ndg():= geoprover_ndg;
 add_ndg(d):=
   if not member(d,geoprover_ndg) then geoprover_ndg:cons(d,geoprover_ndg);
 
+clear_ndg();
+
 /* ==== elementary geometric constructions ==== */
 
 /* Generators: */
