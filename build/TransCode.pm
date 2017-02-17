@@ -14,6 +14,7 @@ sub Reduce_Comment { local $_=shift; s.(^|\n).$1% .gs; return $_; }
 sub Maple_Comment { local $_=shift; s.(^|\n).$1\# .gs; return $_; }
 sub MuPAD_Comment { local $_=shift; s.(^|\n).$1// .gs; return $_; }
 sub Mathematica_Comment { return "(* ".shift()." *)"; }
+sub Maxima_Comment { return "/* ".shift()." */"; }
 
 sub Reduce 
 { 
@@ -28,6 +29,14 @@ sub uhu
   local $_=shift;
   s/([A-Z])/$1_/g;
   return $_."_";
+}
+
+sub Maxima
+{ 
+  my $s=shift; 
+  $s=~tr/\[\]/\(\)/;
+  $s=~s/\$(\w+)/$1\_/g; 
+  return $s; 
 }
 
 sub Maple 

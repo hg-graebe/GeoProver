@@ -161,6 +161,17 @@ sub getPlatform {
   my $sys=shift;
   my $platforms=
   {
+ 'Maxima' =>  
+ { 
+  target => "Maxima/GeoProver.m",
+  inline => "Inline/maxima.inline",
+  help   => "Maxima/GeoProver.html",
+  QuitCommand => "\nquit;\n",
+  Preamble => <<EOT,
+load ("funct"); 
+EOT
+ },
+
  'Reduce' =>  
  { 
   target => "Reduce/GeoProver.red",
@@ -404,6 +415,83 @@ $inlinehelp->{Acknowledgements}
 </html>
 EOT
   createFile($out,getPlatform("Reduce")->{help})
+}
+# --------- Maxima --------------
+
+sub codeprepareMaxima
+{
+  my $r=shift; 
+  return unless $r->{code}; 
+  my $c=$r->{call}.":=\n\t".$r->{code}.";\n";
+  $c=~s/::\w*//gs;
+  push(@code, TransCode::Maxima($c));
+}
+
+sub codecreateMaxima
+{
+  my $out;
+  $out.=$inlinecode;
+  $out.="\n/* GeoProver code generated from database */ \n\n";
+  $out.=join("\n",@code);
+  return $out;
+}
+
+sub createhelpMaxima
+{
+  my $help=shift;
+  my ($a,$r,$s,$name);
+  my $inlinehelp=readHelp();
+  my $out=<<EOT;
+<html>
+<head>
+<title>GeoProver v. $inlinehelp->{version}</title>
+</head>
+<body>
+<h1 align="center">$inlinehelp->{title} 
+<p> Version $inlinehelp->{version}</h1>
+
+ <h3 align="center">
+<table>
+<tr><td>AUTHOR   <td>: <td>$inlinehelp->{author}
+<tr><td> ADDRESS  <td>: <td>$inlinehelp->{address}
+<tr><td> URL    <td>: 
+<td> <a href="$inlinehelp->{url}">$inlinehelp->{url}</a> 
+</table>
+</h3>
+
+<h4>Introduction</h4>
+
+$inlinehelp->{Introduction}
+
+<h4>Basic Data Types</h4>
+
+$inlinehelp->{BasicDataTypes}
+
+<h4>Available functions</h4>
+
+<p><table border align="center" cellpadding=8 width="80%">
+EOT
+  
+  for $a (sort keys %$help)
+  {
+    $r=$help->{$a};
+    $name=TransCode::Maxima($a);
+    $s=$r->{parameters3};
+    $out.= <<EOT;
+<tr><td align="center"> $name($s) <td> $r->{description}
+EOT
+  }
+  $out.= <<EOT;
+</table>
+
+<h4>Acknowledgements</h4>
+
+$inlinehelp->{Acknowledgements}
+
+</body>
+</html>
+EOT
+  createFile($out,getPlatform("Maxima")->{help})
 }
 
 # --------- MuPAD --------------

@@ -2,8 +2,6 @@
 
 Compiled from reduce.inline on 2014-12-07
 
-GeoProver inline part. Version 1.3
-
 Data structures:
 
 	Point A  :== [a1,a2]       <=> A=(a1,a2)
@@ -12,16 +10,8 @@ Data structures:
 
 */
 
-put ('geoprover,"GeoProver",name)$
-put ('geoprover," 1.3a",version)$
-put ('geoprover,"December 30, 2002",date)$
-
-print(concat(get('geoprover,name),get('geoprover,version),
-  ", Last update ",get('geoprover,'date)));
-
 /* ==== Handling non degeneracy conditions ==== */
 
-define_variable (geoprover_ndg, [], any); /* Initialization */
 clear_ndg():= geoprover_ndg:[];
 print_ndg():= geoprover_ndg;
 add_ndg(d):=
@@ -33,8 +23,16 @@ add_ndg(d):=
 
 is_equal(a,b):= a-b;
 Normal(a):= ratsimp(a);
-Point(a,b):= [a,b];
+Point(a,b):= ratsimp([a,b]);
 Line(a,b,c):= reduce_coords([a,b,c]);
+
+reduce_coords(u):= /* Reduziere homogene Koordinaten, nennerfrei */ 
+block([l,g], u:ratsimp(u),
+  l:denom(first(u)), g:num(first(u)),
+  for x in rest(u) do (l:lcm(l,denom(x)), g:gcd(g,num(x)) ) , 
+  add_ndg(g),
+  ratsimp(u*l/g)
+);
 
 par_point(a,b,c):=
   Point(part(a,1)-part(b,1)+part(c,1),
@@ -46,9 +44,9 @@ pp_line(a,b):= /* The line through A and B. */
 
 intersection_point(a,b):= /* The intersection point of the lines a,b. */
    block([d,d1,d2], 
-   d:part(a,1)*part(b,2)-part(b,1)*part(a,2),
-   d1:part(a,3)*part(b,2)-part(b,3)*part(a,2),
-   d2:part(a,1)*part(b,3)-part(b,1)*part(a,3),
+   d:expand(part(a,1)*part(b,2)-part(b,1)*part(a,2)),
+   d1:expand(part(a,3)*part(b,2)-part(b,3)*part(a,2)),
+   d2:expand(part(a,1)*part(b,3)-part(b,1)*part(a,3)),
    if d=0 then error("Lines are parallel"),
    add_ndg(num(d)),
    Point(-d1/d,-d2/d));
@@ -80,32 +78,32 @@ circle_slider(M,A,u):= /* Slider on the circle with center M
 	 (a2 + 2*(m1-a1)*u + (2*m2-a2)*u^2)/d)); 
 
 sqrdist(a,b):= /* The square of the distance between the points A and B. */
-  (part(b,1)-part(a,1))^2+(part(b,2)-part(a,2))^2;
+  ratsimp((part(b,1)-part(a,1))^2+(part(b,2)-part(a,2))^2);
 
 /*======= elementary geometric properties ====== */
 
 is_collinear(a,b,c):= /* A,B,C are on a common line. */
-determinant(matrix(
+ratsimp(determinant(matrix(
      [part(a,1),part(a,2),1],
      [part(b,1),part(b,2),1],
-     [part(c,1),part(c,2),1]));
+     [part(c,1),part(c,2),1])));
 
 is_concurrent(a,b,c):= /* Lines a,b,c have a common point. */
-determinant(matrix(
+ratsimp(determinant(matrix(
 	[part(a,1),part(a,2),part(a,3)],
 	[part(b,1),part(b,2),part(b,3)],
-	[part(c,1),part(c,2),part(c,3)]);
+	[part(c,1),part(c,2),part(c,3)])));
 
 is_parallel(a,b):= /* 0 <=> the lines a,b are parallel. */
-  part(a,1)*part(b,2)-part(b,1)*part(a,2);
+  ratsimp(part(a,1)*part(b,2)-part(b,1)*part(a,2));
 
 is_orthogonal(a,b):= /* 0 <=> the lines a,b are orthogonal. */
-  part(a,1)*part(b,1)+part(a,2)*part(b,2);
+  ratsimp(part(a,1)*part(b,1)+part(a,2)*part(b,2));
 
 on_line(p,a):= /* Substitute point P into the line a. */
-  part(p,1)*part(a,1)+part(p,2)*part(a,2)+part(a,3);
+  ratsimp(part(p,1)*part(a,1)+part(p,2)*part(a,2)+part(a,3));
 
-eq_dist(a,b,c,d):= sqrdist(a,b)-sqrdist(c,d);
+eq_dist(a,b,c,d):= ratsimp(sqrdist(a,b)-sqrdist(c,d));
 
 /* 
 
@@ -119,144 +117,117 @@ eq_dist(a,b,c,d):= sqrdist(a,b)-sqrdist(c,d);
 
 /* ======= angles ======= */
 
-algebraic procedure l2_angle(a,b);
-% tan of the angle between the lines a and b.
-  begin scalar d; d:(part(a,1)*part(b,1)+part(a,2)*part(b,2)); 
-  add_ndg(num(d));
-  return (part(a,2)*part(b,1)-part(b,2)*part(a,1))/d;
-  end;
+l2_angle(a,b):=
+/* tan of the angle between the lines a and b. */
+  block([d:ratsimp(part(a,1)*part(b,1)+part(a,2)*part(b,2))], 
+  add_ndg(num(d)),
+  ratsimp((part(a,2)*part(b,1)-part(b,2)*part(a,1))/d)
+);
 
-algebraic procedure angle_sum(a,b);
-% a=tan(\alpha), b=tan(\beta). Returns tan(\alpha+\beta)
-  begin scalar d; d:(1-a*b); add_ndg(num d); 
-  return (a+b)/d;
-  end;
+angle_sum(a,b):=
+/* a=tan(\alpha), b=tan(\beta). Returns tan(\alpha+\beta) */
+  block([d:(1-a*b)], add_ndg(num(d)), ratsimp((a+b)/d)
+);
 
-algebraic procedure eq_angle(a,b,c,d,e,f);
-  p3_angle(a,b,c)-p3_angle(d,e,f);
+eq_angle(a,b,c,d,e,f):=
+  ratsimp(p3_angle(a,b,c)-p3_angle(d,e,f));
 
-algebraic procedure rotate(C, A, angle);
-  begin scalar ac1,ac2;
-  ac1:part(A,1)-part(C,1); ac2:part(A,2)-part(C,2); 
-  return Point(part(C,1)+ac1*cos(angle*pi)-ac2*sin(angle*pi),
-    part(C,2)+ac1*sin(angle*pi)+ac2*cos(angle*pi)); 
-  end;
+rotate(C, A, angle):=
+  block([ac1,ac2],
+  ac1:part(A,1)-part(C,1), ac2:part(A,2)-part(C,2),
+  ratsimp(Point(part(C,1)+ac1*cos(angle*%pi)-ac2*sin(angle*%pi),
+    part(C,2)+ac1*sin(angle*%pi)+ac2*cos(angle*%pi)))
+);
 
-% ========== symmetric lines and points
+/* ========== symmetric lines and points */
 
-algebraic procedure sym_line(a,l);
-% The line symmetric to a wrt. the line l.
-  begin scalar a1,a2,a3,l1,l2,l3,u;
-  a1:part(a,1); a2:part(a,2); a3:part(a,3); 
-  l1:part(l,1); l2:part(l,2); l3:part(l,3); 
-  u:l1^2 - l2^2;
-  return Line(- a1*u - 2*a2*l1*l2, - 2*a1*l1*l2 + a2*u, 
-		- 2*(a1*l1 + a2*l2)*l3 + a3*(l1^2 + l2^2));
-  end;
+sym_line(a,l):=
+/* The line symmetric to a wrt. the line l. */
+  block([a1,a2,a3,l1,l2,l3,u,u1,u2,u3],
+  a1:part(a,1), a2:part(a,2), a3:part(a,3), 
+  l1:part(l,1), l2:part(l,2), l3:part(l,3), 
+  u3: -2*(a1*l1 + a2*l2)*l3 + a3*(l1^2 + l2^2),
+  u:l1^2 - l2^2, u1:- a1*u - 2*a2*l1*l2, u2:- 2*a1*l1*l2 + a2*u,
+  Line(u1,u2,u3)
+);
 
-% ===================== circles
 
-algebraic procedure Circle(c1,c2,c3,c4); reduce_coords([c1,c2,c3,c4]);
+/* ===================== circles */
 
-algebraic procedure pc_circle(M,A);
-% Circle with center M and Point A on circumference.
+Circle(c1,c2,c3,c4):= reduce_coords([c1,c2,c3,c4]);
+
+pc_circle(M,A):=
+/* Circle with center M and Point A on circumference. */
   Circle(1, -2*part(M,1), -2*part(M,2),
 	    part(A,1)*(2*part(M,1)-part(A,1)) +
 	    part(A,2)*(2*part(M,2)-part(A,2)));
 
-algebraic procedure circle_center c;
-% The center of the circle c.
-  begin add_ndg(num part(c,1));
-  return Point(-part(c,2)/2/part(c,1) ,-part(c,3)/(2*part(c,1)));
-  end;
+circle_center(c):=
+/* The center of the circle c */
+  block(add_ndg(num(part(c,1))),
+  Point(-part(c,2)/2/part(c,1) ,-part(c,3)/(2*part(c,1)))
+);
+ 
+circle_sqradius(c):=
+/* The squared radius of the circle c. */
+  block(add_ndg(num(part(c,1))),
+   ratsimp(((part(c,2)^2+part(c,3)^2) - 4*part(c,4)*part(c,1)) / 
+	(2*part(c,1))^2)
+);
 
-algebraic procedure circle_sqradius c;
-% The squared radius of the circle c.
-  begin add_ndg(num part(c,1));
-  return 
-   ((part(c,2)^2+part(c,3)^2) - 4*part(c,4)*part(c,1)) / 
-	(2*part(c,1))^2;
-  end;
+on_circle(P,c):=
+  block([p1:part(P,1), p2:part(P,2)],
+  ratsimp(part(c,1)*(p1^2+p2^2)+part(c,2)*p1+part(c,3)*p2+part(c,4))
+);
 
-algebraic procedure on_circle(P,c);
-  begin scalar p1,p2; p1:part(P,1); p2:part(P,2);
-  return part(c,1)*(p1^2+p2^2)+part(c,2)*p1+part(c,3)*p2+part(c,4);
-  end;
+/* Intersecting with circles */
 
-% Intersecting with circles
+other_cl_point(P,c,l):=
+/* circle c and line l intersect at P. The procedure returns their
+ second intersection point. */
+  if on_line(P,l) != 0 then error("Point not on the line")
+  else if on_circle(P,c) != 0 then 
+	error( "Point not on the circle")
+  else block([c1,c2,c3,l1,l2,d,d1,p1,p2],
+  c1:part(c,1), c2:part(c,2), c3:part(c,3), 
+  l1:part(l,1), l2:part(l,2), p1:part(P,1), p2:part(P,2),
+  d:c1*(l1^2 + l2^2), add_ndg(num(d)), d1:c1*(l1^2-l2^2),
+  Point((d1*p1+((2*c1*p2 + c3)*l1-c2*l2)*l2)/d, 
+	(- d1*p2+((2*c1*p1 + c2)*l2-c3*l1)*l1)/d)
+);
+  
 
-algebraic procedure other_cl_point(P,c,l);
-% circle c and line l intersect at P. The procedure returns their
-% second intersection point.
-  if on_line(P,l) neq 0 then rederr "Point not on the line"
-  else if on_circle(P,c) neq 0 then 
-	rederr "Point not on the circle"
-  else begin scalar c1,c2,c3,l1,l2,d,d1,p1,p2;
-  c1:part(c,1); c2:part(c,2); c3:part(c,3); 
-  l1:part(l,1); l2:part(l,2); p1:part(P,1); p2:part(P,2);
-  d:c1*(l1^2 + l2^2); add_ndg(num d); d1:c1*(l1^2-l2^2);
-  return [(d1*p1+((2*c1*p2 + c3)*l1-c2*l2)*l2)/d, 
-	(- d1*p2+((2*c1*p1 + c2)*l2-c3*l1)*l1)/d];
-  end;
+radical_axis(c1,c2):=
+/* Radical axis of the circles c1 and c2, i.e. the line through the
+ intersection points of the two circles if they intersect. */
+  Line((part(c1,1)*part(c2,2)-part(c1,2)*part(c2,1)),
+       (part(c1,1)*part(c2,3)-part(c1,3)*part(c2,1)),
+       (part(c1,1)*part(c2,4)-part(c1,4)*part(c2,1))); 
 
-algebraic procedure radical_axis(c1,c2);
-% Radical axis of the circles c1 and c2, i.e. the line through the
-% intersection points of the two circles if they intersect. 
-  for i:2:4 collect
-	(part(c1,1)*part(c2,i)-part(c1,i)*part(c2,1)); 
-
-algebraic procedure is_cl_tangent(c,l);
-% Line l is tangent to the circle c.
-  begin scalar c1,c2,c3,c4,l1,l2,l3;
-  c1:part(c,1); c2:part(c,2); c3:part(c,3); c4:part(c,4); 
-  l1:part(l,1); l2:part(l,2); l3:part(l,3); 
-  return - 4*c1^2*l3^2 + 4*c1*c2*l1*l3 + 4*c1*c3*l2*l3 -
+is_cl_tangent(c,l):=
+/* Line l is tangent to the circle c */
+  block([c1,c2,c3,c4,l1,l2,l3],
+  c1:part(c,1), c2:part(c,2), c3:part(c,3), c4:part(c,4), 
+  l1:part(l,1), l2:part(l,2), l3:part(l,3), 
+  ratsimp(- 4*c1^2*l3^2 + 4*c1*c2*l1*l3 + 4*c1*c3*l2*l3 -
 	4*c1*c4*l1^2 - 4*c1*c4*l2^2 + c2^2*l2^2 - 2*c2*c3*l1*l2 +
-	c3^2*l1^2
-  end;
+	c3^2*l1^2)
+);
 
-algebraic procedure tangent_line(P,c);
-  if on_circle(P,c) then rederr "Point not on the circle"
+tangent_line(P,c):=
+  if on_circle(P,c) then error("Point not on the circle")
   else Line(2*part(c,1)*part(P,1)+part(c,2), 2*part(c,1)*part(P,2)+part(c,3),
                 part(c,2)*part(P,1)+part(c,3)*part(P,2)+2*part(c,4));
-end;
 
-% ============= some additional tools ===============
+/* ================ new */ 
 
-symbolic operator list2mat;
-symbolic procedure list2mat u;
-  'mat. for each x in cdr reval u collect cdr x;
-
-algebraic procedure extractmat(polys,vars);
-% extract the coefficient matrix from the linear system polys.
-  begin
-  if length polys neq length vars then
-        rederr"Number of variables doesn't match";
-  for each p in polys do for each x in vars do
-        if deg(p,x)>1 then rederr"Equations not of linear type";
-  return list2mat
-        for each x in vars collect
-        for each p in polys collect coeffn(p,x,1);
-end;
-
-algebraic procedure reduce_coords u;
-% Divide out the content of homogeneous coordinates.
-  begin scalar l,g;
-  l:den first u; g:num first u;
-  for each x in rest u do <<l:lcm(l,den x); g:gcd(g,num x) >>;
-  add_ndg(g);
-  return for each x in u collect (x*l/g);
-  end;
-
-% ================ new 
-
-algebraic procedure circle_inverse(M,R,P);
-% compute the inverse of P wrt. the circle pc_circle(M,R) 
-  begin scalar m1,m2,r1,r2,p1,p2,d;
-  m1:part(M,1); m2:part(M,2); 
-  r1:part(R,1); r2:part(R,2); 
-  p1:part(P,1); p2:part(P,2); 
-  d:(m1-p1)^2+(m2-p2)^2;
-  add_ndg(d);
-  return ((m1-p1)^2+(m2-p2)^2+(m1-r1)^2+(m2-r2)^2)/d;
-  end;
+circle_inverse(M,R,P):=
+/* compute the inverse of P wrt. the circle pc_circle(M,R) */
+  block([m1,m2,r1,r2,p1,p2,d],
+  m1:part(M,1), m2:part(M,2), 
+  r1:part(R,1), r2:part(R,2), 
+  p1:part(P,1), p2:part(P,2), 
+  d:(m1-p1)^2+(m2-p2)^2,
+  add_ndg(d),
+  ratsimp(((m1-p1)^2+(m2-p2)^2+(m1-r1)^2+(m2-r2)^2)/d)
+);
