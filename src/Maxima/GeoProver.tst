@@ -1,4 +1,6 @@
-/* GeoProver test file for Maxima, created 02/2017 */
+/*
+  GeoProver test file for Maxima, created 02/2017, fixed 01/2018.
+*/
 
 /* Example Arnon
 
@@ -9,8 +11,10 @@ distance between $B$ and $D$. Let $Q$ be the intersection point of
 $BF$ and $CD$. Show that $l(DP)=l(DQ)$.
 */
 
-clear_ndg();
 load(functs);
+batchload("GeoProver.m");
+batchload("supp.m");
+clear_ndg();
 
 vars_:[x1, x2, x3];
 
@@ -287,9 +291,9 @@ nondeg_:[x5-u2,x1-u2,x6-u1,x3-u1];
 con_:is_concurrent(pp_line(A,M),pp_line(D,N),pp_line(X,Y));
 
 gb:geo_gbasis(polys_,vars_);
-p:=apply("*",nondeg_);
-geo_normalf(con_gb,vars_);
-geo_normalf(p*con_gb,vars_);
+p:apply("*",nondeg_);
+geo_normalf(con_,gb,vars_);
+geo_normalf(p*con_,gb,vars_);
 
 /* 
 Example IMO/43_2

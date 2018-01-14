@@ -1,3 +1,13 @@
+Jan 14 2018
+
+        GeoProver.m for Maxima added and GeoProver.tst fixed. The build process
+        has yet to be fixed.
+
+Febr 2012
+
+        Version for Maxima added. The GeoProver.m file is yet missing, the
+        build process has to be fixed.
+
 June 15 2003
 	
 	tangent_line code added.

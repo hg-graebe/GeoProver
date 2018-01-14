@@ -2,8 +2,6 @@ GeoProver
 =========
 
 GeoProver is a Inter-CAS package for Geometry Theorem Proving with Mappings
-currently to Reduce, Mathematica, Maple and MuPAD.
+currently to Reduce, Mathematica, Maple, Maxima and MuPAD (5.0).
 
-A version for Maxima is on the way.
-
-Note that the build process has to be checked.
+The build process has to be fixed.
