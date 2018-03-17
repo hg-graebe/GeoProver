@@ -5,8 +5,8 @@ The GeoProver is a small package for mechanized (plane) geometry manipulations
 with non degeneracy tracing, available for different CAS platforms (Maple,
 MuPAD, Maxima, Mathematica, and Reduce).
 
-The latest version 1.3 was finished at Jan 20, 2003 and since that time under
-casual revision.  In particular, in 2017 a version for Maxima was added. 
+The latest version 1.3 was finished at Jan 20, 2003 and was since that time
+under casual revision.  In particular, in 2017 a version for Maxima was added.
 
 The different packages are build from a common generic source description
 (macro definitions) and CAS-specific basic inline code together with help
