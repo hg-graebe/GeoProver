@@ -311,6 +311,3 @@ Maplets:-Elements:-Button("OK",Maplets:-Elements:-Shutdown())]))
 end proc;
 
 # GeoProver code generated from database 
-
-
-# GeoProver code end.

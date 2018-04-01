@@ -16,10 +16,10 @@ PRETTYPRINT:=FALSE:
 
 _vars:=geoList(x1, x2, x3);
 // Points
-_A:=Point(0,0); _B:=Point(1,0); _P:=Point(x1,x2);
-// coordinates
-_D:=rotate(_A,_B,1/2);
-_C:=par_point(_D,_A,_B); 
+_A:=Point(0,0); _B:=Point(1,0); 
+_C:=Point(1,1); _D:=Point(0,1); 
+_P:=Point(x1,x2);
+// coordinates 
 _Q:=varpoint(_D,_C,x3);
 // polynomials
 _polys:=geoList(on_line(_P,par_line(_C,pp_line(_B,_D))),
