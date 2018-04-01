@@ -1,3 +1,8 @@
+April 1 2018
+
+	GeoProver.m for Maxima changed to typed geometric objects.  First
+	version of plottest.m added.
+
 Jan 14 2018
 
         GeoProver.m for Maxima added and GeoProver.tst fixed. The build process

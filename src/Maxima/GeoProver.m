@@ -29,15 +29,15 @@ clear_ndg();
 
 is_equal(a,b):= a-b;
 Normal(a):= ratsimp(a);
-Point(a,b):= ratsimp([a,b]);
-Line(a,b,c):= reduce_coords([a,b,c]);
+Point(a,b):= ratsimp(TP(a,b));
+Line(a,b,c):= reduce_coords(TL(a,b,c));
 
 reduce_coords(u):= /* Reduziere homogene Koordinaten, nennerfrei */ 
 block([l,g], u:ratsimp(u),
   l:denom(first(u)), g:num(first(u)),
   for x in rest(u) do (l:lcm(l,denom(x)), g:gcd(g,num(x)) ) , 
   add_ndg(g),
-  ratsimp(u*l/g)
+  ratsimp(map(lambda([t],t*l/g),u))
 );
 
 par_point(a,b,c):=
@@ -160,7 +160,7 @@ sym_line(a,l):=
 
 /* ===================== circles */
 
-Circle(c1,c2,c3,c4):= reduce_coords([c1,c2,c3,c4]);
+Circle(c1,c2,c3,c4):= reduce_coords(TC(c1,c2,c3,c4));
 
 pc_circle(M,A):=
 /* Circle with center M and Point A on circumference. */
